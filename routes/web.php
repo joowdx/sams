@@ -16,3 +16,4 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::resource('users', 'UserController');
 Route::resource('configurations', 'ConfigurationController');
+Route::resource('logs', 'LogController');

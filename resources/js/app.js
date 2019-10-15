@@ -19,6 +19,8 @@ window.Vue = require('vue')
 const files = require.context('./', true, /\.vue$/i)
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+Vue.config.productionTip = false;
+Vue.config.devtools = false;
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**
@@ -33,21 +35,8 @@ const app = new Vue({
 
 import 'admin-lte/dist/js/adminlte.min.js'
 import './fontawesome-kit-pro.js'
+window.alertify = require('alertifyjs')
 
 window.ucfirst = e => e.trim().charAt(0).toUpperCase() + e.slice(1)
 window.ucwords = e => e.trim().split(/\s+/igm).map(ucfirst).join(' ')
 
-
-
-Echo.join(`Logs`)
-    .here((users) => {
-        console.log(users)
-    })
-    .joining((user) => {
-        console.log(`${user.username} has joined.`);
-    })
-    .leaving((user) => {
-        console.log(`${user.username} has left.`);
-    })
-// Echo.channel()
-    // .listen()
