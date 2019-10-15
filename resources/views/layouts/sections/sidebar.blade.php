@@ -20,7 +20,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-chart-network fa-fw"></i>
                         <p>
                             Dashboard
@@ -33,7 +33,16 @@
                                 <i class="nav-icon fad fa-sparkles fa-fw"></i>
                                 <p>
                                     Telescope
-                                    <span class="right badge badge-dark"> Debug </span>
+                                    <span class="right badge badge-dark d-none"> Debug </span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('websockets') }}" class="nav-link">
+                                <i class="nav-icon fad fa-satellite fa-fw"></i>
+                                <p>
+                                    Websockets
+                                    <span class="right badge badge-dark d-none"> Debug </span>
                                 </p>
                             </a>
                         </li>

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Attendance;
+use App\Log;
 use Illuminate\Http\Request;
 
-class AttendanceController extends Controller
+class LogController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Attendance  $attendance
+     * @param  \App\Log  $log
      * @return \Illuminate\Http\Response
      */
-    public function show(Attendance $attendance)
+    public function show(Log $log)
     {
         //
     }
@@ -52,10 +52,10 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Attendance  $attendance
+     * @param  \App\Log  $log
      * @return \Illuminate\Http\Response
      */
-    public function edit(Attendance $attendance)
+    public function edit(Log $log)
     {
         //
     }
@@ -64,10 +64,10 @@ class AttendanceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Attendance  $attendance
+     * @param  \App\Log  $log
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Attendance $attendance)
+    public function update(Request $request, Log $log)
     {
         //
     }
@@ -75,10 +75,10 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Attendance  $attendance
+     * @param  \App\Log  $log
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Attendance $attendance)
+    public function destroy(Log $log)
     {
         //
     }

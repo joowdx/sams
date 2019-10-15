@@ -12,9 +12,7 @@
 */
 
 Auth::routes();
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::resource('users', 'UserController');
 Route::resource('configurations', 'ConfigurationController');

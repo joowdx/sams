@@ -37,3 +37,17 @@ import './fontawesome-kit-pro.js'
 window.ucfirst = e => e.trim().charAt(0).toUpperCase() + e.slice(1)
 window.ucwords = e => e.trim().split(/\s+/igm).map(ucfirst).join(' ')
 
+
+
+Echo.join(`Logs`)
+    .here((users) => {
+        console.log(users)
+    })
+    .joining((user) => {
+        console.log(`${user.username} has joined.`);
+    })
+    .leaving((user) => {
+        console.log(`${user.username} has left.`);
+    })
+// Echo.channel()
+    // .listen()
