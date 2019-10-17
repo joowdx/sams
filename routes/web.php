@@ -11,9 +11,10 @@
 |
 */
 
-Auth::routes();
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Auth::routes(['register' => false]);
+Route::any('/', 'HomeController')->name('home');
+Route::any('/dashboard', 'DashboardController')->name('dashboard');
+Route::any('/profile', 'ProfileController')->name('profile');
 Route::resource('users', 'UserController');
 Route::resource('configurations', 'ConfigurationController');
 Route::resource('logs', 'LogController');

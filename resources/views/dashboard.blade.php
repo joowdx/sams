@@ -1,25 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-        @foreach (Auth::user()->notifications as $not)
-            {!! $not.'<br>' !!}
-        @endforeach
-    </div>
+<div class="container-fluid">
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    try {
+        Echo.private('logs').listen('NewScannedLog', function(e) {
+            notify({
+                'icon': 'fad fa-info-circle fa-fw mr-2',
+                'message': `${e.log.log_by.school_id} ⁠— ${e.log.log_by.name} in ${e.log.from} at ${new Date(e.log.created_at).toLocaleString('en-gb', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'})}`,
+            })
+        })
+    } catch (error) {
+        // location.reload()
+    }
+</script>
 @endsection

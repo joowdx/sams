@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Log;
-use App\Events\NewLog;
+use App\Student;
 use Illuminate\Http\Request;
 
-class LogController extends Controller
+class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class LogController extends Controller
      */
     public function index()
     {
-        // event(new NewLog(Log::create()));
+        //
     }
 
     /**
@@ -42,10 +41,10 @@ class LogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Log  $log
+     * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Log $log)
+    public function show(Student $student)
     {
         //
     }
@@ -53,10 +52,10 @@ class LogController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Log  $log
+     * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Log $log)
+    public function edit(Student $student)
     {
         //
     }
@@ -65,10 +64,10 @@ class LogController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Log  $log
+     * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Log $log)
+    public function update(Request $request, Student $student)
     {
         //
     }
@@ -76,10 +75,10 @@ class LogController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Log  $log
+     * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Log $log)
+    public function destroy(Student $student)
     {
         //
     }

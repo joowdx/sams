@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\NewLog;
+use App\Faculty;
 use Illuminate\Http\Request;
 
-class LogAPIController extends Controller
+class FacultyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class LogAPIController extends Controller
      */
     public function index()
     {
-        event(new NewLog('Hello'));
+        //
     }
 
     /**
@@ -41,10 +41,10 @@ class LogAPIController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Faculty $faculty)
     {
         //
     }
@@ -52,10 +52,10 @@ class LogAPIController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Faculty $faculty)
     {
         //
     }
@@ -64,10 +64,10 @@ class LogAPIController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Faculty $faculty)
     {
         //
     }
@@ -75,10 +75,10 @@ class LogAPIController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Faculty $faculty)
     {
         //
     }

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Log;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -9,23 +10,21 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Carbon;
 
-class NewLog implements ShouldBroadcast
+class NewScannedLog implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * @var message
-     */
-    protected $message;
+    public $log;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($log)
     {
-        $this->message = $message;
+        $this->log = $log;
     }
 
     /**
