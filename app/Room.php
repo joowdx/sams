@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Faculty extends Model
+class Room extends Model
 {
     protected $fillable = [
-        'school_id', 'name',
+        'name',
     ];
 
     public function courses()
@@ -17,6 +17,6 @@ class Faculty extends Model
 
     public function logs()
     {
-        return $this->morphMany(Log::class, 'log_by');
+        return $this->morphMany(Log::class, 'from_by');
     }
 }

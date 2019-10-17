@@ -17,8 +17,9 @@ class CreateLogsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('log_by_id');
             $table->string('log_by_type');
+            $table->unsignedBigInteger('from_id');
+            $table->string('from_type');
             $table->enum('type', ['entry', 'exit'])->default('entry');
-            $table->string('from',3)->nullable();
             $table->timestamps();
         });
     }

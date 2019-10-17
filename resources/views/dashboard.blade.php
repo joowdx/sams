@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="container-fluid">
+    @php
+        use App\User;
+    @endphp
+    {{ User::where('id', '<>', Auth::user()->id)->get()}}
 </div>
 @endsection
 
