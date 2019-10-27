@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::any('logs', 'API\LogController');
+Route::any('tags', 'API\TagController');

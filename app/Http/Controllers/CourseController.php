@@ -14,7 +14,10 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        return view('courses.index')->with([
+            'contentheader' => 'Courses',
+            'courses' => Course::with(['faculty'])->get()
+        ]);
     }
 
     /**
@@ -46,7 +49,18 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        return view('courses.show', compact('course'))->with([
+            'contentheader' => 'Course Info',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Courses',
+                    'link' => route('courses.index'),
+                ],
+                [
+                    'text' => 'Info'
+                ]
+            ]
+        ]);
     }
 
     /**

@@ -10,3 +10,10 @@ $factory->define(Faculty::class, function (Faker $faker) {
         //
     ];
 });
+
+$factory->state(Faculty::class, 'John Doe', function($faker) {
+    return [
+        'uid' => 10000,
+        'name' => 'John Doe',
+    ];
+});

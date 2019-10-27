@@ -22,4 +22,9 @@ class Course extends Model
         return $this->belongsToMany(Student::class);
     }
 
+    public function logs()
+    {
+        return $this->hasMany(Log::class);
+    }
+
 }

@@ -15,11 +15,13 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('log_by_id');
-            $table->string('log_by_type');
-            $table->unsignedBigInteger('from_id');
-            $table->string('from_type');
-            $table->enum('type', ['entry', 'exit'])->default('entry');
+            $table->unsignedBigInteger('log_by_id')->nullable();
+            $table->string('log_by_type')->nullable();
+            $table->unsignedBigInteger('from_by_id')->nullable();
+            $table->string('from_by_type')->nullable();
+            $table->enum('type', ['entry', 'exit'])->nullable();
+            $table->unsignedBigInteger('course_id')->nullable();
+            $table->enum('remarks', ['ok', 'fail']);
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class CreateGatesTable extends Migration
     {
         Schema::create('gates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name', 3)->nullable();
             $table->timestamps();
         });
     }

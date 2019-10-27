@@ -20,10 +20,10 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-chart-network fa-fw"></i>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fad fa-bug fa-fw"></i>
                         <p>
-                            Dashboard
+                            Debugging
                             <i class="right fad fa-angle-left fa-fw"></i>
                         </p>
                     </a>
@@ -58,6 +58,24 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-users-class fa-fw"></i>
+                        <p> Students </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('faculties.index') }}" class="nav-link {{ request()->is('faculties*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-chalkboard-teacher fa-fw"></i>
+                        <p> Faculties </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('courses.index') }}" class="nav-link {{ request()->is('courses*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-book-spells fa-fw"></i>
+                        <p> Courses </p>
+                    </a>
                 </li>
                 <li class="nav-item">
                 <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">

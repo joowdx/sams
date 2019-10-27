@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $fillable = [
-        'school_id', 'name',
+        'uid', 'name',
     ];
 
     public function courses()
@@ -18,5 +18,10 @@ class Student extends Model
     public function logs()
     {
         return $this->morphMany(Log::class, 'log_by');
+    }
+
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

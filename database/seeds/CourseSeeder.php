@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class AdminUserSeeder extends Seeder
+class CourseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class)->states('admin')->create();
+        factory(App\Course::class)->states(['IT111L', 'IT112L'])->create();
     }
 }
