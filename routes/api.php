@@ -17,5 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::any('logs', 'API\LogController');
+Route::resource('logs', 'API\LogController')->only('store');
 Route::any('tags', 'API\TagController');
+Route::resource('users', 'API\Usercontroller');

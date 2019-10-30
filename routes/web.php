@@ -11,6 +11,7 @@
 |
 */
 
+
 Auth::routes(['register' => false]);
 Route::any('/', 'HomeController')->name('home');
 Route::any('/dashboard', 'DashboardController')->name('dashboard');

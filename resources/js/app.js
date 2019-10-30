@@ -36,7 +36,16 @@ const app = new Vue({
 import './fontawesome-kit-pro.js'
 import 'admin-lte/dist/js/adminlte.min.js'
 import 'bootstrap-notify'
+
+import 'datatables.net-bs4'
+import 'datatables.net-buttons-bs4'
+import 'datatables.net-buttons/js/buttons.colVis.js'
+import 'datatables.net-buttons/js/buttons.flash.js'
+import 'datatables.net-buttons/js/buttons.html5.js'
+import 'datatables.net-buttons/js/buttons.print.js'
+
 window.swal = require('sweetalert2')
 window.alertify = require('alertifyjs')
+
 
 import './global.js'

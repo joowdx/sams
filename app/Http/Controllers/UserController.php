@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Http\Requests\UpdateValidation;
+use App\Http\Requests\StoreValidation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $users = User::all();
         return view('users.index')->with([
             'contentheader' => 'Users'
         ]);
@@ -26,18 +34,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create')->with([
-            'contentheader' => 'Add new user',
-            'breadcrumbs' => [
-                [
-                    'text' => 'Users',
-                    'link' => route('users.index'),
-                ],
-                [
-                    'text' => 'Create'
-                ]
-            ]
-        ]);
+        $user = new User();
+        return view('users.create', compact('user'));
     }
 
     /**
@@ -46,9 +44,11 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreValidation $request)
     {
-        //
+        $this->authorize('create', User::class);
+        User::create($request->all())->update(['password' => Hash::make($request->input('password'))]);
+        return redirect('users');
     }
 
     /**
@@ -59,7 +59,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show')->with([
+        return view('users.show', compact('user'))->with([
             'contentheader' => 'User Info',
             'breadcrumbs' => [
                 [
@@ -69,7 +69,7 @@ class UserController extends Controller
                 [
                     'text' => 'Info'
                 ]
-            ]
+            ],
         ]);
     }
 
@@ -81,7 +81,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit')->with([
+        return view('users.edit', compact('user'))->with([
             'contentheader' => 'Update user',
             'breadcrumbs' => [
                 [
@@ -102,9 +102,21 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateValidation $request, $id)
     {
-        //
+        $this->authorize('update', User::class);
+        $user = User::findOrFail($id);
+        $user->type     =   $request->type;
+        $user->name     =   $request->name;
+        $user->username =   $request->username;
+        $user->phone    =   $request->phone;
+        $user->email    =   $request->email;
+        if(!empty($request->input('password'))){
+            $user->password =   Hash::make($request->password);
+        }
+        $user->save();
+
+        return view('users.show',compact('user'));
     }
 
     /**
@@ -115,6 +127,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->authorize('delete', User::class);
+        $user->delete();
+
+        return redirect('users');
     }
+
 }

@@ -13,7 +13,7 @@
                     <i class="fad fa-user-secret fa-fw fa-2x" style="color: #ecf0f1"></i>
                 </div>
                 <div class="info">
-                    <a href="{{ route('profile') }}" class="d-block">{{ Auth::user()->name }}</a>
+                    <a href="/users/{{Auth::user()->id}}" class="d-block">{{ Auth::user()->name }}</a>
                 </div>
             </div>
         @endif
