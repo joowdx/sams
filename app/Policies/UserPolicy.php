@@ -3,6 +3,8 @@
 namespace App\Policies;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -27,9 +29,42 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function aview(User $user)
     {
-        //
+        return in_array($user->type, [
+            'admin',
+        ]);
+    }
+
+    public function hview(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+            'h.r.'
+        ]);
+    }
+
+    public function fview(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+            'faculty'
+        ]);
+    }
+
+    public function rview(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+            'registrar'
+        ]);
+    }
+
+    public function show()
+    {
+
+
+
     }
 
     /**
@@ -52,7 +87,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user)
     {
         return in_array($user->type, [
             'admin'
@@ -66,7 +101,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user)
     {
         return in_array($user->type, [
             'admin'

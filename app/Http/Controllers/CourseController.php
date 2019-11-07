@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\User;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -14,6 +15,8 @@ class CourseController extends Controller
      */
     public function index()
     {
+        $this->authorize('rview', User::class);
+
         return view('courses.index')->with([
             'contentheader' => 'Courses',
             'courses' => Course::with(['faculty'])->get()

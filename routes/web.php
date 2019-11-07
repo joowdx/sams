@@ -25,3 +25,4 @@ Route::resource('faculties.courses.students', 'StudentController');
 Route::resource('logs', 'LogController');
 Route::resource('users', 'UserController');
 Route::resource('configurations', 'ConfigurationController');
+

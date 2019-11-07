@@ -15,12 +15,36 @@ th, td {
 
 tr:hover {background-color:#D0D0D0;}
 
+#add {
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  line-height: 40px;
+  text-align: center;
+  font-size: 18px; /* Increase font size */
+}
+
+#add:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}
+
 </style>
 @endsection
 
 @section('content')
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-12">
+            <a href="{{ route('users.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+        </div>
         <div class="col-md-12">
             <table id="usertable" class="table table-bordered" style="cursor:pointer;">
             </table>
@@ -34,24 +58,13 @@ tr:hover {background-color:#D0D0D0;}
 $('#usertable').DataTable({
         'destroy': true,
         retrieve: true,
-        dom:    "<'row'<'col-sm-12 col-md-8'l>B<'col-sm-12 col-md-2'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         columnDefs: [],
         "aaSorting": [],
-        buttons: [
-        {
-            text: 'Add',
-            action: e => window.location.href="{{ route('users.create') }}",
-        },
-            'copy','csv', 'excel', 'print'
-        ],
        'ajax': {
             'url': '{{ url("/api/users") }}',
             'type': 'get',
             'dataSrc': e => e,
         },
-        // 'dataSrc': e => e.data,
         'columns': [
             {
                 'title': 'Name',
@@ -77,7 +90,6 @@ $('#usertable').DataTable({
 var table = $('#usertable').DataTable();
 $('#usertable tbody').on('click', 'tr', function () {
     var data = table.row( this ).data();
-    // console.log(data)
     window.location.href="users/" + data.id
 } );
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Http\Requests\UpdateValidation;
 use App\Http\Requests\StoreValidation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -21,6 +20,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('aview', User::class);
+
         $users = User::all();
         return view('users.index')->with([
             'contentheader' => 'Users'
@@ -59,6 +60,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        // $this->authorize('show', User::class);
+
         return view('users.show', compact('user'))->with([
             'contentheader' => 'User Info',
             'breadcrumbs' => [

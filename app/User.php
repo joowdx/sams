@@ -26,6 +26,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
+        'admin' => 'boolean'
     ];
 
     /**
@@ -44,4 +45,5 @@ class User extends Authenticatable
     public function created_faculties() {
         return $this->hasMany(Faculty::class, 'created_by');
     }
+
 }

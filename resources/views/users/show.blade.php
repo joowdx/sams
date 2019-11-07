@@ -44,7 +44,7 @@ span.tags
                     <p><strong>Username: </strong> {{ $user->username }} </p>
                     <p><strong>Email: </strong> {{ $user->email }} </p>
                     <p><strong>Phone Number: </strong>{{ $user->phone }} </p>
-                    <p><strong>Type: </strong>
+                    <p><strong></strong>
                         <span class="tags">{{ $user->type }}</span>
                     </p>
                 </div>
@@ -57,10 +57,10 @@ span.tags
                         </div>
 
                         <div class="col-md-6 col-sm-4 emphasis">
-                            <form method="post" action="{{ route('users.destroy', $user->id) }}">
+                            <form method="post" id="deleteform" action="{{ route('users.destroy', $user->id) }}">
                                 @method('DELETE')
                                     @csrf
-                                        <button class="btn btn-danger btn-block" type="submit" onclick="confirm()"><span class="fa fa-trash"></span>Delete</button>
+                                        <button class="btn btn-danger btn-block btn-delete" type="submit"><span class="fa fa-trash"></span>Delete</button>
                             </form>
                         </div>
 
@@ -75,6 +75,21 @@ span.tags
 
 @section('scripts')
 <script>
-
+$('.btn-delete').click(function(e){
+    swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $('#deleteform').submit()
+        }
+    })
+    e.preventDefault()
+})
 </script>
 @endsection

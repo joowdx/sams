@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Faculty;
+use App\User;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
@@ -14,6 +15,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
+        $this->authorize('hview', User::class);
         return Faculty::all();
     }
 
