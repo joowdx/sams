@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('logs', 'API\LogController')->only('store');
 Route::any('tags', 'API\TagController');
 Route::resource('users', 'API\Usercontroller');
+Route::resource('faculties', 'API\FacultyController');

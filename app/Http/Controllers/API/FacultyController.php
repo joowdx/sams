@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Faculty;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
 
-
-class Usercontroller extends Controller
+class FacultyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,7 @@ class Usercontroller extends Controller
      */
     public function index()
     {
-        return User::all();
+        return Faculty::all();
     }
 
     /**
@@ -27,7 +26,7 @@ class Usercontroller extends Controller
      */
     public function store(Request $request)
     {
-
+        //
     }
 
     /**
@@ -63,5 +62,4 @@ class Usercontroller extends Controller
     {
         //
     }
-
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Faculty;
 use App\User;
+use App\Course;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
@@ -16,7 +17,10 @@ class FacultyController extends Controller
     public function index()
     {
         $this->authorize('hview', User::class);
-        return Faculty::all();
+
+        return view('faculties.index')->with([
+            'contentheader' => 'Faculties',
+        ]);
     }
 
     /**
@@ -48,7 +52,19 @@ class FacultyController extends Controller
      */
     public function show(Faculty $faculty)
     {
-        //
+        return view('faculties.show', compact('faculty'))->with([
+            'contentheader' => 'Faculty Info',
+            'courses' => Course::with(['faculty'])->get(),
+            'breadcrumbs' => [
+                [
+                    'text' => 'Users',
+                    'link' => route('faculties.index'),
+                ],
+                [
+                    'text' => 'Info'
+                ]
+            ],
+        ]);
     }
 
     /**

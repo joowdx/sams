@@ -22,7 +22,6 @@ class UserController extends Controller
     {
         $this->authorize('aview', User::class);
 
-        $users = User::all();
         return view('users.index')->with([
             'contentheader' => 'Users'
         ]);
