@@ -7,7 +7,16 @@ use Faker\Generator as Faker;
 
 $factory->define(Course::class, function (Faker $faker) {
     return [
-        //
+        'code' => $faker->randomNumber(4, true),
+        'title' => $faker->word(),
+        'description' => $faker->words(5, true),
+        'semester' => $faker->randomElement(['1ST', '2ND', 'SUMMER']),
+        'term' => $faker->randomElement(['1ST', '2ND', 'SEMESTER']),
+        'day_from' => 'Mon',
+        'day_to' => 'Fri',
+        'time_from' => '15:30',
+        'time_to' => '17:30',
+        'unit' => $faker->randomElement([3, 6]),
     ];
 });
 

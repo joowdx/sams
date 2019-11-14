@@ -25,8 +25,8 @@ class CreateCoursesTable extends Migration
             $table->string('time_from', 5);
             $table->string('time_to', 5);
             $table->string('unit', 1);
-            $table->unsignedBigInteger('room_id');
-            $table->unsignedBigInteger('faculty_id');
+            $table->unsignedBigInteger('room_id')->nullable();
+            $table->unsignedBigInteger('faculty_id')->nullable();
             $table->timestamps();
         });
     }

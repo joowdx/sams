@@ -31,7 +31,18 @@ class FacultyController extends Controller
      */
     public function create()
     {
-        //
+        return view('faculties.create')->with([
+            'contentheader' => 'New faculty',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Faculties',
+                    'link' => route('faculties.index'),
+                ],
+                [
+                    'text' => 'Info'
+                ]
+            ],
+        ]);
     }
 
     /**
@@ -42,7 +53,12 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'uid' => 'required|string|numeric',
+            'name' => 'required|string',
+        ]);
+        Faculty::create($request->all());
+        return redirect(route('faculties.index'));
     }
 
     /**
@@ -77,7 +93,19 @@ class FacultyController extends Controller
      */
     public function edit(Faculty $faculty)
     {
-        //
+        return view('faculties.edit', compact('faculty'))->with([
+            'contentheader' => $faculty->name,
+            'courses' => Course::all(),
+            'breadcrumbs' => [
+                [
+                    'text' => 'Faculties',
+                    'link' => route('faculties.index'),
+                ],
+                [
+                    'text' => 'Info'
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -89,7 +117,25 @@ class FacultyController extends Controller
      */
     public function update(Request $request, Faculty $faculty)
     {
-        //
+        $request->validate([
+            'type' => 'required|string|in:info,courses',
+            'uid' => 'required_if:type,info|string|numeric',
+            'name' => 'required_if:type,info|string',
+            'courses' => 'required_if:type,courses|array',
+            'courses.*' => 'required_if:type,courses|numeric',
+        ]);
+        switch($request->type) {
+            case 'info': {
+                $faculty->update($request->all());
+                break;
+            }
+            case 'courses': {
+                $faculty->courses()->whereNotIn('id', $request->courses)->update(['faculty_id' => null]);
+                $faculty->courses()->saveMany(Course::findMany($request->courses));
+                break;
+            }
+        }
+        return redirect(route('faculties.show', $faculty->id));
     }
 
     /**
