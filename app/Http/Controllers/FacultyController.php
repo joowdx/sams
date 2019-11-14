@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Faculty;
 use App\User;
 use App\Course;
+use App\Student;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
@@ -54,10 +55,11 @@ class FacultyController extends Controller
     {
         return view('faculties.show', compact('faculty'))->with([
             'contentheader' => 'Faculty Info',
-            'courses' => Course::with(['faculty'])->get(),
+            'courses'   => Course::with(['faculty'])->get(),
+            'students'  => Student::all(),
             'breadcrumbs' => [
                 [
-                    'text' => 'Users',
+                    'text' => 'Faculties',
                     'link' => route('faculties.index'),
                 ],
                 [
@@ -96,8 +98,12 @@ class FacultyController extends Controller
      * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Faculty $faculty)
+    public function destroy(Request $student, $id)
     {
-        //
+        $this->authorize('delete', User::class);
+        $student = Student::Find($id);
+        $student->delete();
+
+        return redirect()->back();
     }
 }
