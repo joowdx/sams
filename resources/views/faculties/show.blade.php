@@ -134,24 +134,24 @@ body {
 
     <div class="row">
 
-            <div id="circularMenu" class="circular-menu">
+        <div id="circularMenu" class="circular-menu">
 
-                <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
-                    <i class="fa fa-bars"></i>
+            <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <menu class="items-wrapper">
+
+                <a href="#" class="menu-item">
+                    <i class="fa fa-plus"></i>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fa fa-edit"></i>
                 </a>
 
-                <menu class="items-wrapper">
+            </menu>
 
-                    <a href="#" class="menu-item">
-                        <i class="fa fa-plus"></i>
-                    </a>
-                    <a href="#" class="menu-item">
-                        <i class="fa fa-edit"></i>
-                    </a>
-
-                </menu>
-
-            </div>
+        </div>
 
         <div class="col-md-2">
             <div id="wrapper">

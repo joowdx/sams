@@ -16,7 +16,9 @@ class StudentController extends Controller
     public function index()
     {
         $this->authorize('fview', User::class);
-        return Student::all();
+        return view('students.index')->with([
+            'contentheader' => 'Students',
+        ]);
     }
 
     /**
@@ -26,7 +28,10 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', User::class);
+
+        $student = new Student();
+        return view('students.create', compact('student'));
     }
 
     /**
@@ -37,7 +42,11 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', User::class);
+
+        Student::create($request->all());
+
+        return redirect('students.index');
     }
 
     /**
@@ -59,7 +68,18 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        return view('students.edit', compact('student'))->with([
+            'contentheader' => 'Update student',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Students',
+                    'link' => route('students.index'),
+                ],
+                [
+                    'text' => 'Edit'
+                ]
+            ]
+        ]);
     }
 
     /**
@@ -69,9 +89,17 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
-        //
+        $this->authorize('update', User::class);
+
+        $student = Student::findorfail($id);
+        $student->uid   =   $request->uid;
+        $student->name  =   $request->name;
+        $student->save();
+
+        return redirect('students');
+
     }
 
     /**
@@ -82,6 +110,10 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $this->authorize('delete', User::class);
+
+        $student->delete();
+
+        return redirect('students');
     }
 }
