@@ -81,6 +81,7 @@ class CourseController extends Controller
     {
         return view('courses.show', compact('course'))->with([
             'contentheader' => 'Course Info',
+            'courses' => Course::all(),
             'breadcrumbs' => [
                 [
                     'text' => 'Courses',

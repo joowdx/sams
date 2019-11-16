@@ -71,7 +71,7 @@ class FacultyController extends Controller
     {
         return view('faculties.show', compact('faculty'))->with([
             'contentheader' => 'Faculty Info',
-            'courses'   => Course::with(['faculty'])->get(),
+            'courses'   => Course::with('faculty')->where('faculty_id',$faculty->id)->get(),
             'students'  => Student::all(),
             'breadcrumbs' => [
                 [
@@ -144,12 +144,13 @@ class FacultyController extends Controller
      * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $student, $id)
+    public function destroy(Faculty $faculty)
     {
         $this->authorize('delete', User::class);
-        $student = Student::Find($id);
-        $student->delete();
 
-        return redirect()->back();
+
+        $faculty->delete();
+
+        return view('faculties.index', compact('faculty'));
     }
 }
