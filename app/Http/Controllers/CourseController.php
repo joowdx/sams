@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Student;
 use App\User;
+use App\Log;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -82,7 +83,9 @@ class CourseController extends Controller
     {
         return view('courses.show', compact('course'))->with([
             'contentheader' => 'Course Info',
-            'courses' => Course::all(),
+            'courses' => Course::with('students')->get(),
+            'students' => Student::all(),
+            'logs' => Log::all(),
             'breadcrumbs' => [
                 [
                     'text' => 'Courses',

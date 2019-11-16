@@ -71,8 +71,7 @@ class FacultyController extends Controller
     {
         return view('faculties.show', compact('faculty'))->with([
             'contentheader' => 'Faculty Info',
-            'courses'   => Course::with('faculty')->where('faculty_id',$faculty->id)->get(),
-            'students'  => Student::all(),
+            'courses'   => $faculty->courses()->with('students')->get(),
             'breadcrumbs' => [
                 [
                     'text' => 'Faculties',

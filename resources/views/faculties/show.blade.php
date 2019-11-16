@@ -187,7 +187,7 @@ body {
             <table id="classestable" class="table table-bordered clickable-row" style="cursor:pointer;">
                 <thead>
                     <tr>
-                        <th scope="col">Course ID</th>
+                        <th scope="col" hidden>Course ID</th>
                         <th scope="col">Course Code</th>
                         <th scope="col">Course Title</th>
                         <th scope="col">Course Description</th>
@@ -196,7 +196,7 @@ body {
                 <tbody>
                     @foreach ($courses as $course)
                         <tr>
-                            <th scope="row">{{ $course->id }}</th>
+                            <th class="course-id" scope="row" hidden>{{ $course->id }}</th>
                             <th>{{ $course->code }}</th>
                             <td>{{ $course->title }}</td>
                             <td>{{ $course->description }}</td>
@@ -221,7 +221,7 @@ body {
             <table id="studentstable" class="table table-bordered" style="cursor:pointer;">
                 <thead>
                     <tr>
-                        <th scope="col">Student ID</th>
+                        <th scope="col" hidden>Student ID</th>
                         <th scope="col">Student Name</th>
                         <th scope="col">Student Course</th>
                         <th scope="col">Unexcused Absence</th>
@@ -230,9 +230,9 @@ body {
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($students as $student)
+                    @foreach ($course->students as $student)
                         <tr>
-                            <th scope="row">{{ $student->id}}</th>
+                            <th scope="row" hidden>{{ $student->id}}</th>
                             <td> {{ $student->name}} </td>
                             <td>BSIT</td>
                             <td>6</td>
@@ -279,8 +279,12 @@ $('.btn-delete').click(function(e){
         }
     })
     e.preventDefault()
-})
+});
 
+$('#classestable').on('click', 'tr', function(){
+    // console.log(this)
+    console.log($('th.course-id', this)[0].innerHTML);
+});
 
 
 </script>
