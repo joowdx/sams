@@ -19,7 +19,7 @@ class CourseController extends Controller
 
         return view('courses.index')->with([
             'contentheader' => 'Courses',
-            'courses' => Course::with(['faculty'])->get()
+            'courses' => Course::with(['faculty'])->get(),
         ]);
     }
 
@@ -30,7 +30,18 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return view('courses.create')->with([
+            'contentheader' => 'Create',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Courses',
+                    'link' => route('courses.index'),
+                ],
+                [
+                    'text' => 'Info'
+                ]
+            ],
+        ]);
     }
 
     /**
@@ -41,7 +52,23 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'code' => 'required|string|numeric|digits_between:0,7',
+            'title' => 'required|string|max:10',
+            'description' => 'required|string',
+            'semester' => 'required|string|in:1ST,2ND,SUMMER',
+            'term' => 'required|string|in:1ST,2ND,SEMESTER',
+            'day_from' => 'required|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
+            'day_to' => 'required|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
+            'time_from' => 'required|string|numeric',
+            'time_to' => 'required|string|numeric',
+            'units' => 'required|string|numeric|digits:1',
+            'room_id' => 'nullable|string|numeric|exists:room,id',
+            'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
+        ]);
+
+        Course::create($request->all());
+        return redirect(route('courses.index'));
     }
 
     /**
@@ -74,7 +101,18 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        return view('courses.edit', compact('course'))->with([
+            'contentheader' => 'Edit',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Courses',
+                    'link' => route('courses.index'),
+                ],
+                [
+                    'text' => 'Info'
+                ]
+            ]
+        ]);
     }
 
     /**
@@ -86,7 +124,37 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+
+        $request->validate([
+            'type' => 'required|string|in:info,students',
+            'code' => 'required_if:type,info|string|numeric|digits_between:0,7',
+            'title' => 'required_if:type,info|string|max:10',
+            'description' => 'required_if:type,info|string',
+            'semester' => 'required_if:type,info|string|in:1ST,2ND,SUMMER',
+            'term' => 'required_if:type,info|string|in:1ST,2ND,SEMESTER',
+            'day_from' => 'required_if:type,info|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
+            'day_to' => 'required_if:type,info|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
+            'time_from' => 'required_if:type,info|string|numeric',
+            'time_to' => 'required_if:type,info|string|numeric',
+            'units' => 'required_if:type,info|string|numeric|digits:1',
+            'room_id' => 'nullable|string|numeric|exists:room,id',
+            'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
+            'students' => 'required_if:type,students|array',
+            'students.*' => 'numeric|exists:students,id',
+        ]);
+
+        switch($request->type) {
+            case 'info': {
+                $course->update($request->all());
+                break;
+            }
+            case 'students': {
+                $course->students()->sync($request->students);
+                break;
+            }
+        }
+
+        return redirect(route('courses.show', $course->id));
     }
 
     /**

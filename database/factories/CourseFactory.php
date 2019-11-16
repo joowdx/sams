@@ -16,7 +16,7 @@ $factory->define(Course::class, function (Faker $faker) {
         'day_to' => 'Fri',
         'time_from' => '15:30',
         'time_to' => '17:30',
-        'unit' => $faker->randomElement([3, 6]),
+        'units' => $faker->randomElement([2, 3, 6, 9]),
     ];
 });
 
@@ -31,7 +31,7 @@ $factory->state(Course::class, 'IT111L', function(Faker $faker) {
         'day_to' => 'Fri',
         'time_from' => '15:30',
         'time_to' => '17:30',
-        'unit' => 6,
+        'units' => 6,
         'room_id' => 1,
         'faculty_id' => 1,
     ];
@@ -48,7 +48,7 @@ $factory->state(Course::class, 'IT112L', function(Faker $faker) {
         'day_to' => 'Fri',
         'time_from' => '13:30',
         'time_to' => '15:30',
-        'unit' => 6,
+        'units' => 6,
         'room_id' => 1,
         'faculty_id' => 1,
     ];

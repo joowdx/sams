@@ -4,6 +4,7 @@
 <div class="container-fluid row">
     <div class="col-lg-4 col-sm-6">
         <div id="logs">
+            {{ $courses->count() }}
             @foreach ($courses as $course)
                 <div class="media text-muted pt-3">
                     <p class="media-body pb-3 mb-0 small lh-125">

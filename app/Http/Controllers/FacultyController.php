@@ -122,7 +122,7 @@ class FacultyController extends Controller
             'uid' => 'required_if:type,info|string|numeric',
             'name' => 'required_if:type,info|string',
             'courses' => 'required_if:type,courses|array',
-            'courses.*' => 'required_if:type,courses|numeric',
+            'courses.*' => 'numeric|exists:courses,id',
         ]);
         switch($request->type) {
             case 'info': {

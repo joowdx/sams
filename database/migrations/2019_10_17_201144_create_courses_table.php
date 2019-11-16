@@ -15,7 +15,7 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code', 4);
+            $table->string('code', 7);
             $table->string('title', 10);
             $table->string('description');
             $table->enum('semester', ['1ST', '2ND', 'SUMMER']);
@@ -24,7 +24,7 @@ class CreateCoursesTable extends Migration
             $table->enum('day_to', ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
             $table->string('time_from', 5);
             $table->string('time_to', 5);
-            $table->string('unit', 1);
+            $table->string('units', 1);
             $table->unsignedBigInteger('room_id')->nullable();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->timestamps();
