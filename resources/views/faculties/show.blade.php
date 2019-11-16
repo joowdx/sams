@@ -12,9 +12,7 @@
   background-position: center center;
   background-size: cover;
 }
-#wrapper{
-    text-align: center;
-}
+
 li.info{
     display: inline-block;
 }
@@ -137,16 +135,21 @@ body {
         <div id="circularMenu" class="circular-menu">
 
             <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
-                <i class="fa fa-bars"></i>
+                <i class="fa fa-bars" style="color:white"></i>
             </a>
 
             <menu class="items-wrapper">
 
-                <a href="#" class="menu-item">
+                <a href="{{ $faculty->id }}/edit" class="menu-item">
                     <i class="fa fa-plus"></i>
                 </a>
-                <a href="#" class="menu-item">
-                    <i class="fa fa-edit"></i>
+
+                <a class="menu-item">
+                    <form method="post" id="deleteform" action="{{ route('faculties.destroy', $faculty->id) }}">
+                            @method('DELETE')
+                                @csrf
+                                <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
+                    </form>
                 </a>
 
             </menu>
@@ -184,19 +187,21 @@ body {
             <table id="classestable" class="table table-bordered clickable-row" style="cursor:pointer;">
                 <thead>
                     <tr>
+                        <th scope="col">Course ID</th>
                         <th scope="col">Course Code</th>
                         <th scope="col">Course Title</th>
                         <th scope="col">Course Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @foreach ($courses as $course)
-                            <th scope="row">{{ $course->code }}</th>
+                    @foreach ($courses as $course)
+                        <tr>
+                            <th scope="row">{{ $course->id }}</th>
+                            <th>{{ $course->code }}</th>
                             <td>{{ $course->title }}</td>
                             <td>{{ $course->description }}</td>
-                        @endforeach
-                    </tr>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -225,8 +230,8 @@ body {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @foreach ($students as $student)
+                    @foreach ($students as $student)
+                        <tr>
                             <th scope="row">{{ $student->id}}</th>
                             <td> {{ $student->name}} </td>
                             <td>BSIT</td>
@@ -234,15 +239,15 @@ body {
                             <td>9</td>
                             <td>
                                 <div class="emphasis">
-                                <form method="post" id="deleteform" action="{{ route('faculties.destroy', $student->id) }}">
+                                <form method="post" id="studentdeleteform" action="{{ route('students.destroy', $student->id) }}">
                                     @method('DELETE')
                                         @csrf
-                                            <button class="btn btn-danger btn-block btn-delete" type="submit"><span class="fa fa-trash"></span>Delete</button>
+                                            <button class="btn btn-danger btn-block btn-delete" type="submit"><span class="fa fa-trash"></span></button>
                                 </form>
                                 </div>
                             </td>
-                        @endforeach
-                    </tr>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -256,7 +261,6 @@ body {
 $(document).ready(function(){
     var rowCount = $('#studentstable tr').length - 1;
     var result = (rowCount/50) * 100;
-    console.log(result);
     $('#instudent').css('width', result+'%');
 });
 
@@ -276,5 +280,8 @@ $('.btn-delete').click(function(e){
     })
     e.preventDefault()
 })
+
+
+
 </script>
 @endsection
