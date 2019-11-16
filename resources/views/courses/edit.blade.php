@@ -20,6 +20,9 @@
                     <form method="post" action="{{ route('courses.update', $course->id) }}">
                         @csrf
                         @method('put')
+
+                        <input type="hidden" name="type" value="info">
+
                         <div class="form-group row">
                             <label for="code" class="col-md-4 col-form-label text-md-right">Code</label>
 
@@ -198,15 +201,15 @@
                         @csrf
                         @method('put')
 
-                        <input type="hidden" name="type" value="courses">
+                        <input type="hidden" name="type" value="students">
 
                         <div class="form-group row">
-                            <label for="courses" class="col-md-4 col-form-label text-md-right">Courses</label>
+                            <label for="students" class="col-md-4 col-form-label text-md-right">Courses</label>
 
                             <div class="col-md-6">
-                                <select id="courses" name="courses[]" class="selectpicker" multiple data-width="100%" data-live-search="true">
-                                    @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}" {{ $faculty->courses->contains($course->id) ? 'selected' : '' }}> {{ $course->title }} </option>
+                                <select id="students" name="students[]" class="selectpicker" multiple data-width="100%" data-live-search="true">
+                                    @foreach ($students as $student)
+                                    <option value="{{ $student->id }}" {{ $student->courses->contains($course->id) ? 'selected' : '' }}> {{ $student->name }} </option>
                                     @endforeach
                                 </select>
                             </div>
