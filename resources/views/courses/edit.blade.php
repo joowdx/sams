@@ -10,7 +10,6 @@
 
 @section('content')
 <div class="container">
-    {{ $errors }}
     <div class="row">
         <div class="col-md-7">
             <div class="card card-dark">
@@ -70,9 +69,9 @@
 
                             <div class="col-md-6">
                                 <select id="semester" name="semester" class="selectpicker" title="SEMESTER" data-width="100%">
-                                    <option value="1ST" {{ (old('semester') == '1ST' || $course->semester == '1ST')? 'selected' : '' }}> 1ST </option>
-                                    <option value="2ND" {{ (old('semester') == '2ND' || $course->semester == '2ND') ? 'selected' : '' }}> 2ND </option>
-                                    <option value="SUMMER" {{ (old('semester') == 'SUMMER' || $course->semester == 'SUMMER') ? 'selected' : '' }}> SUMMER </option>
+                                    <option value="1ST" {{ (old('semester') == '1ST' || @$course->academic_period->semester == '1ST')? 'selected' : '' }}> 1ST </option>
+                                    <option value="2ND" {{ (old('semester') == '2ND' || @$course->academic_period->semester == '2ND') ? 'selected' : '' }}> 2ND </option>
+                                    <option value="SUMMER" {{ (old('semester') == 'SUMMER' || @$course->academic_period->semester == 'SUMMER') ? 'selected' : '' }}> SUMMER </option>
                                 </select>
 
                                 @error('semester')
@@ -88,9 +87,9 @@
 
                             <div class="col-md-6">
                                 <select id="term" name="term" class="selectpicker" title="TERM" data-width="100%">
-                                    <option value="1ST" {{ (old('term') == '1ST' || $course->term == '1ST') ? 'selected' : '' }}> 1ST </option>
-                                    <option value="2ND" {{ (old('term') == '2ND' || $course->term == '2ND') ? 'selected' : '' }}> 2ND </option>
-                                    <option value="SEMESTER" {{ (old('term') == 'SUMMER' || $course->term == 'SEMESTER') ? 'selected' : '' }}> SEMESTER </option>
+                                    <option value="1ST" {{ (old('term') == '1ST' || @$course->academic_period->term == '1ST') ? 'selected' : '' }}> 1ST </option>
+                                    <option value="2ND" {{ (old('term') == '2ND' || @$course->academic_period->term == '2ND') ? 'selected' : '' }}> 2ND </option>
+                                    <option value="SEMESTER" {{ (old('term') == 'SUMMER' || @$course->academic_period->term == 'SEMESTER') ? 'selected' : '' }}> SEMESTER </option>
                                 </select>
 
                                 @error('term')
@@ -192,37 +191,74 @@
             </div>
         </div>
         <div class="col-md-5">
-            <div class="card card-dark">
-                <div class="card-header">{{ __('Courses') }}</div>
+            <div>
+                <div class="card card-dark">
+                    <div class="card-header">Faculty</div>
 
-                <div class="card-body">
-                    <br>
-                    <form method="post" action="{{ route('courses.update', $course->id) }}">
-                        @csrf
-                        @method('put')
+                    <div class="card-body">
+                        <br>
+                        <form method="post" action="{{ route('courses.update', $course->id) }}">
+                            @csrf
+                            @method('put')
 
-                        <input type="hidden" name="type" value="students">
+                            <input type="hidden" name="type" value="faculty">
 
-                        <div class="form-group row">
-                            <label for="students" class="col-md-4 col-form-label text-md-right">Courses</label>
+                            <div class="form-group row">
+                                <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Faculty</label>
 
-                            <div class="col-md-6">
-                                <select id="students" name="students[]" class="selectpicker" multiple data-width="100%" data-live-search="true">
-                                    @foreach ($students as $student)
-                                    <option value="{{ $student->id }}" {{ $student->courses->contains($course->id) ? 'selected' : '' }}> {{ $student->name }} </option>
-                                    @endforeach
-                                </select>
+                                <div class="col-md-6">
+                                    <select id="faculty_id" name="faculty_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                        @foreach ($faculties as $faculty)
+                                        <option value="{{ $faculty->id }}" {{ $faculty->courses->contains($course->id) ? 'selected' : '' }}> {{ $faculty->name }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-dark" id="btnsave" style="float:right;">
-                                    {{ __('Update') }}
-                                </button>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-dark" id="btnsave" style="float:right;">
+                                        {{ __('Update') }}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="card card-dark">
+                    <div class="card-header">Students</div>
+
+                    <div class="card-body">
+                        <br>
+                        <form method="post" action="{{ route('courses.update', $course->id) }}">
+                            @csrf
+                            @method('put')
+
+                            <input type="hidden" name="type" value="students">
+
+                            <div class="form-group row">
+                                <label for="students" class="col-md-4 col-form-label text-md-right">Students</label>
+
+                                <div class="col-md-6">
+                                    <select id="students" name="students[]" class="selectpicker" multiple data-width="100%" data-live-search="true">
+                                        @foreach ($students as $student)
+                                        <option value="{{ $student->id }}" {{ $student->courses->contains($course->id) ? 'selected' : '' }}> {{ ($student->school_id ? $student->school_id.' - ' : '').$student->name }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-dark" id="btnsave" style="float:right;">
+                                        {{ __('Update') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

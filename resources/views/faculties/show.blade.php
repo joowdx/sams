@@ -170,7 +170,7 @@ body {
             <hr>
 
             <ul class="nav info">
-                <li class="col-md-2 text-center"><h1>{{  $students->count() }}</h1>Total Number of Students</li>
+                <li class="col-md-2 text-center"><h1>1</h1>Total Number of Students</li>
                 <li class="vl"></li>
                 <li class="col-md-2 text-center"><h1>{{  $courses->count() }}</h1>Total Number of Classes</li>
             </ul>

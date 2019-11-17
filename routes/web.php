@@ -16,6 +16,7 @@ Auth::routes(['register' => false]);
 Route::any('/', 'HomeController')->name('home');
 Route::any('/dashboard', 'DashboardController')->name('dashboard');
 Route::any('/profile', 'ProfileController')->name('profile');
+Route::resource('academicperiods', 'AcademicPeriodController');
 Route::resource('courses', 'CourseController');
 Route::resource('students', 'StudentController');
 Route::resource('faculties', 'FacultyController');

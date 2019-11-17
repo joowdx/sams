@@ -77,7 +77,7 @@
                             <div class="col-md-6">
                                 <select id="courses" name="courses[]" class="selectpicker" multiple data-width="100%" data-live-search="true">
                                     @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}" {{ $faculty->courses->contains($course->id) ? 'selected' : '' }}> {{ $course->title }} </option>
+                                    <option value="{{ $course->id }}" {{ $faculty->courses->contains($course->id) ? 'selected' : '' }}> {{ $course->code . ' - ' . $course->title }} </option>
                                     @endforeach
                                 </select>
                             </div>

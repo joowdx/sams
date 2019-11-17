@@ -1,5 +1,6 @@
 <?php
 
+use App\AcademicPeriod;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             GateSeeder::class,
             RoomSeeder::class,
+            AcademicPeriodSeeder::class,
             CourseSeeder::class,
         ]);
     }

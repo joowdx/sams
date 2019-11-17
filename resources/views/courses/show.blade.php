@@ -30,15 +30,16 @@
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item">Course Code: {{ $course->code }}</li>
-                    <li class="list-group-item">Course Code: {{ $course->code }}</li>
-                    <li class="list-group-item">Course Title: {{ $course->title }}</li>
-                    <li class="list-group-item">Semester: {{ $course->semester }}</li>
-                    <li class="list-group-item">Term: {{ $course->term }}</li>
-                    <li class="list-group-item"> Schedule: {{ $course->day_from }} - {{ $course->day_to }} /
+                    <li class="list-group-item">Code: {{ $course->code }}</li>
+                    <li class="list-group-item">Code: {{ $course->code }}</li>
+                    <li class="list-group-item">Title: {{ $course->title }}</li>
+                    <li class="list-group-item">School Year: {{ $course->academic_period->school_year }}</li>
+                    <li class="list-group-item">Semester: {{ $course->academic_period->semester }}</li>
+                    <li class="list-group-item">Term: {{ $course->academic_period->term }}</li>
+                    <li class="list-group-item">Schedule: {{ $course->day_from }} - {{ $course->day_to }} /
                             {{ $course->time_from }} - {{ $course->time_to }}
                     </li>
-                    <li class="list-group-item">Units: {{ $course->unit }}</li>
+                    <li class="list-group-item">Units: {{ $course->units }}</li>
                 </ul>
 
 
@@ -62,8 +63,8 @@
                     <thead>
                             <tr>
                                 <th scope="col">Student Name</th>
-                                @foreach ($logs as $date)
-                                    <th class="upright" scope="col">{{ $date->created_at->format('d-m-y') }}</th>
+                                @foreach ($days as $day)
+                                    <th class="upright" scope="col">{{ $day }}</th>
                                 @endforeach
                             </tr>
                     </thead>
@@ -71,8 +72,11 @@
                         @foreach ($course->students as $student)
                             <tr class="text-center">
                                 <td> {{ $student->name }} </td>
-                                @foreach ($logs as $remark)
-                                    @if ($remark->remarks == 'fail')
+                                @foreach ($days as $day)
+                                    <td>
+                                        {{ $day }}
+                                    </td>
+                                    {{-- @if ($remark->remarks == 'fail')
                                         <td>
                                             <i class="fa fa-user-times" style="color:red"></i>
                                         </td>
@@ -80,7 +84,7 @@
                                         <td>
                                             <i class="fa fa-user-check" style="color:blue"></i>
                                         </td>
-                                    @endif
+                                    @endif --}}
                                 @endforeach
                             </tr>
                         @endforeach

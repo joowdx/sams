@@ -18,13 +18,12 @@ class CreateCoursesTable extends Migration
             $table->string('code', 7);
             $table->string('title', 10);
             $table->string('description');
-            $table->enum('semester', ['1ST', '2ND', 'SUMMER']);
-            $table->enum('term', ['1ST', '2ND', 'SEMESTER'])->nullable();
-            $table->enum('day_from', ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
-            $table->enum('day_to', ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+            $table->enum('day_from', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+            $table->enum('day_to', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
             $table->string('time_from', 5);
             $table->string('time_to', 5);
             $table->string('units', 1);
+            $table->unsignedBigInteger('academic_period_id')->nullable();
             $table->unsignedBigInteger('room_id')->nullable();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->timestamps();

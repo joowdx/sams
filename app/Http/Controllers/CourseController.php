@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\AcademicPeriod;
 use App\Course;
+use App\Faculty;
 use App\Student;
 use App\User;
 use App\Log;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -86,13 +89,14 @@ class CourseController extends Controller
             'courses' => Course::with('students')->get(),
             'students' => Student::all(),
             'logs' => Log::all(),
+            'days' => iterator_to_array(CarbonPeriod::create($course->academic_period->start, $course->academic_period->end)->filter(function($day) { return $day->isWeekDay(); })->map(function($day) { return $day->format('D m-d-y'); })),
             'breadcrumbs' => [
                 [
                     'text' => 'Courses',
                     'link' => route('courses.index'),
                 ],
                 [
-                    'text' => 'Info'
+                    'text' => 'Info',
                 ]
             ]
         ]);
@@ -114,10 +118,15 @@ class CourseController extends Controller
                     'link' => route('courses.index'),
                 ],
                 [
-                    'text' => 'Info'
-                ]
+                    'text' => 'Info',
+                    'link' => route('courses.show', $course->id),
+                ],
+                [
+                    'text' => 'Edit',
+                ],
             ],
             'students' => Student::all(),
+            'faculties' => Faculty::all(),
         ]);
     }
 
@@ -137,7 +146,7 @@ class CourseController extends Controller
             'title' => 'required_if:type,info|string|max:10',
             'description' => 'required_if:type,info|string',
             'semester' => 'required_if:type,info|string|in:1ST,2ND,SUMMER',
-            'term' => 'required_if:type,info|string|in:1ST,2ND,SEMESTER',
+            'term' => 'required_if:type,info|string|in:1ST,2ND,SEMESTER,SUMMER',
             'day_from' => 'required_if:type,info|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
             'day_to' => 'required_if:type,info|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
             'time_from' => 'required_if:type,info|string|numeric',
@@ -145,13 +154,23 @@ class CourseController extends Controller
             'units' => 'required_if:type,info|string|numeric|digits:1',
             'room_id' => 'nullable|string|numeric|exists:room,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
-            'students' => 'required_if:type,students|array',
+            'students' => 'nullable|array',
             'students.*' => 'numeric|exists:students,id',
         ]);
 
         switch($request->type) {
             case 'info': {
+                $ap = AcademicPeriod::firstOrCreate([
+                    'semester' => $request->semester,
+                    'term' => $request->semester == 'SUMMER' ? 'SUMMER' : $request->term,
+                ]);
                 $course->update($request->all());
+                $course->academic_period()->associate($ap);
+                $course->save();
+                break;
+            }
+            case 'faculty': {
+                $course->update(['faculty_id', $request->faculty_id]);
                 break;
             }
             case 'students': {

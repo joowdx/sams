@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentsTable extends Migration
+class CreateAcademicPeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('academic_periods', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('uid')->unique();
-            $table->unsignedBigInteger('school_id')->unique()->nullable();
-            $table->string('name');
-            $table->unsignedBigInteger('created_by')->nullable();
+            $table->string('school_year');
+            $table->enum('semester', ['1ST', '2ND', 'SUMMER']);
+            $table->enum('term', ['1ST', '2ND', 'SEMESTER', 'SUMMER'])->nullable();
+            $table->date('start');
+            $table->date('end');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('academic_periods');
     }
 }

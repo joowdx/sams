@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     protected $fillable = [
-        'code', 'title', 'description', 'semester', 'term', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'room_id',
+        'code', 'title', 'description', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'room_id',
     ];
 
     public function room()
@@ -28,6 +28,11 @@ class Course extends Model
     public function logs()
     {
         return $this->hasMany(Log::class);
+    }
+
+    public function academic_period()
+    {
+        return $this->belongsTo(AcademicPeriod::class);
     }
 
 }
