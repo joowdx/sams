@@ -43,7 +43,7 @@ tr:hover {background-color:#D0D0D0;}
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <a href="{{ route('users.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+            <a href="{{ route('users.create') }}" id="add" class="btn btn-custom"><span class="fa fa-plus"></span></a>
         </div>
         <div class="col-md-12">
             <table id="usertable" class="table table-bordered" style="cursor:pointer;">

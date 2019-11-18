@@ -29,7 +29,7 @@
 @section('content')
 <div class="row">
         <div class="col-md-12">
-            <a href="{{ route('students.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+            <a href="{{ route('students.create') }}" id="add" class="btn btn-custom"><span class="fa fa-plus"></span></a>
         </div>
 
 

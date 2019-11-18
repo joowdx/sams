@@ -2,31 +2,40 @@
 
 @section('styles')
 <style>
-    .upright{
-        text-align:center;
-        white-space:nowrap;
-        transform-origin:50% 50%;
-        -webkit-transform: rotate(-90deg);
-        -moz-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
-        -o-transform: rotate(-90deg);
-        transform: rotate(-90deg);
-    }
-    .upright::before{
-        content:'';
-        padding-top:110%;/* takes width as reference, + 10% for faking some extra padding */
-        display:inline-block;
-        vertical-align:middle;
-    }
 </style>
 @endsection
 
 @section('content')
 <div class="row">
+
+    <div id="circularMenu" class="circular-menu">
+
+        <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
+            <i class="fa fa-bars" style="color:white"></i>
+        </a>
+
+        <menu class="items-wrapper">
+
+            <a href="{{ $course->id }}/edit" class="menu-item">
+                <i class="fa fa-edit"></i>
+            </a>
+
+            <a class="menu-item">
+                <form method="post" id="deleteform" action="{{ route('courses.destroy', $course->id) }}">
+                        @method('DELETE')
+                            @csrf
+                            <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
+                </form>
+            </a>
+
+        </menu>
+
+    </div>
+
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header bg-dark">
-                <h3>{{ $course->description }}</h3>
+            <div class="card-header bg-custom">
+                <h6>{{ $course->description }}</h6>
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-horizontal">
@@ -53,13 +62,15 @@
 
         <div class="card">
 
-            <div class="card-header bg-dark">
-                <h3>{{ $course->description }} students</h3>
+            <div class="card-header bg-custom">
+                <h6>{{ $course->description }} students</h6>
             </div>
 
             <div class="card-body">
 
-                <table id="studentstable" class="table table-bordered table-responsive" style="cursor:pointer;">
+                {{-- <div class="wrapper">
+                <div class="scroller">
+                 <table id="studentstable" class="table table-bordered table-responsive" style="cursor:pointer;">
                     <thead>
                         <tr>
                             <th scope="col">Student Name</th>
@@ -75,10 +86,10 @@
                             @foreach ($days as $day)
                             <td>
                                 {{-- {{$student->name}} --}}
-                                <i class="
+                                {{-- <i class="
                                     {{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}
                                 "></i>
-                            </td>
+                            </td> --}}
                             {{-- @if ($remark->remarks == 'fail')
                             <td>
                                 <i class="fa fa-user-times" style="color:red"></i>
@@ -88,11 +99,50 @@
                                 <i class="fa fa-user-check" style="color:blue"></i>
                             </td>
                             @endif --}}
-                            @endforeach
+                            {{-- @endforeach
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                </div>
+                </div> --}}
+
+                <div class="zui-wrapper">
+                    <div class="zui-scroller">
+                        <table class="zui-table">
+                            <thead>
+                                <tr>
+                                    <th class="zui-sticky-col">Name</th>
+                                    @foreach ($days as $day)
+                                        <th class="upright" scope="col">{{ $day }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($course->students as $student)
+                                <tr class="text-center">
+                                    <td class="zui-sticky-col"> {{ $student->name }} </td>
+                                    @foreach ($days as $day)
+                                    <td>
+                                        {{-- {{$student->name}} --}}
+                                        <i class="{{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}"></i>
+                                    </td>
+                                    {{-- @if ($remark->remarks == 'fail')
+                                    <td>
+                                        <i class="fa fa-user-times" style="color:red"></i>
+                                    </td>
+                                    @else
+                                    <td>
+                                        <i class="fa fa-user-check" style="color:blue"></i>
+                                    </td>
+                                    @endif --}}
+                                    @endforeach
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
 
@@ -103,5 +153,7 @@
 @endsection
 
 @section('scripts')
+<script>
 
+</script>
 @endsection

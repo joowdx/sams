@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-light elevation-4">
     <a href="{{ url('/') }}" class="brand-link">
-        <img src="{{ asset('storage/umdc.png') }}" alt="logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="{{ asset('/assets/img/umdc.png') }}" alt="logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <div class="brand-image img-circle elevation-3" style="opacity: .8"></div>
         <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
     </a>
