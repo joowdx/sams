@@ -76,7 +76,7 @@
                             <td>
                                 {{-- {{$student->name}} --}}
                                 <i class="
-                                    {{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-dot-circle' : '' ) }}
+                                    {{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}
                                 "></i>
                             </td>
                             {{-- @if ($remark->remarks == 'fail')
