@@ -106,13 +106,13 @@
 
                             <div class="col-md-3">
                                 <select id="day_from" name="day_from" class="selectpicker" title="FROM" data-width="100%">
-                                    <option value="Mon" {{ (old('day_from') ?? $course->day_to) == 'Mon' ? 'selected' : '' }}> Monday </option>
-                                    <option value="Tue" {{ (old('day_from') ?? $course->day_to) == 'Tue' ? 'selected' : '' }}> Tuesday </option>
-                                    <option value="Wed" {{ (old('day_from') ?? $course->day_to) == 'Wed' ? 'selected' : '' }}> Wednesday </option>
-                                    <option value="Thu" {{ (old('day_from') ?? $course->day_to) == 'Thu' ? 'selected' : '' }}> Thursday </option>
-                                    <option value="Fri" {{ (old('day_from') ?? $course->day_to) == 'Fri' ? 'selected' : '' }}> Friday </option>
-                                    <option value="Sat" {{ (old('day_from') ?? $course->day_to) == 'Sat' ? 'selected' : '' }}> Saturday </option>
-                                    <option value="Sun" {{ (old('day_from') ?? $course->day_to) == 'Sun' ? 'selected' : '' }}> Sunday </option>
+                                    <option value="Mon" {{ (old('day_from') ?? $course->day_from) == 'Mon' ? 'selected' : '' }}> Monday </option>
+                                    <option value="Tue" {{ (old('day_from') ?? $course->day_from) == 'Tue' ? 'selected' : '' }}> Tuesday </option>
+                                    <option value="Wed" {{ (old('day_from') ?? $course->day_from) == 'Wed' ? 'selected' : '' }}> Wednesday </option>
+                                    <option value="Thu" {{ (old('day_from') ?? $course->day_from) == 'Thu' ? 'selected' : '' }}> Thursday </option>
+                                    <option value="Fri" {{ (old('day_from') ?? $course->day_from) == 'Fri' ? 'selected' : '' }}> Friday </option>
+                                    <option value="Sat" {{ (old('day_from') ?? $course->day_from) == 'Sat' ? 'selected' : '' }}> Saturday </option>
+                                    <option value="Sun" {{ (old('day_from') ?? $course->day_from) == 'Sun' ? 'selected' : '' }}> Sunday </option>
                                 </select>
 
                             </div>
@@ -144,7 +144,7 @@
                             <label for="time_from" class="col-md-4 col-form-label text-md-right">Time</label>
 
                             <div class="col-md-3">
-                                <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" autocomplete="new-time_from" oninput="this.value=this.value.replace(/[^\d]/,'')" placeholder="FROM" value="{{ old('time_from') ?? $course->time_from }}">
+                                <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" autocomplete="new-time_from" placeholder="FROM" value="{{ old('time_from') ?? $course->time_from }}">
 
                                 @error('time_from')
                                 <span class="invalid-feedback" role="alert">
@@ -154,7 +154,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" autocomplete="new-time_to" oninput="this.value=this.value.replace(/[^\d]/,'')" placeholder="TO" value="{{ old('time_to') ?? $course->time_to }}">
+                                <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" autocomplete="new-time_to" placeholder="TO" value="{{ old('time_to') ?? $course->time_to }}">
 
                                 @error('time_to')
                                 <span class="invalid-feedback" role="alert">

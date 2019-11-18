@@ -10,6 +10,7 @@ use App\Faculty;
 use App\Student;
 use App\Events\NewScannedLog;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -38,22 +39,41 @@ class LogController extends Controller
             $sf =
             Student::where(['uid' => $request->i])->first() ?:
             Faculty::where(['uid' => $request->i])->first() ,
-            403, 'Forbidden'
+            403, 'Record Not Found'
         );
 
         abort_unless(
             strtolower($request->type) == 'G' ?
             ($gr = Gate::where(['name' => $request->f])->first()) :
             ($gr = Room::where(['name' => $request->f])->first()) ,
-            403, 'Forbidden'
+            403, 'Unknown Location'
+        );
+
+        // abort_unless(
+        //     ($cc = Course::where(['room_id' => $gr->id])->first()) &&
+        //     ($tm = Carbon::now()) &&
+        //     ($fr = Carbon::create($tm->year, $tm->month, $tm->day, explode(':', $cc->time_from)[0], explode(':', $cc->time_from)[1], 0)) &&
+        //     ($to = Carbon::create($tm->year, $tm->month, $tm->day, explode(':', $cc->time_to)[0], explode(':', $cc->time_to)[1], 0)) &&
+        //     ($tm->between($fr, $to)),
+        //     403, 'No Class Found'
+        // );
+
+        abort_unless(
+            ($cc = $gr->session()) && ($fr = Carbon::now()->setTime(explode(':', $cc->time_from)[0], explode(':', $cc->time_from)[1])),
+            403, 'No Class Found'
         );
 
         abort_unless(
-            $cc = Course::where(['room_id' => $gr->id])->first() ,
-            403, 'Forbidden'
+            $cc->students->contains($sf),
+            403, 'Student Not Enrolled'
         );
 
-        $nl = $gr->logs()->save($sf->logs()->create(['remarks' => 'ok']));
+        abort_unless(
+            $cc->nolog($sf),
+            403, 'Already Logged In'
+        );
+
+        $nl = $gr->logs()->save($sf->logs()->create(['remarks' => $fr->diffInMinutes(Carbon::now()) > 15 ? 'late' : 'ok']));
         $cc->logs()->save($nl);
 
         event(

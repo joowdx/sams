@@ -65,8 +65,8 @@ class CourseController extends Controller
             'term' => 'required|string|in:1ST,2ND,SEMESTER',
             'day_from' => 'required|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
             'day_to' => 'required|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
-            'time_from' => 'required|string|numeric',
-            'time_to' => 'required|string|numeric',
+            'time_from' => 'required|string',
+            'time_to' => 'required|string',
             'units' => 'required|string|numeric|digits:1',
             'room_id' => 'nullable|string|numeric|exists:room,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
@@ -86,10 +86,9 @@ class CourseController extends Controller
     {
         return view('courses.show', compact('course'))->with([
             'contentheader' => 'Course Info',
-            'courses' => Course::with('students')->get(),
-            'students' => Student::all(),
+            'courses' => Course::with('students', 'logs')->get(),
             'logs' => Log::all(),
-            'days' => iterator_to_array(CarbonPeriod::create($course->academic_period->start, $course->academic_period->end)->filter(function($day) { return $day->isWeekDay(); })->map(function($day) { return $day->format('D m-d-y'); })),
+            'days' => $course->academic_period ? iterator_to_array(CarbonPeriod::create($course->academic_period->start, $course->academic_period->end)->filter(function($day) { return $day->isWeekDay(); })->map(function($day) { return $day->format('D d-m-y'); })) : [],
             'breadcrumbs' => [
                 [
                     'text' => 'Courses',
@@ -149,8 +148,8 @@ class CourseController extends Controller
             'term' => 'required_if:type,info|string|in:1ST,2ND,SEMESTER,SUMMER',
             'day_from' => 'required_if:type,info|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
             'day_to' => 'required_if:type,info|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
-            'time_from' => 'required_if:type,info|string|numeric',
-            'time_to' => 'required_if:type,info|string|numeric',
+            'time_from' => 'required_if:type,info|string',
+            'time_to' => 'required_if:type,info|string',
             'units' => 'required_if:type,info|string|numeric|digits:1',
             'room_id' => 'nullable|string|numeric|exists:room,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',

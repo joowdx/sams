@@ -50,8 +50,8 @@ $factory->state(AcademicPeriod::class, '1SEMESTER', function(Faker $faker) {
         'school_year'  => '2019-2020',
         'semester' => '1ST',
         'term' => 'SEMESTER',
-        'start' => Carbon::createFromFormat('m-d-Y', '01-06-19'),
-        'end' => Carbon::createFromFormat('m-d-Y', '31-10-19'),
+        'start' => Carbon::createFromFormat('d-m-y', '01-06-19'),
+        'end' => Carbon::createFromFormat('d-m-y', '31-10-19'),
     ];
 });
 
@@ -60,7 +60,7 @@ $factory->state(AcademicPeriod::class, '2SEMESTER', function(Faker $faker) {
         'school_year'  => '2019-2020',
         'semester' => '2ND',
         'term' => 'SEMESTER',
-        'start' => Carbon::createFromFormat('m-d-Y', '01-11-19'),
-        'end' => Carbon::createFromFormat('m-d-Y', '31-03-20'),
+        'start' => Carbon::createFromFormat('d-m-y', '01-11-19'),
+        'end' => Carbon::createFromFormat('d-m-y', '31-03-20'),
     ];
 });

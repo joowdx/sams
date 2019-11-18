@@ -13,7 +13,14 @@ $factory->define(Student::class, function (Faker $faker) {
 
 $factory->state(Student::class, 'John Doe', function($faker) {
     return [
-        'uid' => 459707917051,
+        'uid' => 315828891249,
         'name' => 'John Doe',
+    ];
+});
+
+$factory->state(Student::class, 'Jane Doe', function($faker) {
+    return [
+        'uid' => 40175168926,
+        'name' => 'Jane Doe',
     ];
 });

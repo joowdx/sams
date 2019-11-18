@@ -21,7 +21,7 @@ $factory->define(Course::class, function (Faker $faker) {
 $factory->state(Course::class, 'IT111L', function(Faker $faker) {
     return [
         'code' => 1000,
-        'title' => 'IT112L',
+        'title' => 'IT111L',
         'description' => 'Basic Computer Operations',
         'day_from' => 'Mon',
         'day_to' => 'Fri',
