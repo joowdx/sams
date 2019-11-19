@@ -8,8 +8,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="title-wrapper">
-    </div>
+
 </div>
 @endsection
 

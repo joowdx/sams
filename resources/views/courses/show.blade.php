@@ -50,12 +50,11 @@
                     </li>
                     <li class="list-group-item">Units: {{ $course->units }}</li>
                 </ul>
-
-
             </div>
         </div>
     </div>
-</div>
+
+</div>{{-- row --}}
 
 <div class="row">
     <div class="col-md-12">
@@ -67,81 +66,44 @@
             </div>
 
             <div class="card-body">
-
-                {{-- <div class="wrapper">
-                <div class="scroller">
-                 <table id="studentstable" class="table table-bordered table-responsive" style="cursor:pointer;">
-                    <thead>
+                <div class="wrapper">
+                <div class="scrollable-table">
+                    <table class="table-borderless table-striped table-header-rotated">
+                        <thead>
                         <tr>
-                            <th scope="col">Student Name</th>
+                            <!-- First column header is not rotated -->
+                            <th></th>
+                            <!-- Following headers are rotated -->
                             @foreach ($days as $day)
-                            <th class="upright" scope="col">{{ $day }}</th>
+                                <th class="rotate-45"><div><span>{{ $day }}</span></div></th>
                             @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($course->students as $student)
-                        <tr class="text-center">
-                            <td> {{ $student->name }} </td>
-                            @foreach ($days as $day)
-                            <td>
-                                {{-- {{$student->name}} --}}
-                                {{-- <i class="
-                                    {{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}
-                                "></i>
-                            </td> --}}
-                            {{-- @if ($remark->remarks == 'fail')
-                            <td>
-                                <i class="fa fa-user-times" style="color:red"></i>
-                            </td>
-                            @else
-                            <td>
-                                <i class="fa fa-user-check" style="color:blue"></i>
-                            </td>
-                            @endif --}}
-                            {{-- @endforeach
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                </div>
-                </div> --}}
 
-                <div class="zui-wrapper">
-                    <div class="zui-scroller">
-                        <table class="zui-table">
-                            <thead>
-                                <tr>
-                                    <th class="zui-sticky-col">Name</th>
-                                    @foreach ($days as $day)
-                                        <th class="upright" scope="col">{{ $day }}</th>
-                                    @endforeach
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($course->students as $student)
-                                <tr class="text-center">
-                                    <td class="zui-sticky-col"> {{ $student->name }} </td>
-                                    @foreach ($days as $day)
-                                    <td>
-                                        {{-- {{$student->name}} --}}
-                                        <i class="{{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}"></i>
-                                    </td>
-                                    {{-- @if ($remark->remarks == 'fail')
-                                    <td>
-                                        <i class="fa fa-user-times" style="color:red"></i>
-                                    </td>
-                                    @else
-                                    <td>
-                                        <i class="fa fa-user-check" style="color:blue"></i>
-                                    </td>
-                                    @endif --}}
-                                    @endforeach
-                                </tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($course->students as $student)
+                            <tr>
+                                <td class="headcol"> {{ $student->name }} </td>
+                                @foreach ($days as $day)
+                                <td>
+                                    ha
+                                    <i class="{{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}"></i>
+                                </td>
+                                {{-- @if ($remark->remarks == 'fail')
+                                <td>
+                                    <i class="fa fa-user-times" style="color:red"></i>
+                                </td>
+                                @else
+                                <td>
+                                    <i class="fa fa-user-check" style="color:blue"></i>
+                                </td>
+                                @endif --}}
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 </div>
 
             </div>
