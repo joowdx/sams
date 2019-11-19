@@ -33,7 +33,7 @@
     </div>
 
     <div class="col-md-12">
-        <div class="card">
+        <div class="card border-danger">
             <div class="card-header bg-custom">
                 <h6>{{ $course->description }}</h6>
             </div>
@@ -59,7 +59,7 @@
 <div class="row">
     <div class="col-md-12">
 
-        <div class="card">
+        <div class="card border-danger">
 
             <div class="card-header bg-custom">
                 <h6>{{ $course->description }} students</h6>
@@ -82,12 +82,22 @@
                         </thead>
                         <tbody>
                             @foreach ($course->students as $student)
+
                             <tr>
                                 <td class="headcol"> {{ $student->name }} </td>
                                 @foreach ($days as $day)
                                 <td>
-                                    ha
-                                    <i class="{{ ($r = ($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1])))->remarks ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}"></i>
+                                    @switch($course->haslogged($student, Carbon\Carbon::createFromFormat('d-m-y', explode(' ', $day)[1]))->remarks ?? '')
+                                        @case('ok')
+                                            <i class="fa fa-fw fad fa-check-circle"></i>
+                                        @break
+                                        @case('late')
+                                            <i class="fa fa-fw fad fa-scrubber"></i>
+                                            @break
+                                        @default
+                                            -
+                                    @endswitch
+                                    {{-- <i class="{{ ($r = ( ?? '') == 'ok' ? 'fad fa-fw fa-check-circle' : ($r == 'late' ? 'fad fa-fw fa-scrubber' : '' ) }}"></i> --}}
                                 </td>
                                 {{-- @if ($remark->remarks == 'fail')
                                 <td>
