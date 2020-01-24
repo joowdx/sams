@@ -200,6 +200,7 @@
     }
     catch (error) {
         // location.reload()
+
     }
 </script>
 @endsection

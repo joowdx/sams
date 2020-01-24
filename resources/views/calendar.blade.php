@@ -23,9 +23,10 @@ $(() => {
         selectable: true,
         displayEventTime: false,
         googleCalendarApiKey: 'AIzaSyCLu3aNS-LE7sAgndn4p_gGYNZ_NhvE0us',
-        events: 'https://en.philippines#holiday@group.v.calendar.google.com',
+        events: 'https://en.us#holiday@group.v.calendar.google.com',
     })
     calendar.render()
+
 })
 
 </script>
