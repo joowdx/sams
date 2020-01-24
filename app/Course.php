@@ -67,4 +67,8 @@ class Course extends Model
         $to = Carbon::create($now->year, $now->month, $now->day, explode(':', $this->time_to)[0], explode(':', $this->time_to)[1], 0);
         return $now->between($fr, $to);
     }
+
+    public function absences($day) {
+
+    }
 }

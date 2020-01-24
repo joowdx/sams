@@ -58,23 +58,28 @@ class LogController extends Controller
         //     403, 'No Class Found'
         // );
 
-        abort_unless(
-            ($cc = $gr->session()) && ($fr = Carbon::now()->setTime(explode(':', $cc->time_from)[0], explode(':', $cc->time_from)[1])),
-            403, 'No Class Found'
-        );
 
-        abort_unless(
-            $cc->students->contains($sf),
-            403, 'Student Not Enrolled'
-        );
+        ///
 
-        abort_unless(
-            $cc->nolog($sf),
-            403, 'Already Logged In'
-        );
+        // abort_unless(
+        //     ($cc = $gr->session()) && ($fr = Carbon::now()->setTime(explode(':', $cc->time_from)[0], explode(':', $cc->time_from)[1])),
+        //     403, 'No Class Found'
+        // );
 
-        $nl = $gr->logs()->save($sf->logs()->create(['remarks' => $fr->diffInMinutes(Carbon::now()) > 15 ? 'late' : 'ok']));
-        $cc->logs()->save($nl);
+        // abort_unless(
+        //     $cc->students->contains($sf),
+        //     403, 'Student Not Enrolled'
+        // );
+
+        // abort_unless(
+        //     $cc->nolog($sf),
+        //     403, 'Already Logged In'
+        // );
+
+        $nl = $gr->logs()->save($sf->logs()->create(['remarks' => 'ok']));
+        Course::first()->logs()->save($nl);
+        // $nl = $gr->logs()->save($sf->logs()->create(['remarks' => $fr->diffInMinutes(Carbon::now()) > 15 ? 'late' : 'ok']));
+        // $cc->logs()->save($nl);
 
         event(
             new NewScannedLog(

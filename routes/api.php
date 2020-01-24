@@ -23,3 +23,5 @@ Route::resource('users', 'API\Usercontroller');
 Route::resource('faculties', 'API\FacultyController');
 Route::resource('students', 'API\StudentController');
 Route::resource('courses', 'API\CourseController');
+Route::any('statsclass', 'API\StatsClassController');
+Route::any('records', 'API\RecordsController');

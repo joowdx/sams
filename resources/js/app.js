@@ -51,3 +51,14 @@ window.alertify = require('alertifyjs')
 
 
 import './global.js'
+
+import { Calendar } from '@fullcalendar/core'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
+
+window.Calendar = Calendar
+window.dayGridPlugin = dayGridPlugin
+window.interactionPlugin = interactionPlugin
+window.Draggable = Draggable
+
+
