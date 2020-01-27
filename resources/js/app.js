@@ -52,6 +52,7 @@ window.alertify = require('alertifyjs')
 
 import './global.js'
 
+import moment from 'moment'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
@@ -60,5 +61,5 @@ window.Calendar = Calendar
 window.dayGridPlugin = dayGridPlugin
 window.interactionPlugin = interactionPlugin
 window.Draggable = Draggable
-
+window.moment = moment
 

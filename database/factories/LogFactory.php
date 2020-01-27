@@ -4,6 +4,7 @@
 
 use App\Log;
 use App\Course;
+use App\Student;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
@@ -13,91 +14,57 @@ $factory->define(Log::class, function (Faker $faker) {
     ];
 });
 
+$john = null;
+$jane = null;
 $it111l = null;
 $it112l = null;
-$jane = null;
-$john = null;
+$it111ljane = null;
+$it112ljane = null;
+$it111ljohn = null;
+$it112ljohn = null;
 
-$factory->state(Log::class, 'IT111L JANE', function($faker) {
-    global $it111l, $jane;
-    $it111l = $it111l ?? Course::find(1);
-    $jane = $jane ?? $it111l->academic_period->start->setTime(explode(':', $it111l->time_from)[0], explode(':', $it111l->time_from)[1]);
-    $log = $faker->dateTimeBetween($jane, $jane->format('Y-m-d H:i:s').' +30 minutes');
-    $remark = $jane->copy()->addMinutes(15)->gt(Carbon::instance($log)) ? 'ok' : 'late';
-    $chance = rand(1, 100);
-    $jane->addDays($chance < 90 ? 1 : ($chance < 98 ? 2 : 3));
+function generate($faker, $subj, $for, $day) {
+    $log = $faker->dateTimeBetween($day, $day->format('Y-m-d H:i:s').' +30 minutes');
+    $remark = rand(1, 100) > 90 ? 'absent' : ($day->copy()->addMinutes(15)->gt(Carbon::instance($log)) ? 'ok' : 'late');
     return [
-        'log_by_id' => '2',
-        'log_by_type' => 'App\Student',
-        'from_by_id' => '1',
-        'from_by_type' => 'App\Room',
-        'type' => null,
-        'course_id' => '1',
+        'log_by_id' => $for->id,
+        'log_by_type' => get_class($for),
+        'from_by_id' => $remark == 'absent' ? null : '1',
+        'from_by_type' => $remark == 'absent' ? null : 'App\Room',
+        'course_id' => $subj->id,
         'remarks' => $remark,
-        'created_at' => $log,
-        'updated_at' => $log,
+        'date' => $log,
     ];
-});
+}
 
 $factory->state(Log::class, 'IT111L JOHN', function($faker) {
-    global $it111l, $john;
+    global $it111l, $john, $it111ljohn;
     $it111l = $it111l ?? Course::find(1);
-    $john = $john ?? $it111l->academic_period->start->setTime(explode(':', $it111l->time_from)[0], explode(':', $it111l->time_from)[1]);
-    $log = $faker->dateTimeBetween($john, $john->format('Y-m-d H:i:s').' +30 minutes');
-    $remark = $john->copy()->addMinutes(15)->gt(Carbon::instance($log)) ? 'ok' : 'late';
-    $chance = rand(1, 100);
-    $john->addDays($chance < 90 ? 1 : ($chance < 98 ? 2 : 3));
-    return [
-        'log_by_id' => '1',
-        'log_by_type' => 'App\Student',
-        'from_by_id' => '1',
-        'from_by_type' => 'App\Room',
-        'type' => null,
-        'course_id' => '1',
-        'remarks' => $remark,
-        'created_at' => $log,
-        'updated_at' => $log,
-    ];
+    $john = $john ?? Student::find(1);
+    $it111ljohn = $it111l->nextmeeting($it111ljohn ?? $it111l->firstmeeting()->subDay());
+    return generate($faker, $it111l, $john, $it111ljohn);
 });
 
-$factory->state(Log::class, 'IT112L JANE', function($faker) {
-    global $it112l, $jane;
-    $it112l = $it112l ?? Course::find(2);
-    $jane = $jane ?? $it112l->academic_period->start->setTime(explode(':', $it112l->time_from)[0], explode(':', $it112l->time_from)[1]);
-    $log = $faker->dateTimeBetween($jane, $jane->format('Y-m-d H:i:s').' +30 minutes');
-    $remark = $jane->copy()->addMinutes(15)->gt(Carbon::instance($log)) ? 'ok' : 'late';
-    $chance = rand(1, 100);
-    $jane->addDays($chance < 90 ? 1 : ($chance < 98 ? 2 : 3));
-    return [
-        'log_by_id' => '2',
-        'log_by_type' => 'App\Student',
-        'from_by_id' => '1',
-        'from_by_type' => 'App\Room',
-        'type' => null,
-        'course_id' => '2',
-        'remarks' => $remark,
-        'created_at' => $log,
-        'updated_at' => $log,
-    ];
+$factory->state(Log::class, 'IT111L JANE', function($faker) {
+    global $it111l, $jane, $it111ljane;
+    $it111l = $it111l ?? Course::find(1);
+    $jane = $jane ?? Student::find(2);
+    $it111ljane = $it111l->nextmeeting($it111ljane ?? $it111l->firstmeeting()->subDay());
+    return generate($faker, $it111l, $jane, $it111ljane);
 });
 
 $factory->state(Log::class, 'IT112L JOHN', function($faker) {
-    global $it112l, $john;
+    global $it112l, $john, $it112ljohn;
     $it112l = $it112l ?? Course::find(2);
-    $john = $john ?? $it112l->academic_period->start->setTime(explode(':', $it112l->time_from)[0], explode(':', $it112l->time_from)[1]);
-    $log = $faker->dateTimeBetween($john, $john->format('Y-m-d H:i:s').' +30 minutes');
-    $remark = $john->copy()->addMinutes(15)->gt(Carbon::instance($log)) ? 'ok' : 'late';
-    $chance = rand(1, 100);
-    $john->addDays($chance < 90 ? 1 : ($chance < 98 ? 2 : 3));
-    return [
-        'log_by_id' => '1',
-        'log_by_type' => 'App\Student',
-        'from_by_id' => '1',
-        'from_by_type' => 'App\Room',
-        'type' => null,
-        'course_id' => '2',
-        'remarks' => $remark,
-        'created_at' => $log,
-        'updated_at' => $log,
-    ];
+    $john = $john ?? Student::find(1);
+    $it112ljohn = $it112l->nextmeeting($it112ljohn ?? $it112l->firstmeeting()->subDay());
+    return generate($faker, $it112l, $john, $it112ljohn);
+});
+
+$factory->state(Log::class, 'IT112L JANE', function($faker) {
+    global $it112l, $jane, $it112ljane;
+    $it112l = $it112l ?? Course::find(2);
+    $jane = $jane ?? Student::find(2);
+    $it112ljane = $it112l->nextmeeting($it112ljane ?? $it112l->firstmeeting()->subDay());
+    return generate($faker, $it112l, $jane, $it112ljane);
 });

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RoomSeeder::class,
             AcademicPeriodSeeder::class,
             CourseSeeder::class,
+            EventSeeder::class,
             LogSeeder::class,
         ]);
     }

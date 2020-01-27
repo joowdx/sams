@@ -1,5 +1,7 @@
 <?php
 
+use App\EventHolidays;
+use App\Http\Resources\EventResource;
 use Illuminate\Http\Request;
 
 /*
@@ -25,3 +27,5 @@ Route::resource('students', 'API\StudentController');
 Route::resource('courses', 'API\CourseController');
 Route::any('statsclass', 'API\StatsClassController');
 Route::any('records', 'API\RecordsController');
+Route::any('queryclasses', 'API\ClassesQueryController')->name('queryclasses');
+Route::any('events', 'API\EventController');

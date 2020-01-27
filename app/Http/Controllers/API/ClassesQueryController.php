@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\AcademicPeriod;
 use App\Course;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,6 +18,14 @@ class ClassesQueryController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return OngoingClasses::collection(Course::where()->all());
+        return Course::whereIn('academic_period_id',
+            AcademicPeriod::where(function($query) {
+                $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
+            })->get()->map(function($period) {
+                return $period->id;
+            })->all()
+        // )->with('room')->get();
+        )->whereTime('time_from', '<=', date('H:i'))->whereTime('time_to', '>', date('H:i'))->get();
+
     }
 }

@@ -64,14 +64,14 @@
                 {{-- @can('fview', App\AcademicPeriod::class) --}}
                 <li class="nav-item">
                     <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiod*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-bahai fa-fw"></i>
+                        <i class="nav-icon fad fa-calendar-week fa-fw"></i>
                         <p> Academic Period </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('calendar') }}" class="nav-link {{ request()->is('calendar*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-calendar-week fa-fw"></i>
-                        <p> Calendar </p>
+                    <a href="{{ route('events.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-bahai fa-fw"></i>
+                        <p> Events </p>
                     </a>
                 </li>
                 {{-- @endcan --}}

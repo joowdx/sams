@@ -20,3 +20,11 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 Broadcast::channel('logs', function(User $user) {
     return $user;
 });
+
+Broadcast::channel('map', function(User $user) {
+    return $user;
+});
+
+Broadcast::channel('holidays', function(User $user) {
+    return $user;
+});

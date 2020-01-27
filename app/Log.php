@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $fillable = [
-        'type', 'remarks'
+        'type', 'remarks', 'date'
+    ];
+
+    protected $dates = [
+        'date',
     ];
 
     public $timestamps = true;

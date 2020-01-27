@@ -29,4 +29,15 @@ class Student extends Model
     {
         return $this->hasOneThrough(Course::class, AcademicPeriod::class);
     }
+
+    public function entered()
+    {
+        return @$this->logs()->where('from_by_type', 'App\Gate')->latest()->first()->remarks == 'entry';
+    }
+
+    public function exited()
+    {
+        return @$this->logs()->where('from_by_type', 'App\Gate')->latest()->first()->remarks != 'entry';
+    }
+
 }

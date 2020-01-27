@@ -9,6 +9,12 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('dashboard') }}" class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">Dashboard</a>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="{{ route('calendar') }}" class="nav-link {{ Route::is('calendar') ? 'active' : '' }}">Calendar</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="{{ route('map') }}" class="nav-link {{ Route::is('map') ? 'active' : '' }}">Map</a>
+        </li>
     </ul>
     {{-- <form class="form-inline ml-3">
         <div class="input-group input-group-sm">
