@@ -7,7 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Student::class, function (Faker $faker) {
     return [
-        //
+        // 'uid' => $faker->random->,
+        'name' => $faker->name,
     ];
 });
 

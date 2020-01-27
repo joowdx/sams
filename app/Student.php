@@ -31,4 +31,15 @@ class Student extends Model
         LEFT JOIN courses c ON(c.id = cs.course_id) where s.uid = ?',[(string)$id]);
         return $result;
     }
+
+    public function entered()
+    {
+        return @$this->logs()->where('from_by_type', 'App\Gate')->latest()->first()->remarks == 'entry';
+    }
+
+    public function exited()
+    {
+        return @$this->logs()->where('from_by_type', 'App\Gate')->latest()->first()->remarks != 'entry';
+    }
+
 }

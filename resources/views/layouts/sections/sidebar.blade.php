@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-light elevation-4">
     <a href="{{ url('/') }}" class="brand-link">
-        <img src="{{ asset('/assets/img/umdc.png') }}" alt="logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="{{ asset('/assets/img/umdc.png') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
         <div class="brand-image img-circle elevation-3" style="opacity: .8"></div>
         <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
     </a>
@@ -66,6 +66,12 @@
                     <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiod*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-calendar-week fa-fw"></i>
                         <p> Academic Period </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('events.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-bahai fa-fw"></i>
+                        <p> Events </p>
                     </a>
                 </li>
                 {{-- @endcan --}}

@@ -19,9 +19,9 @@ class CreateLogsTable extends Migration
             $table->string('log_by_type')->nullable();
             $table->unsignedBigInteger('from_by_id')->nullable();
             $table->string('from_by_type')->nullable();
-            $table->enum('type', ['entry', 'exit'])->nullable();
             $table->unsignedBigInteger('course_id')->nullable();
-            $table->enum('remarks', ['ok', 'late', 'fail']);
+            $table->date('date');
+            $table->enum('remarks', ['ok', 'late', 'excuse', 'absent', 'entry', 'exit']);
             $table->timestamps();
         });
     }

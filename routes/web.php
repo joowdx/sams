@@ -11,6 +11,14 @@
 |
 */
 
+use App\AcademicPeriod;
+use App\Course;
+use App\EventHolidays;
+use App\Log;
+use App\Student;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\DB;
 
 Auth::routes(['register' => false]);
 Route::any('/', 'HomeController')->name('home');
@@ -26,5 +34,8 @@ Route::resource('faculties', 'FacultyController');
 Route::resource('logs', 'LogController');
 Route::resource('users', 'UserController');
 Route::resource('configurations', 'ConfigurationController');
-Route::any('calendar', function() { return view('calendar'); } )->name('calendar');
-Route::any('map', function() { return view('map'); } )->name('map');
+Route::resource('events', 'EventController');
+Route::any('calendar', 'CalendarController@index')->name('calendar');
+Route::any('map', 'MapController@index')->name('map');
+Route::any('test', function() {
+});

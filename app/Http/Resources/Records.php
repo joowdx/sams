@@ -14,7 +14,6 @@ class Records extends JsonResource
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
         $record = [
             'id' => $this->id,
             explode('\\', strtolower($this->log_by_type))[1] => [
@@ -27,11 +26,11 @@ class Records extends JsonResource
                 'title' => $this->course->title,
                 'description' => $this->course->description,
             ] : null,
-            'from' => $this->from_by->name,
+            'from' => $this->from_by->name ?? null,
             'time' => $this->created_at->format('Y-m-d H:i:s'),
             'remarks' => $this->remarks,
         ];
-        get_class($this->from_by) == 'App\Room' ? null : ($record['type'] = $this->from_by->type);
+        !$this->from_by ?? (get_class($this->from_by) == 'App\Room' ? null : ($record['type'] = $this->from_by->type));
         return $record;
     }
 }

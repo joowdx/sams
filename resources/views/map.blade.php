@@ -104,7 +104,7 @@
 
     <text id="cl1_" class="cls1" x="1480" y="805">CL1</text>
     <text id="cl2_" class="cls1" x="1480" y="610">CL2</text>
-    <a href="">
+    <a id="cl3-" href="">
         <text id="cl3_" class="cls1" x="1251" y="805">CL3</text>
     </a>
     <text id="b11_" class="cls1" x="1480" y="980">CHEMLAB</text>
@@ -187,20 +187,20 @@
 @section('scripts')
 <script>
     try {
-        Echo.private('logs').listen('NewScannedLog', function(e) {
-            try {
-                $('#' + e.log.from_by.name.toLowerCase()).css('fill', 'red')
-                $('#' + e.log.from_by.name.toLowerCase() + '_').text('asdas')
-            }
-            catch(error) {
-
-            }
-
+        const refreshmap = e => e.forEach(e => {
+            $(`#${e.room.name.toLowerCase()}_`).text(`${e.title}(${e.code})`)
+            $(`#${e.room.name.toLowerCase()}-`).attr('href', `/courses/${e.id}`)
         })
+        const updatelogs = e => {
+            $(`#${e.from_by.name.toLowerCase()}`).css('fill', 'red')
+            $(`#${e.from_by.name.toLowerCase()}_`).text('asdas')
+        }
+        Echo.private('map').listen('RefreshMap', e => refreshmap(JSON.parse(e.courses)))
+        Echo.private('logs').listen('NewScannedLog', e => updatelogs(e.log))
+        fetch('{{route('queryclasses')}}').then(e => e.json()).then(e =>{ refreshmap(e);})
     }
     catch (error) {
-        // location.reload()
-
+        console.log(error)
     }
 </script>
 @endsection
