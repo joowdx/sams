@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
     @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed layout-navbar-fixed">
@@ -20,6 +21,7 @@
         @include('layouts.sections.footer')
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
+    
     @yield('scripts')
 </body>
 </html>
