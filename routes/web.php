@@ -26,4 +26,5 @@ Route::resource('faculties', 'FacultyController');
 Route::resource('logs', 'LogController');
 Route::resource('users', 'UserController');
 Route::resource('configurations', 'ConfigurationController');
-
+Route::any('calendar', function() { return view('calendar'); } )->name('calendar');
+Route::any('map', function() { return view('map'); } )->name('map');
