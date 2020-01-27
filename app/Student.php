@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
@@ -24,9 +24,11 @@ class Student extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
-    public function academic_period()
-    {
-        return $this->hasOneThrough(Course::class, AcademicPeriod::class);
+    public function showStudentDetails($id){
+        
+        $result = DB::select('SELECT * FROM students s
+        LEFT JOIN course_student cs ON(cs.student_id = s.id)
+        LEFT JOIN courses c ON(c.id = cs.course_id) where s.uid = ?',[(string)$id]);
+        return $result;
     }
 }

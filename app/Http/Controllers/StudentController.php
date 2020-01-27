@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use App\User;
+use App\Course;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -15,11 +16,15 @@ class StudentController extends Controller
      */
     public function index()
     {
+        
+
+
         $this->authorize('fview', User::class);
         return view('students.index')->with([
             'contentheader' => 'Students',
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -55,10 +60,25 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
-    {
-        //
+    public function show(Student $student){
+
+        $students = new Student();
+        // var_dump($students->showStudentDetails($student->uid));
+        return view('students.show', [
+            'contentheader' => 'Student Info',
+            'studentDetails' => $students->showStudentDetails($student->uid),
+            'breadcrumbs' => [
+                [
+                    'text' => 'Students',
+                    'link' => route('students.index'),
+                ],
+                [
+                    'text' => 'Info'
+                ]
+            ],
+        ]);
     }
+    
 
     /**
      * Show the form for editing the specified resource.
