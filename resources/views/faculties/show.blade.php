@@ -54,24 +54,12 @@ li.info{
 
         </div>
 
-        <div class="col-md-2">
-            <div id="wrapper">
-                <div><i class="fa fa-user-circle" id="user" aria-hidden="true"></i></div>
-            </div>
-        </div>
-
-        <div class="col-md-10">
-
-            <h1>{{ $faculty->name }}</h1>
-            <h3>ID: {{ $faculty->uid }}</h3>
+        <div class="col-md-12">
 
             <hr>
 
-            <ul class="nav info">
-                <li class="col-md-2 text-center"><h1>1</h1>Total Number of Students</li>
-                <li class="vl"></li>
-                <li class="col-md-2 text-center"><h1>1</h1>Total Number of Classes</li>
-            </ul>
+            <h1>{{ $faculty->name }}</h1>
+            <h3>ID: {{ $faculty->uid }}</h3>
 
             <hr>
 
@@ -110,12 +98,6 @@ li.info{
 
             <ul class="nav">
                     <li><h1 id="haha">Students</h1></li>
-                    <li class="col-md-5">
-                            <small>Student Percentage</small>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped" id="instudent"  role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50"></div>
-                        </div>
-                    </li>
             </ul>
 
             <table id="studentstable" class="table table-bordered" style="cursor:pointer;">

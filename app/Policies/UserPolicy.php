@@ -60,11 +60,11 @@ class UserPolicy
         ]);
     }
 
-    public function show()
+    public function show(User $user)
     {
-
-
-
+        return in_array($user->type, [
+            'admin'
+        ]);
     }
 
     /**

@@ -13,7 +13,7 @@
                     <i class="fad fa-user-secret fa-fw fa-2x" style="color: #ecf0f1"></i>
                 </div>
                 <div class="info">
-                    <a href="/users/{{Auth::user()->id}}" class="d-block">{{ Auth::user()->name }}</a>
+                    <a href="/profile" class="d-block">{{ Auth::user()->name }}</a>
                 </div>
             </div>
         @endif
@@ -60,8 +60,13 @@
                         </li>
                     </ul>
                 </li>
-                @endcan
                 {{-- @can('fview', App\AcademicPeriod::class) --}}
+                <li class="nav-item">
+                    <a href="{{ route('map') }}" class="nav-link {{ request()->is('map*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-map-marked-alt fa-fw"></i>
+                        <p> School Map </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiod*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-calendar-week fa-fw"></i>
@@ -75,19 +80,28 @@
                     </a>
                 </li>
                 {{-- @endcan --}}
-                @can('fview', App\User::class)
+                {{-- @can('fview', App\User::class) --}}
                 <li class="nav-item">
-                    <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-users-class fa-fw"></i>
-                        <p> Students </p>
+                    <a href="{{ route('calendar') }}" class="nav-link {{ request()->is('calendar*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-calendar-week fa-fw"></i>
+                        <p> Calendar </p>
                     </a>
                 </li>
                 @endcan
+                {{-- @endcan --}}
                 @can('rview', App\User::class)
                 <li class="nav-item">
                     <a href="{{ route('courses.index') }}" class="nav-link {{ request()->is('courses*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-book-spells fa-fw"></i>
                         <p> Courses </p>
+                    </a>
+                </li>
+                @endcan
+                @can('fview', App\User::class)
+                <li class="nav-item">
+                    <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-users-class fa-fw"></i>
+                        <p> Students </p>
                     </a>
                 </li>
                 @endcan

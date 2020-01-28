@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('styles')
+<style>
+
+</style>
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -13,17 +16,46 @@
 @endsection
 
 @section('scripts')
+<script>
+$('#studenttable').DataTable({
+        'destroy': true,
+        retrieve: true,
+        columnDefs: [],
+        "aaSorting": [],
+       'ajax': {
+            'url': '{{ url("/api/students") }}',
+            'type': 'get',
+            'dataSrc': e => e,
+        },
+        'columns': [
+            {
+                'title': 'ID',
+                'data': 'uid',
+            },
+            {
+                'title': 'Name',
+                'data': 'name',
+            },
+        ],
+    });
+
+var table = $('#studenttable').DataTable();
+$('#studenttable tbody').on('click', 'tr', function () {
+    var data = table.row( this ).data();
+    window.location.href="students/" + data.id + "/edit";
+} );
+</script>
 
 <script>
   var student = (function(){
 
     var
-     
+
     $gridID = $("#tblStudent"),
-    
+
 
      init = function(){
-         
+
       $gridID.DataTable({
         'destroy': true,
         retrieve: true,
@@ -47,7 +79,7 @@
     });
     var table = $('#tblStudent').DataTable();
     $('#tblStudent tbody').on('click', 'tr', function () {
-    
+
         var data = table.row( this ).data();
         console.log(data);
         //window.location.href="students/id=" + data.uid;

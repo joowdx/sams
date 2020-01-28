@@ -5,12 +5,12 @@
             <select class="custom-select type" id="type" name="type">
                 @foreach([
                 "admin"     =>  "Admin",
-                "d.o."       =>  "Deans Office",
-                "h.r."        =>  "Human Resouce",
+                "d.o."      =>  "Deans Office",
+                "h.r."      =>  "Human Resouce",
                 "faculty"   =>  "Faculty",
-                "registrar" =>  "Registrar",
+                "depthead"  =>  "Department Head",
                 "student"   =>  "Student",
-                ] as $type => $user_label)
+                ] as $type  => $user_label)
                 <option value="{{ $type }}">{{ $user_label }}</option>
                 @endforeach
             </select>

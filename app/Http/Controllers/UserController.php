@@ -83,6 +83,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('show', User::class);
         return view('users.edit', compact('user'))->with([
             'contentheader' => 'Update user',
             'breadcrumbs' => [

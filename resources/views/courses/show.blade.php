@@ -103,7 +103,7 @@
 <div class="row">
     <div class="col-md-12">
 
-        <div class="card border-danger">
+        <div class="card">
 
             <div class="card-header bg-custom">
                 <h6>Records</h6>
