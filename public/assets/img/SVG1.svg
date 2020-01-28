@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3347" height="1878" viewBox="0 0 3347 1878">
+  <defs>
+    <style>
+      .cls-1, .cls-16, .cls-2, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-13, .cls-14, .cls-2, .cls-3, .cls-4 {
+        stroke: #000;
+        stroke-linejoin: round;
+      }
+
+      .cls-1 {
+        stroke-width: 7px;
+      }
+
+      .cls-1, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
+        fill-rule: evenodd;
+      }
+
+      .cls-13, .cls-2, .cls-3 {
+        stroke-width: 5px;
+      }
+
+      .cls-3 {
+        fill: #fdfdfd;
+      }
+
+      .cls-14, .cls-4 {
+        stroke-width: 3px;
+      }
+
+      .cls-5 {
+        fill: #a7a7a7;
+      }
+
+      .cls-6 {
+        fill: #a1654a;
+      }
+
+      .cls-7 {
+        fill: #ec6b76;
+      }
+
+      .cls-8 {
+        fill: #1fbf4f;
+      }
+
+      .cls-9 {
+        fill: #67087b;
+      }
+
+      .cls-10 {
+        fill: #f59fbc;
+      }
+
+      .cls-11 {
+        fill: #00a8ec;
+      }
+
+      .cls-12 {
+        fill: #d2b2e1;
+      }
+
+      .cls-13, .cls-14 {
+        fill: #fef668;
+      }
+
+      .cls-15 {
+        fill: #f4b757;
+      }
+
+      .cls-16, .cls-17 {
+        font-size: 66.667px;
+      }
+
+      .cls-16, .cls-17, .cls-18, .cls-21, .cls-23, .cls-24, .cls-25, .cls-26 {
+        font-family: Calibri;
+        font-weight: 700;
+      }
+
+      .cls-17, .cls-18, .cls-21, .cls-23, .cls-24 {
+        fill: #303030;
+      }
+
+      .cls-18, .cls-22, .cls-24 {
+        font-size: 58.333px;
+      }
+
+      .cls-18, .cls-21, .cls-23, .cls-25, .cls-26 {
+        text-anchor: middle;
+      }
+
+      .cls-19 {
+        font-size: 41.667px;
+      }
+
+      .cls-20, .cls-23, .cls-25, .cls-26 {
+        font-size: 50px;
+      }
+
+      .cls-21 {
+        font-size: 33.333px;
+      }
+
+      .cls-25 {
+        fill: #212121;
+      }
+
+      .cls-26 {
+        fill: #fefefe;
+      }
+    </style>
+  </defs>
+  <path id="Color_Fill_53" data-name="Color Fill 53" class="cls-1" d="M2377,108l3,250h559l1-250H2377Z"/>
+  <path id="Color_Fill_52" data-name="Color Fill 52" class="cls-1" d="M1759,761l2,468,318,1-3-469H1759Z"/>
+  <path id="Color_Fill_51" data-name="Color Fill 51" class="cls-1" d="M79,430l4,657,1005-1,3-659Z"/>
+  <path id="Offices" class="cls-2" d="M1225,270l6,466,421-2-1-465Z"/>
+  <path id="Color_Fill_50" data-name="Color Fill 50" class="cls-2" d="M1464,1648v165.5l183.99,0.01,1.01-164.52Z"/>
+  <path id="Color_Fill_49" data-name="Color Fill 49" class="cls-2" d="M1351.46,33l2.47,151,288.12-1V29.951Z"/>
+  <path id="Color_Fill_48" data-name="Color Fill 48" class="cls-3" d="M3081,674V838h187V674H3081Z"/>
+  <path id="Color_Fill_47" data-name="Color Fill 47" class="cls-2" d="M3081,845l2,378,187,2-2-379Z"/>
+  <path id="Color_Fill_46" data-name="Color Fill 46" class="cls-2" d="M1451,559.012V726l191.13-1.992V558Z"/>
+  <path id="Color_Fill_45" data-name="Color Fill 45" class="cls-2" d="M1452.99,754l-0.32,167L1643,921.306,1642.33,753Z"/>
+  <path id="Color_Fill_44" data-name="Color Fill 44" class="cls-2" d="M1457.01,939.5l1,168.5,189-1.31-1.07-167.527Z"/>
+  <path id="Color_Fill_43" data-name="Color Fill 43" class="cls-2" d="M1238,755V923l186-2-1-167Z"/>
+  <path id="Color_Fill_42" data-name="Color Fill 42" class="cls-2" d="M1236.34,940.014L1237,1109h187l-0.05-170Z"/>
+  <path id="Color_Fill_41" data-name="Color Fill 41" class="cls-2" d="M961,1116l1,215,140-1V1114Z"/>
+  <path id="Color_Fill_40" data-name="Color Fill 40" class="cls-2" d="M1942,129l2.01,220.978,134.99-2.5L2077.01,129H1942Z"/>
+  <path id="Color_Fill_39" data-name="Color Fill 39" class="cls-4" d="M950.916,196.994l0.974,211.162,138.21-.953L1089.11,196Z"/>
+  <path id="Color_Fill_34" data-name="Color Fill 34" class="cls-5" d="M808,1114H949l-1.335,210.93L808,1324.67V1114Z"/>
+  <path id="Color_Fill_33" data-name="Color Fill 33" class="cls-6" d="M660,1114.65l-0.339,209.71,142,1.31L801,1114Z"/>
+  <path id="Color_Fill_32" data-name="Color Fill 32" class="cls-7" d="M365,1115H505l-2.335,210.82-136.171-.99Z"/>
+  <path id="Color_Fill_31" data-name="Color Fill 31" class="cls-7" d="M217,1114.79l141.119,0.03,0.983,210.31H217.352Z"/>
+  <path id="Color_Fill_30" data-name="Color Fill 30" class="cls-7" d="M76,1115.34l0.964,209.67,134.532,0.02,0.489-211.05Z"/>
+  <path id="Color_Fill_29" data-name="Color Fill 29" class="cls-8" d="M1462.32,1468.01l182.02-.68v166.69l-182.37-.68Z"/>
+  <path id="Color_Fill_28" data-name="Color Fill 28" class="cls-8" d="M1462.61,1120.71l0.66,166.3L1645,1288l-1-168.66Z"/>
+  <path id="Color_Fill_26" data-name="Color Fill 26" class="cls-9" d="M512.014,1115.66L511,1324.33l140.994,0.34L651.972,1115ZM2438,1713.01"/>
+  <path id="Color_Fill_25" data-name="Color Fill 25" class="cls-9" d="M1242,1647.01l0.59,167.99,181.22-.99,0.81-168.01Z"/>
+  <path id="Color_Fill_24" data-name="Color Fill 24" class="cls-9" d="M1239.62,1470l-0.52,170.5,182.6-.27L1422,1470H1239.62Z"/>
+  <path id="Color_Fill_22" data-name="Color Fill 22" class="cls-10" d="M2865.75,1013.09l-1,216.39,179.31,0.52-0.64-217.53Z"/>
+  <path id="Color_Fill_21" data-name="Color Fill 21" class="cls-10" d="M2683,1013v216.24l175.03,0.26,0.7-216.92Z"/>
+  <path id="Color_Fill_19" data-name="Color Fill 19" class="cls-11" d="M1462.66,1292l-0.34,170.01,181.68,0.61,1.67-170.61Z"/>
+  <path id="Color_Fill_18" data-name="Color Fill 18" class="cls-11" d="M2109,760V977l187.5-.738L2296.74,760H2109Z"/>
+  <path id="Color_Fill_17" data-name="Color Fill 17" class="cls-11" d="M2301.63,760.7l0.43,215.761,183.92,0V760.978Z"/>
+  <path id="Color_Fill_16" data-name="Color Fill 16" class="cls-11" d="M2491.75,760.557L2491,976.5l184.49,0L2675,760.982Z"/>
+  <path id="Color_Fill_15" data-name="Color Fill 15" class="cls-11" d="M2229.67,128.035L2232,349.472l134.33,1.191L2364.99,127Z"/>
+  <path id="Color_Fill_14" data-name="Color Fill 14" class="cls-11" d="M2088.31,129.03L2089.3,350.5l136.39-.168L2224.7,128Z"/>
+  <path id="Color_Fill_13" data-name="Color Fill 13" class="cls-12" d="M2865,762.1l0.01,214.913,179.05-.948-0.02-214.514Z"/>
+  <path id="Color_Fill_12" data-name="Color Fill 12" class="cls-12" d="M2680.99,762.105V976.493l177.45-.234,0.29-214.416Z"/>
+  <path id="Color_Fill_10" data-name="Color Fill 10" class="cls-13" d="M1800,131l1,217,134-1-1-217Z"/>
+  <path id="Color_Fill_9" data-name="Color Fill 9" class="cls-14" d="M1221.62,30.985L1220.66,184h126.68l-2.96-153.966Z"/>
+  <path id="Color_Fill_8" data-name="Color Fill 8" class="cls-14" d="M993,32l2.013,151.991L1214,183V32H993Z"/>
+  <path id="Color_Fill_6" data-name="Color Fill 6" class="cls-15" d="M2491,1013.25l0.25,215.5,184.99,0.75,1.76-216.99Z"/>
+  <path id="Color_Fill_5" data-name="Color Fill 5" class="cls-15" d="M2301,1013v215.75l185-.01V1012.75Z"/>
+  <path id="Color_Fill_4" data-name="Color Fill 4" class="cls-15" d="M2109.47,1013.24l-0.9,215.76h186.68l0.26-216.01Z"/>
+  <path id="Color_Fill_3" data-name="Color Fill 3" class="cls-15" d="M1237.32,1296l0.98,168,181.35,1,0.21-169H1237.32Z"/>
+  <path id="Color_Fill_2" data-name="Color Fill 2" class="cls-15" d="M1236.67,1121l1.26,170.02,181.07-.72-0.98-168.3Z"/>
+  <path id="Color_Fill_1" data-name="Color Fill 1" class="cls-15" d="M799.246,194.409l1.98,212.762,137.528,0.985-0.079-214.018ZM1689,446"/>
+  <path id="C3" class="cls-12" d="M652.443,194.823l0.488,213.007,138.626,0.492-0.133-213.335Z"/>
+  <path id="C4" class="cls-12" d="M507.736,194.478V407.833l135.993,1.09-1-214.617Z"/>
+  <path id="C5" class="cls-12" d="M365.5,195.536l-0.954,212.758,135.909-.007L498.5,194.469Z"/>
+  <path id="C6" class="cls-12" d="M220,195.414l1.447,212.9,132.263-.621,1.562-212.606Z"/>
+  <path id="C7" class="cls-12" d="M75.5,195.5V407.779l136.849,0.369-1.412-213.226Z"/>
+  <text id="C7-2" data-name="C7" class="cls-16" x="106.878" y="321.001">C7</text>
+  <text id="C6-2" data-name="C6" class="cls-16" x="254.876" y="320">C6</text>
+  <text id="C5-2" data-name="C5" class="cls-16" x="401.878" y="320">C5</text>
+  <text id="C4-2" data-name="C4" class="cls-16" x="542.877" y="320">C4</text>
+  <text id="C3-2" data-name="C3" class="cls-16" x="689.877" y="320">C3</text>
+  <text id="C2" class="cls-16" x="833.875" y="320">C2</text>
+  <text id="C13" class="cls-16" x="245.876" y="1240.999">C13</text>
+  <text id="C14" class="cls-16" x="389.875" y="1240.999">C14</text>
+  <text id="C15" class="cls-16" x="533.877" y="1240.999">C15</text>
+  <text id="C16" class="cls-16" x="680.877" y="1240.999">C16</text>
+  <text id="C17" class="cls-16" x="824.875" y="1240.999">C17</text>
+  <text id="B4" class="cls-16" x="1285.877" y="1217.999">B4</text>
+  <text id="B3" class="cls-16" x="1288.876" y="1398">B3</text>
+  <text id="B2" class="cls-16" x="1288.876" y="1569">B2</text>
+  <text id="B1" class="cls-16" x="1288.876" y="1745.999">B1</text>
+  <text id="B10" class="cls-16" x="1509.875" y="1217.999">B10</text>
+  <text id="B9" class="cls-16" x="1519.876" y="1389.001">B9</text>
+  <text id="B8" class="cls-16" x="1527.875" y="1562.999">B8</text>
+  <text id="D10" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2151.994, 884.23)">D10</text>
+  <text id="D8" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2544.995, 884.23)">D8</text>
+  <text id="D7" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2736.996, 884.23)">D7</text>
+  <text id="D6" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2919.996, 884.23)">D6</text>
+  <text id="D9" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2358.996, 884.23)">D9</text>
+  <text id="D5" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2169.994, 1133.23)">D5</text>
+  <text id="D4" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2355.997, 1133.23)">D4</text>
+  <text id="D3" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2541.996, 1133.23)">D3</text>
+  <text id="D2" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2733.997, 1133.23)">D2</text>
+  <text id="D1" class="cls-16" transform="matrix(1, -0.005, 0.005, 1, 2925.994, 1133.23)">D1</text>
+  <text id="A4" class="cls-16" x="2119.876" y="253">A4</text>
+  <text id="A3" class="cls-16" x="2254.877" y="253">A3</text>
+  <text id="CL2" class="cls-17" x="1494.877" y="666.001">CL 2</text>
+  <text id="CL1" class="cls-17" x="1494.877" y="852">CL 1</text>
+  <text id="CL3" class="cls-17" x="1266.876" y="852">CL 3</text>
+  <text id="B11" class="cls-18" x="1554.876" y="1010"><tspan x="1554.876">B11</tspan><tspan class="cls-19" x="1554.876" dy="50">CHEMLAB</tspan></text>
+  <text id="PE" class="cls-18" x="1334.877" y="1007.001"><tspan x="1334.877">PE</tspan><tspan class="cls-20" x="1334.877" dy="60">ROOM</tspan></text>
+  <text id="COMENG" class="cls-21" x="1031.877" y="1211"><tspan x="1031.877">COMENG</tspan><tspan class="cls-22" x="1031.877" dy="70">LAB</tspan></text>
+  <text id="TM" class="cls-23" x="1020.875" y="285"><tspan x="1020.875">TM</tspan><tspan x="1020.875" dy="60">LAB</tspan></text>
+  <text id="PSYCH" class="cls-23" x="1563.876" y="1704"><tspan x="1563.876">PSYCH</tspan><tspan x="1563.876" dy="60">LAB</tspan></text>
+  <text id="GYM" class="cls-17" x="496.876" y="746">GYM</text>
+  <text id="AVR" class="cls-24" x="1960.877" y="253">AVR</text>
+  <text id="LIC" class="cls-17" x="2598.875" y="230.001">LIC</text>
+  <text id="OFFICES-2" data-name="OFFICES" class="cls-17" x="1333.877" y="480">OFFICES</text>
+  <text id="OPL" class="cls-17" x="3120.877" y="777">OPL</text>
+  <text id="MRC" class="cls-17" x="3117.878" y="1014">MRC</text>
+  <text id="FACULTY_RM" data-name="FACULTY RM" class="cls-24" x="1770.878" y="997.999">FACULTY RM</text>
+  <text id="ELEC" class="cls-25" x="1869.875" y="226.999"><tspan x="1869.875">ELEC</tspan><tspan x="1869.875" dy="60">LAB</tspan></text>
+  <text id="AML" class="cls-17" x="1038.875" y="128">AML</text>
+  <text id="A11" class="cls-17" x="1227.877" y="128">A11</text>
+  <text id="MBL" class="cls-17" x="1434.876" y="128">MBL</text>
+  <text id="BTTE" class="cls-26" x="145.876" y="1213"><tspan x="145.876">BTTE</tspan><tspan x="145.876" dy="60">LAB</tspan></text>
+</svg>
