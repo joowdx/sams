@@ -36,8 +36,7 @@ const app = new Vue({
 import './fontawesome-kit-pro.js'
 import 'admin-lte/dist/js/adminlte.min.js'
 import 'bootstrap-notify'
-import 'bootstrap-select'
-
+import 'select2'
 import 'datatables.net-bs4'
 import 'datatables.net-buttons-bs4'
 import 'datatables.net-buttons/js/buttons.colVis.js'

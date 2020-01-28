@@ -242,7 +242,7 @@
                                 <label for="students" class="col-md-4 col-form-label text-md-right">Students</label>
 
                                 <div class="col-md-6">
-                                    <select id="students" name="students[]" class="selectpicker" multiple data-width="100%" data-live-search="true">
+                                    <select name="students[]" multiple="multiple">
                                         @foreach ($students as $student)
                                         <option value="{{ $student->id }}" {{ $student->courses->contains($course->id) ? 'selected' : '' }}> {{ ($student->school_id ? $student->school_id.' - ' : '').$student->name }} </option>
                                         @endforeach
@@ -267,5 +267,11 @@
 @endsection
 
 @section('scripts')
-
+<script>
+$(() => {
+    $('select').select2({
+        theme: 'bootstrap4'
+    });
+})
+</script>
 @endsection

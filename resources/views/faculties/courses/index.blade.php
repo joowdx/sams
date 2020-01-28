@@ -1,33 +1,14 @@
 @extends('layouts.app')
+
 @section('styles')
 <style>
-    #user {
-        display: inline-block;
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
 
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-    }
-    i{
-        text-align: center;
-    }
 </style>
+@endsection
+
 @section('content')
+<div class="row justify-content-center pt-5">
 
-
-<div class="row">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-header">Student</div>
-            <div><i class="fa fa-user-circle" id="user" aria-hidden="true"></i></div>
-            <h3>ID: {{ $student->uid }}</h3>
-            <h1>{{ $student->name }}</h1>
-        </div>
-    </div>
     <div class="col-md-9">
         <div class="card px-2">
             <div class="card-header pb-1">
@@ -49,14 +30,14 @@
                             <th style="width: 30%">
                                 Schedule
                             </th>
-                            <th style="width: 30%">
-                                Status
+                            <th style="width: 8%" class="text-center">
+                                Students
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($student->courses as $course)
-                        <tr onclick="window.location='{{ route('faculties.courses.show', [2, $course->id]) }}'" style="cursor: pointer">
+                        @foreach ($faculty->courses as $course)
+                        <tr onclick="window.location='{{ route('faculties.courses.show', [$faculty->id, $course->id]) }}'" style="cursor: pointer">
                             <td class="align-middle">
                                 <i class="fad fa-hashtag"></i>{{ $course->code }}
                                 <br>
@@ -88,8 +69,8 @@
                                 <br>
                                 <small> {{ "$course->time_from - $course->time_to" }} </small>
                             </td>
-                            <td class="align-middle">
-                                <span class="badge badge-{{ ($course->pivot->status == 'dropped' ? 'danger' : ($course->pivot->status == 'warning' ? 'warning' : 'success'))  }}">{{ $course->pivot->status ?? 'ok' }}</span>
+                            <td class="align-middle project-state">
+                                {{ $course->students->count() }}
                             </td>
                         </tr>
                         @endforeach

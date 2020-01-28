@@ -20,7 +20,7 @@ class DashboardController extends Controller
                 'from_by:id,name' ,
                 'log_by:id,name,uid' ,
                 'course' ,
-            ])->limit(5)->orderBy('created_at', 'desc')->get(),
+            ])->where('remarks', '<>', 'absent')->limit(10)->orderBy('created_at', 'desc')->get(),
         ]);
     }
 }

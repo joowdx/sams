@@ -14,10 +14,12 @@
 @import '~datatables.net-bs4/css/dataTables.bootstrap4.css';
 //DataTable Buttons
 @import '~datatables.net-buttons-bs4/css/buttons.bootstrap4.css';
-//Bootstrap Select
-@import '~bootstrap-select/dist/css/bootstrap-select.css';
 
+//Select2
+@import '~select2/dist/css/select2.css';
+@import '~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css';
 
+//Fullcalendar
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
 

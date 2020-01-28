@@ -9,7 +9,7 @@
                     {{ $breadcrumb->text }}
                     @continue
                 @endif
-                <a href="{{ $breadcrumb->link ?? 'javascript:void(0)' }}"> {{ $breadcrumb->text }} </a>
+                <a href="{{ $breadcrumb->link ?? 'javascript:void(0)' }}">{{ $breadcrumb->text }}</a>
             </li>
         @endforeach
     @endif

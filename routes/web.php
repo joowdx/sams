@@ -33,7 +33,7 @@ Route::resource('profiles', 'ProfileController');
 Route::resource('deptheads', 'DeptHeadController');
 Route::resource('studentviews', 'StudentViewController');
 // Route::resource('courses.students', 'StudentController');
-// Route::resource('faculties.courses', 'CourseController');
+Route::resource('faculties.courses', 'FacultyCourseController');
 // Route::resource('faculties.courses.students', 'StudentController');
 Route::resource('logs', 'LogController');
 Route::resource('users', 'UserController');

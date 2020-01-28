@@ -47,20 +47,13 @@ class Course extends Model
 
     public function haslogged($sf, Carbon $dt = null)
     {
-        $dt = $dt ?? today();
-        // $dt->setTime(explode(':', $this->time_from)[0], explode(':', $this->time_from)[1]);
-        // $te = $dt->copy()->setTime(explode(':', $this->time_to)[0], explode(':', $this->time_to)[1]);
-        // return $this->logsof($dt)->first(function($log) use($sf, $dt, $te){
-        //     return $log->log_by->id == $sf->id && $log->created_at->between($dt, $te);
-        // });
-        return $this->logs()->where('log_by_id', $sf->id)->where('log_by_type', get_class($sf))->whereDate('date', $dt)->first();
+        return $this->logs()->where('log_by_id', $sf->id)->where('log_by_type', get_class($sf))->whereDate('date', $dt ?? today())->first();
     }
 
 
     public function nolog($sf, Carbon $dt = null)
     {
-        $dt = $dt ?? today();
-        return !$this->logs()->where('log_by_id', $sf->id)->where('log_by_type', get_class($sf))->whereDate('date', $dt)->first();
+        return !$this->logs()->where('log_by_id', $sf->id)->where('log_by_type', get_class($sf))->whereDate('date', $dt ?? today())->first();
     }
 
     public function onsession()
@@ -68,15 +61,22 @@ class Course extends Model
         return $this->academic_period->iscurrentperiod() && now()->between(today()->setTime(explode(':', $this->time_from)[0], explode(':', $this->time_from)[1]), today()->setTime(explode(':', $this->time_to)[0], explode(':', $this->time_to)[1]));
     }
 
-    public function absences($day) {
-
+    public function ongoing()
+    {
+        return $this->academic_period->iscurrentperiod();
     }
 
-    public function noclass(Carbon $day = null) {
-        $day = $day ?? Carbon::now();
+    public function absences(Carbon $day = null)
+    {
+        $day = $day ?? today();
+        return $this->logs()->where('remarks', 'absent')->whereDate('date', $day)->get();
+    }
+
+    public function noclass(Carbon $day = null)
+    {
+        $day = $day ?? today();
         $week = ['Mon' => 0, 'Tue' => 1, 'Wed' => 2, 'Thu' => 3, 'Fri' => 4, 'Sat' => 5, 'Sun' => 6,];
-        return Event::noclass($day) || !($week[$this->day_from] <= ($d  = $week[$day->format('D')]) && $week[$this->day_to] >= $d) || $this->academic_period->ended();
-        // return Event::noclass($day) || !($f <= $d && $t >= $d ) || $this->academic_period->ended();
+        return Event::noclass($day) || !($week[$this->day_from] <= ($d  = $week[$day->format('D')]) && $week[$this->day_to] >= $d) || $this->academic_period->ended() || !$this->academic_period->started();
     }
 
     public function nextmeeting(Carbon $day = null) {

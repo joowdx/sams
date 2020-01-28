@@ -12,7 +12,7 @@ class Student extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Course::class)->withPivot('status')->withTimestamps();
     }
 
     public function logs()
@@ -25,7 +25,7 @@ class Student extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
     public function showStudentDetails($id){
-        
+
         $result = DB::select('SELECT * FROM students s
         LEFT JOIN course_student cs ON(cs.student_id = s.id)
         LEFT JOIN courses c ON(c.id = cs.course_id) where s.uid = ?',[(string)$id]);

@@ -16,6 +16,8 @@ class CourseStudentTable extends Migration
         Schema::create('course_student', function (Blueprint $table) {
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('student_id');
+            $table->enum('status', ['dropped', 'warning'])->nullable();
+            $table->timestamps();
         });
     }
 

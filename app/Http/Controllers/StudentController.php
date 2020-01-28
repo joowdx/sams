@@ -16,7 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        
+
 
 
         $this->authorize('fview', User::class);
@@ -67,6 +67,7 @@ class StudentController extends Controller
         return view('students.show', [
             'contentheader' => 'Student Info',
             'studentDetails' => $students->showStudentDetails($student->uid),
+            'student' => $student,
             'breadcrumbs' => [
                 [
                     'text' => 'Students',
@@ -78,7 +79,7 @@ class StudentController extends Controller
             ],
         ]);
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.

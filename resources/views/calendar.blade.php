@@ -7,7 +7,9 @@
     }
     .fc-today .fc-day-number {
         border: 2px solid #1b5e20 !important;
-        border-radius: 15%;
+        border-radius: 12%;
+        background: #1b5e20;
+        color: #ecf0f1;
     }
     .fc td, .fc-day-header {
         border-style: none !important;
@@ -180,43 +182,35 @@
                 e.map(e => {
                     e.allDay = true
                     e.end = moment(e.end).add(1, 'days').format()
+                    e.textColor = 'white'
                     return e
                 })
                 const nationalholidays = e.filter(e => e.remarks == 'national holiday').map(e => {
                     e.color = '#f44336'
-                    e.textColor = 'white'
-                    e.eventClick = e => {
-                        alert()
-                    }
                     return e
                 })
                 const localholidays = e.filter(e => e.remarks == 'local holiday').map(e => {
                     e.color = '#ffb74d'
-                    e.textColor = 'white'
                     return e
                 })
                 const breaks = e.filter(e => e.remarks == 'break').map(e => {
                     e.color = '#ffc107'
-                    e.textColor = 'white'
                     return e
                 })
                 const institutionalevents = e.filter(e => e.remarks == 'institutional event').map(e => {
                     e.color = '#1976d2'
-                    e.textColor = 'white'
                     return e
                 })
                 const classsuspensions = e.filter(e => e.remarks == 'class suspension').map(e => {
                     e.color = '#9c27b0'
-                    e.textColor = 'white'
                     return e
                 })
                 const infos = e.filter(e => e.remarks == 'info').map(e => {
                     e.color = '#4dd0e1'
-                    e.textColor = 'white'
                     return e
                 })
                 var calendar = new Calendar(document.getElementById('calendar'), {
-                    plugins: [ interactionPlugin,dayGridPlugin ],
+                    plugins: [ dayGridPlugin ],
                     firstDay: 1,
                     header: {
                         left: 'title',

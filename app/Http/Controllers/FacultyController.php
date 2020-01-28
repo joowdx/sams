@@ -19,8 +19,10 @@ class FacultyController extends Controller
     {
         $this->authorize('hview', User::class);
 
+
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
+            'faculties' => Faculty::paginate(24),
         ]);
     }
 
@@ -39,7 +41,7 @@ class FacultyController extends Controller
                     'link' => route('faculties.index'),
                 ],
                 [
-                    'text' => 'Info'
+                    'text' => 'Create'
                 ]
             ],
         ]);
@@ -70,15 +72,16 @@ class FacultyController extends Controller
     public function show(Faculty $faculty)
     {
         return view('faculties.show', compact('faculty'))->with([
-            'contentheader' => 'Faculty Info',
-            'courses'   => $faculty->courses()->with('students')->get(),
+            'contentheader' => $faculty->name,
+            'courses'   => $faculty->ongoingcourses(),
+            'students' => $faculty->students(),
             'breadcrumbs' => [
                 [
                     'text' => 'Faculties',
                     'link' => route('faculties.index'),
                 ],
                 [
-                    'text' => 'Info'
+                    'text' => $faculty->name
                 ]
             ],
         ]);
