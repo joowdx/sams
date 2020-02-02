@@ -13,6 +13,11 @@ class Faculty extends Model
         'uid', 'name',
     ];
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
     public function logs()
     {
         return $this->morphMany(Log::class, 'log_by');
@@ -30,6 +35,11 @@ class Faculty extends Model
         ])->with(['courses' => function($query) {
             $query->where('faculty_id', $this->id)->whereIn('academic_period_id', AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->get()->pluck('id'));
         }])->get()->unique();
+    }
+
+    public function logsto($course)
+    {
+        return $this->logs()->where('course_id', $course)->get();
     }
 
     public function created_by()

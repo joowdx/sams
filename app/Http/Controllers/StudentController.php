@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Student;
 use App\User;
 use App\Course;
+use App\Student;
+use App\Department;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -16,12 +17,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-
-
-
         $this->authorize('fview', User::class);
-        return view('students.index')->with([
+        return view('students.index', [
             'contentheader' => 'Students',
+            'students' => Student::all(),
         ]);
     }
 
@@ -34,9 +33,19 @@ class StudentController extends Controller
     public function create()
     {
         $this->authorize('create', User::class);
-
-        $student = new Student();
-        return view('students.create', compact('student'));
+        return view('students.create', [
+            'contentheader' => 'Create',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Students',
+                    'link' => route('students.index'),
+                ],
+                [
+                    'text' => 'Create'
+                ]
+            ],
+            'departments' => Department::all(),
+        ]);
     }
 
     /**
@@ -48,9 +57,13 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', User::class);
-
+        $request->validate([
+            'uid' => 'sometimes|numeric|unique:students,uid',
+            'schoolid' => 'sometimes|numeric|unique:students,schoolid',
+            'name' => 'required|string',
+            'department_id' => 'sometimes|exists:departments,id',
+        ]);
         Student::create($request->all());
-
         return redirect('students.index');
     }
 
@@ -60,23 +73,22 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student){
-
-        $students = new Student();
-        // var_dump($students->showStudentDetails($student->uid));
+    public function show($id)
+    {
+        abort_unless(is_numeric($id), 404);
+        abort_unless($student = Student::find($id), 404);
         return view('students.show', [
-            'contentheader' => 'Student Info',
-            'studentDetails' => $students->showStudentDetails($student->uid),
-            'student' => $student,
+            'contentheader' => $student->name,
             'breadcrumbs' => [
                 [
                     'text' => 'Students',
                     'link' => route('students.index'),
                 ],
                 [
-                    'text' => 'Info'
+                    'text' => $student->name
                 ]
             ],
+            'student' => $student,
         ]);
     }
 
@@ -87,19 +99,27 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit($id)
     {
-        return view('students.edit', compact('student'))->with([
-            'contentheader' => 'Update student',
+        abort_unless(is_numeric($id), 404);
+        abort_unless($student = Student::find($id), 404);
+        return view('students.edit', [
+            'contentheader' => 'Edit',
             'breadcrumbs' => [
                 [
                     'text' => 'Students',
                     'link' => route('students.index'),
                 ],
                 [
+                    'text' => $student->name,
+                    'link' => route('students.show', $student->id),
+                ],
+                [
                     'text' => 'Edit'
-                ]
-            ]
+                ],
+            ],
+            'student' => $student,
+            'departments' => Department::all(),
         ]);
     }
 
@@ -113,12 +133,14 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         $this->authorize('update', User::class);
-
-        $student = Student::findorfail($id);
-        $student->uid   =   $request->uid;
-        $student->name  =   $request->name;
-        $student->save();
-
+        $request->validate([
+            'id' => 'required|numeric|exists:students,id',
+            'uid' => 'sometimes|numeric|unique:students,uid,'.$id,
+            'schoolid' => 'sometimes|numeric|unique:students,schoolid,'.$id,
+            'name' => 'required|string',
+            'department_id' => 'sometimes|exists:departments,id',
+        ]);
+        Student::find($id)->update($request->all());
         return redirect('students');
 
     }
@@ -129,12 +151,12 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy($id)
     {
         $this->authorize('delete', User::class);
-
+        abort_unless(is_numeric($id), 404);
+        abort_unless($department = Student::find($id), 404);
         $student->delete();
-
         return redirect('students');
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class GateSeeder extends Seeder
+class DepartmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class GateSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Gate::class)->states(['G1', 'G2'])->create();
+        factory(App\Department::class)->states(['DTP'])->create();
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CourseStudentTable extends Migration
+class CreateUnverifiedTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CourseStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_student', function (Blueprint $table) {
-            $table->unsignedBigInteger('course_id');
-            $table->unsignedBigInteger('student_id');
-            $table->enum('status', ['dropped', 'warning'])->nullable();
-            $table->boolean('dismissed')->default(false);
+        Schema::create('unverified_tags', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->enum('type', ['student', 'faculty', 'others'])->default('others');
+            $table->bigInteger('uid');
+            $table->enum('status', ['pending', 'ignored']);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CourseStudentTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('unverified_tags');
     }
 }

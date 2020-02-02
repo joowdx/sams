@@ -10,7 +10,7 @@
         </div>
     </div>
 </section>
-<section class="content">
+<section class="content" style="display: none;">
     <div class="container-fluid">
         @yield('content')
     </div>

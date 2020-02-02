@@ -62,6 +62,7 @@ class FacultyCourseController extends Controller
      */
     public function show(Faculty $faculty, Course $course)
     {
+        abort_unless($faculty->courses->contains($course), 404);
         return view('faculties.courses.show', compact('faculty'))->with([
             'contentheader' => "$course->title($course->code)",
             'courses'   => $faculty->ongoingcourses(),

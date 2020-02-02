@@ -85,10 +85,6 @@
 
 @section('scripts')
 <script>
-    $(document).ready(function(){
-        $('table').DataTable({
-            dom: 'ftp'
-        });
-    });
+
 </script>
 @endsection

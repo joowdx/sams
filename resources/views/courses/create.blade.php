@@ -30,7 +30,6 @@
 
 @section('content')
 <div class="container">
-    {{ $errors }}
     <div class="row justify-content-center">
 
 

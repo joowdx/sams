@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <title>{{ config('app.name') }}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src={{ asset('vendor/fontawesome/js/all.min.js') }}></script>
     @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed layout-navbar-fixed">
@@ -18,11 +18,11 @@
                 @include('layouts.sections.content')
             </div>
         </div>
-        @include('layouts.sections.footer')
+        {{-- @include('layouts.sections.footer') --}}
     </div>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.5.0/dist/svg-pan-zoom.min.js"></script> --}}
     <script src="{{ asset('js/app.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.5.0/dist/svg-pan-zoom.min.js"></script>
+    <script> Pace.start() </script>
     @yield('scripts')
 </body>
 </html>

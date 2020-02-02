@@ -7,57 +7,77 @@
 @endsection
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <a href="{{ route('courses.create') }}" id="add" class="btn"><span class="fa fa-plus"></a>
+
+<div class="col-md-9">
+    <div class="card px-2">
+        <div class="card-header pb-1">
+            <h3 class="card-title">Courses</h3>
         </div>
-        <div class="col-md-12">
-            <table id="coursesteable" class="table table-bordered" style="cursor:pointer;"></table>
+        <div class="card-body px-2 py-4" style="display: block;">
+            <table class="table table-borderless table-hover projects">
+                <thead>
+                    <tr>
+                        <th style="width: 20%">
+                            Name
+                        </th>
+                        <th style="width: 30%">
+                            Course
+                        </th>
+                        <th style="width: 30%">
+                            Period
+                        </th>
+                        <th style="width: 30%">
+                            Schedule
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($courses as $course)
+                    <tr onclick="window.location='{{ route('courses.show', [$course->id]) }}'" style="cursor: pointer">
+                        <td class="align-middle">
+                            <i class="fad fa-hashtag"></i>{{ $course->code }}
+                            <br>
+                        </td>
+                        <td>
+                            <b>{{ $course->title }}</b>
+                            <br>
+                            <li class="list-inline-item">
+                                <small>
+                                    {{ $course->description }}
+                                </small>
+                            </li>
+                        </td>
+                        <td>
+                            {{ strtolower($course->academic_period->semester) }} Semester
+                            <small>
+                                ({{ ($term = $course->academic_period->term) == 'SEMESTER' ? 'Sem' : (strtolower($term). 'Term') }})
+                            </small>
+                            <br>
+                            <small>
+                                {{ $course->academic_period->school_year }}
+                            </small>
+                        </td>
+                        <td>
+                            {{ "$course->day_from - $course->day_to" }}
+                            <small>
+                                ({{ $course->room->name }})
+                            </small>
+                            <br>
+                            <small> {{ "$course->time_from - $course->time_to" }} </small>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
+        <!-- /.card-body -->
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
 <script>
-$('#coursesteable').DataTable({
-    'destroy': true,
-        retrieve: true,
-        columnDefs: [],
-        "aaSorting": [],
-        'ajax': {
-            'url': '{{ url("/api/courses") }}',
-            'type': 'get',
-            'dataSrc': e => e,
-        },
-        'columns': [
-        {
-            'title': 'Code',
-            'data': 'code',
-        },
-        {
-            'title': 'Title',
-            'data': 'title',
-        },
-        {
-            'title': 'Description',
-            'data': 'description',
-        },
-        {
-            'title': 'Time',
-            'data': 'time_from',
-            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-            $(nTd).append(' - '+oData['time_to']);
-        }
-        },
-        ],
-});
 
-var table = $('#coursesteable').DataTable();
-$('#coursesteable tbody').on('click', 'tr', function () {
-    var data = table.row( this ).data();
-    window.location.href="courses/" + data.id
-} );
 </script>
 @endsection

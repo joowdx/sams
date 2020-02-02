@@ -26,7 +26,6 @@ class EventSeeder extends Seeder
         $z = array_unique(Event::all()->pluck('from')->map(function($date) {
             return $date ? $date->format('Y') : null;
         })->all());
-        echo 'Fetching holidays...';
         foreach(array_diff($y, $z) as $x) {
             foreach(json_decode((shell_exec('curl "https://calendarific.com/api/v2/holidays?&api_key=440cb0e39eb9a2883607a18c0dea5b7db597e2df&country=PH&year='.$x.'&type=national"')))->response->holidays as $event) {
                 Event::updateOrCreate([

@@ -11,7 +11,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        echo 'Creating admin account...';
         factory(App\User::class)->states('admin')->create();
     }
 }

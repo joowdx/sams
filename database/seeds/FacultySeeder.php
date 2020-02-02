@@ -11,7 +11,6 @@ class FacultySeeder extends Seeder
      */
     public function run()
     {
-        echo 'Creating dummy faculty John Doe...';
-        factory(App\Faculty::class)->states(['John Doe'])->create();
+        factory(App\Faculty::class)->states(['John Doe'])->create()->department()->associate(App\Department::first());
     }
 }

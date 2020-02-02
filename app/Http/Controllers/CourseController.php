@@ -21,8 +21,7 @@ class CourseController extends Controller
     public function index()
     {
         $this->authorize('rview', User::class);
-
-        return view('courses.index')->with([
+        return view('courses.index', [
             'contentheader' => 'Courses',
             'courses' => Course::with(['faculty'])->get(),
         ]);
@@ -35,7 +34,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('courses.create')->with([
+        return view('courses.create', [
             'contentheader' => 'Create',
             'breadcrumbs' => [
                 [
@@ -46,6 +45,8 @@ class CourseController extends Controller
                     'text' => 'Info'
                 ]
             ],
+            'faculties' => Faculties::all(),
+            'students' => Students::all(),
         ]);
     }
 
@@ -71,7 +72,6 @@ class CourseController extends Controller
             'room_id' => 'nullable|string|numeric|exists:room,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
         ]);
-
         Course::create($request->all());
         return redirect(route('courses.index'));
     }
@@ -82,13 +82,12 @@ class CourseController extends Controller
      * @param  \App\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        return view('courses.show', compact('course'))->with([
+        abort_unless(is_numeric($id), 404);
+        abort_unless($course = Course::find($id), 404);
+        return view('courses.show', [
             'contentheader' => 'Course Info',
-            'courses' => Course::with('students', 'logs')->get(),
-            'logs' => Log::all(),
-            'days' => $course->academic_period ? iterator_to_array(CarbonPeriod::create($course->academic_period->start, $course->academic_period->end)->filter(function($day) { return $day->isWeekDay(); })->map(function($day) { return $day->format('D d-m-y'); })) : [],
             'breadcrumbs' => [
                 [
                     'text' => 'Courses',
@@ -97,7 +96,11 @@ class CourseController extends Controller
                 [
                     'text' => 'Info',
                 ]
-            ]
+            ],
+            'course' => $course,
+            'courses' => Course::with('students', 'logs')->get(),
+            'logs' => Log::all(),
+            'days' => $course->academic_period ? iterator_to_array(CarbonPeriod::create($course->academic_period->start, $course->academic_period->end)->filter(function($day) { return $day->isWeekDay(); })->map(function($day) { return $day->format('D d-m-y'); })) : [],
         ]);
     }
 

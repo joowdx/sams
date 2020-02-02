@@ -21,19 +21,25 @@
 
 //Fullcalendar
 @import '~@fullcalendar/core/main.css';
-@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/bootstrap/main.css';
+// @import '~@fullcalendar/timegrid/main.css';
+@import '~@fullcalendar/timeline/main.css';
+// @import '~@fullcalendar/resource-timegrid/main.css';
+@import '~@fullcalendar/resource-timeline/main.css';
+
+// Pace
+@import '~pace-js/themes/black/pace-theme-minimal.css';
 
 .sidebar-dark-light, .sidebar-dark-light a.brand-link, .navbar-dark {
     background: rgb(24, 26, 27) !important;
 }
 
-.nav-sidebar .menu-open>.nav-link svg.right {
+.nav-sidebar .menu-open > .nav-link svg.right {
     -webkit-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
-
 
 /* MY CSS Start */
 
@@ -45,9 +51,6 @@
 //   background: #d81c23 !important;
 // }
 
-.nav-sidebar .menu-open>.nav-link svg.right {
-    transform: rotate(-90deg);
-}
 
 
 /* SIDEBAR DARK OVERHAUL END */

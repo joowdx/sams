@@ -61,16 +61,16 @@
                     </ul>
                 </li>
                 {{-- @can('fview', App\AcademicPeriod::class) --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('map') }}" class="nav-link {{ request()->is('map*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-map-marked-alt fa-fw"></i>
                         <p> School Map </p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiod*') ? 'active' : '' }}">
+                    <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiods*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-calendar-week fa-fw"></i>
-                        <p> Academic Period </p>
+                        <p> Periods </p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -79,14 +79,20 @@
                         <p> Events </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('departments.index') }}" class="nav-link {{ request()->is('departments*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-ball-pile fa-fw"></i>
+                        <p> Departments </p>
+                    </a>
+                </li>
                 {{-- @endcan --}}
                 {{-- @can('fview', App\User::class) --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('calendar') }}" class="nav-link {{ request()->is('calendar*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-calendar-week fa-fw"></i>
                         <p> Calendar </p>
                     </a>
-                </li>
+                </li> --}}
                 @endcan
                 {{-- @endcan --}}
                 @can('rview', App\User::class)
@@ -118,6 +124,12 @@
                     <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-users-crown fa-fw"></i>
                         <p> Users </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('tags.index') }}" class="nav-link {{ request()->is('tags*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-tags fa-fw"></i>
+                        <p> Tags </p>
                     </a>
                 </li>
                 <li class="nav-item">

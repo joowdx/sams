@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $fillable = [
-        'uid', 'name',
+        'uid', 'schoolid', 'name', 'department_id'
     ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 
     public function courses()
     {
@@ -24,13 +29,6 @@ class Student extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-    public function showStudentDetails($id){
-
-        $result = DB::select('SELECT * FROM students s
-        LEFT JOIN course_student cs ON(cs.student_id = s.id)
-        LEFT JOIN courses c ON(c.id = cs.course_id) where s.uid = ?',[(string)$id]);
-        return $result;
-    }
 
     public function entered()
     {
@@ -40,6 +38,23 @@ class Student extends Model
     public function exited()
     {
         return @$this->logs()->where('from_by_type', 'App\Gate')->latest()->first()->remarks != 'entry';
+    }
+
+    public function logsto($course)
+    {
+        return $this->logs()->where('course_id', $course)->get();
+    }
+
+    public function enrolled($schoolyear = null, $semester = null)
+    {
+        return $this->enrolledcourses($schoolyear, $semester)->first() ? true : false;
+    }
+
+    public function enrolledcourses($schoolyear = null, $semester = null)
+    {
+        $schoolyear = $schoolyear ?? AcademicPeriod::currentschoolyear();
+        $semester = $semester ?? AcademicPeriod::currentsemester();
+        return $this->courses()->whereIn('academic_period_id', AcademicPeriod::where('school_year', '2019-2020')->where('semester', '2ND')->get()->pluck('id'))->get();
     }
 
 }

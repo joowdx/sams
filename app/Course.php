@@ -39,7 +39,7 @@ class Course extends Model
 
     public function logsof(Carbon $dt = null)
     {
-        $dt = $dt ?: Carbon::now();
+        $dt = $dt ?: today();
         $dt->setTime(explode(':', $this->time_from)[0], explode(':', $this->time_from)[1]);
         $te = $dt->copy()->setTime(explode(':', $this->time_to)[0], explode(':', $this->time_to)[1]);
         return $this->logs->filter(function($log) use($dt, $te) { return $log->created_at->between($dt, $te); });
@@ -79,23 +79,26 @@ class Course extends Model
         return Event::noclass($day) || !($week[$this->day_from] <= ($d  = $week[$day->format('D')]) && $week[$this->day_to] >= $d) || $this->academic_period->ended() || !$this->academic_period->started();
     }
 
-    public function nextmeeting(Carbon $day = null) {
-        $day = $day ?? Carbon::now();
+    public function nextmeeting(Carbon $day = null)
+    {
+        $day = $day ?? today();
         do {
-            if($this->academic_period->ended()) {
+            if($this->academic_period->end->lte($day)) {
                 $day = null;
                 break;
             }
             $day->addDay();
-        } while($this->noclass($day) && $this->academic_period->iscurrentperiod());
+        } while($this->noclass($day));
         return $day ? $day->setTime(explode(':', $this->time_from)[0], explode(':', $this->time_from)[1]) : null;
     }
 
-    public function firstmeeting() {
+    public function firstmeeting()
+    {
         return $this->noclass($this->academic_period->start) ? $this->nextmeeting($this->academic_period->start) : $this->academic_period->start->setTime(explode(':', $this->time_from)[0], explode(':', $this->time_from)[1]);
     }
 
-    public function allowed($sf) {
+    public function allowed($sf)
+    {
         return $sf->entered();
     }
 }

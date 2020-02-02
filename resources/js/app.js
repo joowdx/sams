@@ -33,7 +33,7 @@ const app = new Vue({
     el: '#app',
 });
 
-import './fontawesome-kit-pro.js'
+// import './fontawesome-kit-pro.js'
 import 'admin-lte/dist/js/adminlte.min.js'
 import 'bootstrap-notify'
 import 'select2'
@@ -43,6 +43,8 @@ import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.flash.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
+
+import 'pace-js/pace.min.js'
 
 
 window.swal = require('sweetalert2')
@@ -55,10 +57,30 @@ import moment from 'moment'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+
 
 window.Calendar = Calendar
 window.dayGridPlugin = dayGridPlugin
 window.interactionPlugin = interactionPlugin
 window.Draggable = Draggable
+window.resourceTimeGridPlugin = resourceTimeGridPlugin
+window.resourceTimelinePlugin = resourceTimelinePlugin
 window.moment = moment
+
+$(document).ready(function(){
+    $('table:not(.no-datatable)').DataTable({
+        dom: 'ftp',
+        fnDrawCallback: function(oSettings) {
+            if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                $(oSettings.nTableWrapper).find('.dataTables_paginate').hide()
+            }
+        }
+    })
+    $('select:not(.no-select2)').select2({
+        theme: 'bootstrap4',
+    })
+    $('section.content').fadeIn('slow')
+})
 

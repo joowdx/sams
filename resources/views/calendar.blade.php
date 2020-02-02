@@ -17,12 +17,15 @@
     .fc-highlight {
         background: #26c6da !important;
     }
+    .fc-button-group button:focus {
+        outline: none !important;
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="row">
-    <div id="calendar" class="col-lg-6">
+    <div id="calendar" class="col-lg-12">
 
     </div>
     <div class="col-lg-6">
@@ -35,26 +38,26 @@
                         @php
                         switch ($event->remarks) {
                             case 'national holiday':
-                                $color = '#f44336';
-                                break;
+                            $color = '#f44336';
+                            break;
                             case 'local holiday':
-                                $color = '#ffb74d';
-                                break;
+                            $color = '#ffb74d';
+                            break;
                             case 'institutional event':
-                                $color = '#1976d2';
-                                break;
+                            $color = '#1976d2';
+                            break;
                             case 'class suspension':
-                                $color = '#9c27b0';
-                                break;
+                            $color = '#9c27b0';
+                            break;
                             case 'break':
-                                $color = '#ffc107';
-                                break;
+                            $color = '#ffc107';
+                            break;
                             case 'info':
-                                $color = '#4dd0e1';
-                                break;
+                            $color = '#4dd0e1';
+                            break;
                             default:
-                                $color = '#000';
-                                break;
+                            $color = '#000';
+                            break;
                         }
                         @endphp
                         <span class="float-right badge" style="background: {{ $color }} !important; color: white"> {{ ucwords($event->remarks) }} </span>
@@ -83,26 +86,26 @@
                         @php
                         switch ($event->remarks) {
                             case 'national holiday':
-                                $color = '#f44336';
-                                break;
+                            $color = '#f44336';
+                            break;
                             case 'local holiday':
-                                $color = '#ffb74d';
-                                break;
+                            $color = '#ffb74d';
+                            break;
                             case 'institutional event':
-                                $color = '#1976d2';
-                                break;
+                            $color = '#1976d2';
+                            break;
                             case 'class suspension':
-                                $color = '#9c27b0';
-                                break;
+                            $color = '#9c27b0';
+                            break;
                             case 'break':
-                                $color = '#ffc107';
-                                break;
+                            $color = '#ffc107';
+                            break;
                             case 'info':
-                                $color = '#4dd0e1';
-                                break;
+                            $color = '#4dd0e1';
+                            break;
                             default:
-                                $color = '#000';
-                                break;
+                            $color = '#000';
+                            break;
                         }
                         @endphp
                         <span class="float-right badge" style="background: {{ $color }} !important; color: white"> {{ ucwords($event->remarks) }} </span>
@@ -175,7 +178,7 @@
 
 @section('scripts')
 <script>
-    $(() => {
+    $(e => {
         $.ajax({
             url: '{{ url("api/events") }}',
             success: e => {
@@ -209,12 +212,15 @@
                     e.color = '#4dd0e1'
                     return e
                 })
-                var calendar = new Calendar(document.getElementById('calendar'), {
-                    plugins: [ dayGridPlugin ],
+                new Calendar(document.getElementById('calendar'), {
+                    plugins: [ dayGridPlugin, resourceTimeGridPlugin, resourceTimelinePlugin ],
+                    schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                    defaultView: 'resourceTimelineWeek',
                     firstDay: 1,
                     header: {
                         left: 'title',
-                        right: 'prevYear,prev,today,next,nextYear'
+                        center: 'timelineDay,timelineWeek,resourceTimelineWeek,month',
+                        right: 'prevYear,prev,today,next,nextYear',
                     },
                     validRange: {
                         start: '{{ Carbon\Carbon::now()->subYears(4)->setMonth(1)->setDay(1)->format('Y-m-d') }}',
@@ -223,20 +229,28 @@
                     weekNumbers: true,
                     lazyFetching: true,
                     displayEventTime: false,
-                    eventSources: [
-                        nationalholidays,
-                        localholidays,
-                        institutionalevents,
-                        breaks,
-                        classsuspensions,
-                        infos,
+                    slotDuration: '24:00:00',
+                    resources: [
+                    {
+                        id: 'a',
+                        fname: 'John',
+                        lname: 'Smith'
+                    },
                     ],
-                    select: e => {
-                        $('#start').val(moment(e.start).format('YYYY-MM-DD'))
-                        $('#end').val(moment(e.end).subtract('1', 'days').format('YYYY-MM-DD'))
+                    eventSources: [
+                    nationalholidays,
+                    localholidays,
+                    institutionalevents,
+                    breaks,
+                    classsuspensions,
+                    infos,
+                    ],
+                    eventRender: function(event, element) {
+                        if(event.icon){
+                            element.find(".fc-title").prepend("<i class='fad fa-"+event.icon+"'></i>")
+                        }
                     }
-                })
-                calendar.render()
+                }).render()
             },
         })
 

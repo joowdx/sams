@@ -2,9 +2,6 @@
 
 @section('styles')
 <style>
-    .form-control {
-        border: 0;
-    }
 </style>
 @endsection
 
@@ -207,9 +204,9 @@
                                 <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Faculty</label>
 
                                 <div class="col-md-6">
-                                    <select id="faculty_id" name="faculty_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                    <select id="faculty_id" name="faculty_id" data-width="100%" data-live-search="true">
                                         @foreach ($faculties as $faculty)
-                                        <option value="{{ $faculty->id }}" {{ $faculty->courses->contains($course->id) ? 'selected' : '' }}> {{ $faculty->name }} </option>
+                                        <option value="{{ $faculty->id }}" {{ $faculty->courses->contains($course->id) ? 'selected' : '' }}> {{ ($faculty->school_id ? $faculty->school_id.' - ' : '').$faculty->name }} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -242,7 +239,7 @@
                                 <label for="students" class="col-md-4 col-form-label text-md-right">Students</label>
 
                                 <div class="col-md-6">
-                                    <select name="students[]" multiple="multiple">
+                                    <select name="students[]" multiple data-width="100%">
                                         @foreach ($students as $student)
                                         <option value="{{ $student->id }}" {{ $student->courses->contains($course->id) ? 'selected' : '' }}> {{ ($student->school_id ? $student->school_id.' - ' : '').$student->name }} </option>
                                         @endforeach
@@ -268,10 +265,6 @@
 
 @section('scripts')
 <script>
-$(() => {
-    $('select').select2({
-        theme: 'bootstrap4'
-    });
-})
+
 </script>
 @endsection

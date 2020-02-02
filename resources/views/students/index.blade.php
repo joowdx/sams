@@ -1,97 +1,75 @@
 @extends('layouts.app')
+
 @section('styles')
 <style>
 
 </style>
 @endsection
+
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <table id="tblStudent" class="table table-striped table-bordered"  style="cursor:pointer;background-color:white;">
-            </table>
-        </div>
-    </div>
+<div class="p-2" style="display: block;">
+    <table class="table table-borderless table-hover projects">
+        <thead>
+            <tr>
+                <th>
+                    <i class="fad fa-hashtag"></i>
+                </th>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Department
+                </th>
+                <th>
+                    Modified
+                </th>
+                <th>
+                    Enrolled
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($students as $student)
+            <tr onclick="window.location='{{ route('students.show', [$student->id]) }}'" style="cursor: pointer">
+                <td class="align-middle">
+                    {{ $loop->iteration }}
+                </td>
+                <td class="align-middle">
+                    <b>{{ $student->schoolid }}</b>
+                    <br>
+                    <small>
+                        {{ $student->uid }}
+                    </small>
+                </td>
+                <td class="align-middle">
+                    <b>{{ $student->name }}</b>
+                </td>
+                <td class="align-middle">
+                    <b>{{ $student->department->shortname }}</b>
+                </td>
+                <td class="align-middle">
+                    <small>
+                        {{ $student->created_at == $student->updated_at ? 'Created' : 'Updated' }}
+                    </small>
+
+                    <br>
+                    {{ $student->updated_at->format('d F Y') }}
+                </td>
+                <td class="align-middle">
+                    <span class="badge badge-{{ $student->enrolled() ? 'success' : 'danger' }}"> {{ $student->enrolled() ? 'yes' : 'no' }} </span>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection
 
 @section('scripts')
 <script>
-$('#studenttable').DataTable({
-        'destroy': true,
-        retrieve: true,
-        columnDefs: [],
-        "aaSorting": [],
-       'ajax': {
-            'url': '{{ url("/api/students") }}',
-            'type': 'get',
-            'dataSrc': e => e,
-        },
-        'columns': [
-            {
-                'title': 'ID',
-                'data': 'uid',
-            },
-            {
-                'title': 'Name',
-                'data': 'name',
-            },
-        ],
-    });
 
-var table = $('#studenttable').DataTable();
-$('#studenttable tbody').on('click', 'tr', function () {
-    var data = table.row( this ).data();
-    window.location.href="students/" + data.id + "/edit";
-} );
-</script>
-
-<script>
-  var student = (function(){
-
-    var
-
-    $gridID = $("#tblStudent"),
-
-
-     init = function(){
-
-      $gridID.DataTable({
-        'destroy': true,
-        retrieve: true,
-        columnDefs: [],
-        "aaSorting": [],
-       'ajax': {
-            'url': '{{ url("/api/students")}}',
-            'type': 'get',
-            'dataSrc': e => e,
-        },
-        'columns': [
-            {
-                'title': 'uid',
-                'data': 'uid',
-            },
-            {
-                'title': 'name',
-                'data': 'name',
-            },
-        ],
-    });
-    var table = $('#tblStudent').DataTable();
-    $('#tblStudent tbody').on('click', 'tr', function () {
-
-        var data = table.row( this ).data();
-        console.log(data);
-        //window.location.href="students/id=" + data.uid;
-        window.location.href="students/"+data.id;
-    } );
-
-
-
-     };
-
-     init();
-
-  })();
 </script>
 @endsection
