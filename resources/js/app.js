@@ -59,8 +59,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import tippy from 'tippy.js'
 
-
+window.tippy = tippy
 window.Calendar = Calendar
 window.dayGridPlugin = dayGridPlugin
 window.interactionPlugin = interactionPlugin

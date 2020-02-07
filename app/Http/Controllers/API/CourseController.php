@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Course;
+use App\Http\Resources\CourseResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,13 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return Course::all();
+        return CourseResource::collection(
+            Course::with([
+                'faculty',
+                'students',
+                'students.department'
+            ])->get()
+        );
     }
 
     /**
@@ -26,7 +33,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -37,7 +44,20 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        //
+        abort_unless(is_numeric($id), 404);
+        abort_unless(
+            $course = Course::find($id)->load([
+                'faculty',
+                'students',
+                'students.department',
+                'logs',
+                'logs.log_by',
+                'students.logs' => function($query) use($id) {
+                    $query->where('course_id', $id);
+                },
+            ]), 404
+        );
+        return new CourseResource($course);
     }
 
     /**
@@ -49,7 +69,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -60,6 +80,6 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }

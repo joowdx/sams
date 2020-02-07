@@ -11,13 +11,20 @@ class LogSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Log::class, 60)->states(['IT111L FCLT'])->create();
-        factory(App\Log::class, 60)->states(['IT112L FCLT'])->create();
 
-        factory(App\Log::class, 60)->states(['IT111L JOHN'])->create();
-        factory(App\Log::class, 60)->states(['IT111L JANE'])->create();
+        $it111l = today()->diffInDays(App\Course::find(1)->firstmeeting());
+        $it112l = today()->diffInDays(App\Course::find(2)->firstmeeting());
 
-        factory(App\Log::class, 60)->states(['IT112L JOHN'])->create();
-        factory(App\Log::class, 60)->states(['IT112L JANE'])->create();
+        $it111l -= (2 * ($it111l / 7 - 1));
+        $it112l -= (2 * ($it112l / 7 - 1));
+
+        factory(App\Log::class, $it111l)->states(['IT111L FCLT'])->create();
+        factory(App\Log::class, $it112l)->states(['IT112L FCLT'])->create();
+
+        factory(App\Log::class, $it111l)->states(['IT111L JOHN'])->create();
+        factory(App\Log::class, $it112l)->states(['IT111L JANE'])->create();
+
+        factory(App\Log::class, $it111l)->states(['IT112L JOHN'])->create();
+        factory(App\Log::class, $it112l)->states(['IT112L JANE'])->create();
     }
 }

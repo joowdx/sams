@@ -25,7 +25,7 @@
 
 @section('content')
 <div class="row">
-    <div id="calendar" class="col-lg-12">
+    <div id="calendar" class="col-lg-6">
 
     </div>
     <div class="col-lg-6">
@@ -215,35 +215,25 @@
                 new Calendar(document.getElementById('calendar'), {
                     plugins: [ dayGridPlugin, resourceTimeGridPlugin, resourceTimelinePlugin ],
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-                    defaultView: 'resourceTimelineWeek',
+                    defaultView: 'dayGridMonth',
                     firstDay: 1,
                     header: {
                         left: 'title',
-                        center: 'timelineDay,timelineWeek,resourceTimelineWeek,month',
                         right: 'prevYear,prev,today,next,nextYear',
                     },
                     validRange: {
                         start: '{{ Carbon\Carbon::now()->subYears(4)->setMonth(1)->setDay(1)->format('Y-m-d') }}',
                         end: '{{ Carbon\Carbon::now()->addYears(4)->setMonth(12)->setDay(31)->format('Y-m-d') }}'
                     },
-                    weekNumbers: true,
                     lazyFetching: true,
                     displayEventTime: false,
-                    slotDuration: '24:00:00',
-                    resources: [
-                    {
-                        id: 'a',
-                        fname: 'John',
-                        lname: 'Smith'
-                    },
-                    ],
                     eventSources: [
-                    nationalholidays,
-                    localholidays,
-                    institutionalevents,
-                    breaks,
-                    classsuspensions,
-                    infos,
+                        nationalholidays,
+                        localholidays,
+                        institutionalevents,
+                        breaks,
+                        classsuspensions,
+                        infos,
                     ],
                     eventRender: function(event, element) {
                         if(event.icon){

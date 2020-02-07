@@ -28,7 +28,7 @@ $it111ljohn = null;
 $it112ljohn = null;
 
 function generate($faker, $subj, $for, $day) {
-    $log = $faker->dateTimeBetween($day, $day->format('Y-m-d H:i:s').' +30 minutes');
+    $log = $faker->dateTimeBetween($day, $day->format('Y-m-d H:i:s').' +20 minutes');
     $remark = rand(1, 100) > 90 ? 'absent' : ($day->copy()->addMinutes(15)->gt(Carbon::instance($log)) ? 'ok' : 'late');
     return [
         'log_by_id' => $for->id,

@@ -9,7 +9,6 @@ use App\Faculty;
 use App\Student;
 use App\Events\NewScannedLog;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,17 +58,17 @@ class LogController extends Controller
             403, 'Already Logged In'
         );
 
-        $rk = $gt ? ($sf->exited() ? 'entry' : 'exit') : ($fr->diffInMinutes(Carbon::now()) > 15 ? 'late' : 'ok');
+        $rk = $gt ? ($sf->exited() ? 'entry' : 'exit') : ($fr->diffInMinutes(now()) > 15 ? 'late' : 'ok');
         $nl = $gr->logs()->save($sf->logs()->create(['remarks' => $rk, 'date' => today()]));
         $gt ?: $cc->logs()->save($nl);
 
         event(
             new NewScannedLog(
-                Log::with([
-                    'from_by:id,name' ,
-                    'log_by:id,name,uid' ,
-                    'course' ,
-                ])->where('id', $nl->id)->first()
+                $nl->load([
+                    'from_by:id,name',
+                    'log_by:id,name,uid',
+                    'course',
+                ])
             )
         );
 
