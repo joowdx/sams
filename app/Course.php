@@ -12,6 +12,13 @@ class Course extends Model
         'code', 'title', 'description', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'room_id',
     ];
 
+    public static function currentcourses($schoolyear = null, $semester = null)
+    {
+        $schoolyear = $schoolyear ?? AcademicPeriod::currentschoolyear();
+        $semester = $semester ?? AcademicPeriod::currentsemester();
+        return Course::whereIn('academic_period_id', AcademicPeriod::where('school_year', $schoolyear)->where('semester', $semester)->get()->pluck('id'))->with('faculty')->get();
+    }
+
     public function room()
     {
         return $this->belongsTo(Room::class);

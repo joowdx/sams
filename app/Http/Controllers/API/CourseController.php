@@ -55,6 +55,9 @@ class CourseController extends Controller
                 'students.logs' => function($query) use($id) {
                     $query->where('course_id', $id);
                 },
+                'faculty.logs' => function($query) use($id) {
+                    $query->where('course_id', $id);
+                },
             ]), 404
         );
         return new CourseResource($course);

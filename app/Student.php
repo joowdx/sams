@@ -54,7 +54,7 @@ class Student extends Model
     {
         $schoolyear = $schoolyear ?? AcademicPeriod::currentschoolyear();
         $semester = $semester ?? AcademicPeriod::currentsemester();
-        return $this->courses()->whereIn('academic_period_id', AcademicPeriod::where('school_year', '2019-2020')->where('semester', '2ND')->get()->pluck('id'))->get();
+        return $this->courses()->whereIn('academic_period_id', AcademicPeriod::where('school_year', $schoolyear)->where('semester', $semester)->get()->pluck('id'))->get();
     }
 
 }

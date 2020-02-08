@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LogsForCalendarResource extends JsonResource
+class FacultyCourseLogAttendanceForCalendar extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class LogsForCalendarResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'resourceId' => get_class($this->log_by).'-$'.$this->log_by->id,
+            'resourceId' => '$'.$this->log_by->id.'-$'.$this->course->id,
             'start' => $this->date->format('Y-m-d'),
             'color' => '#0000',
             'textColor' => $this->color(),
@@ -29,12 +29,12 @@ class LogsForCalendarResource extends JsonResource
     private function color()
     {
         switch ($this->remarks) {
-            case 'ok': return 'check-circle';
-            case 'late': return 'dot-circle';
-            case 'absent': return 'times-circle';
-            case 'excuse': return 'scrubber';
-            case 'leave': return 'empty-set';
-            default: return '#000';
+            case 'ok': return '#4CAF50';
+            case 'late': return '#F57F17';
+            case 'absent': return '#f44336';
+            case 'excuse': return '#03A9F4';
+            case 'leave': return '#FDDB3A';
+            default: return '#0000';
         }
     }
 
@@ -44,7 +44,8 @@ class LogsForCalendarResource extends JsonResource
             case 'ok': return 'check-circle';
             case 'late': return 'dot-circle';
             case 'absent': return 'times-circle';
-            case 'excuse': return 'circle';
+            case 'excuse': return 'scrubber';
+            case 'leave': return 'minus-circle';
             default: return '#000';
         }
     }
@@ -54,6 +55,7 @@ class LogsForCalendarResource extends JsonResource
         switch ($this->remarks) {
             case 'absent': return 'absent';
             case 'excuse': return 'excuse';
+            case 'leave': return 'leave';
             default: return $this->created_at->format('H:i:s');
         }
     }

@@ -14,6 +14,10 @@ class CourseResource extends JsonResource
      */
     public function toArray($request)
     {
+        $students = StudentsForCalendarResource::collection($this->students);
+        $faculty = new FacultiesForCalendarResource($this->faculty);
+        $entities = [$faculty];
+        $entities = array_merge($entities, $students->all());
         return [
             'code' => $this->code,
             'title' => $this->title,
@@ -25,7 +29,8 @@ class CourseResource extends JsonResource
                 'schoolid' => $this->faculty->schoolid,
                 'name' => $this->faculty->name,
             ],
-            'students' => StudentsForCalendarResource::collection($this->students),
+            'students' => StudentResource::collection($this->students),
+            'entities' => collect($entities),
             'logs' => LogsForCalendarResource::collection($this->logs),
         ];
     }

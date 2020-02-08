@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\AcademicPeriod as Period;
+use App\Course;
 use App\Faculty;
+use App\Http\Resources\FacultyAttendanceForCalendar as FacultyAttendance;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -13,9 +17,31 @@ class FacultyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Faculty::all();
+
+        abort_unless(
+            Validator::make($request->all(), [
+                'schoolyear' => 'required_with:semester',
+                'semester' => 'required_with:schoolyear'
+            ])->passes(), 404
+        );
+
+        $schoolyear = $request->schoolyear ??  Period::currentschoolyear();
+        $semester =  $request->semester ?? Period::currentsemester();
+        $period = Period::where('school_year', $schoolyear)->where('semester', 'ilike', "%$semester%")->get()->pluck('id');
+        return FacultyAttendance::collection(Faculty::with([
+            'logs',
+            'logs.course',
+            'logs.log_by',
+            'courses' => function($query) use($schoolyear, $semester, $period) {
+                $query->whereIn('academic_period_id', $period);
+            },
+            'courses.faculty',
+            'courses.logs' => function($query) {
+                $query->where('log_by_type', 'App\Faculty');
+            },
+        ])->get()->filter(function($faculty) { return $faculty->courses->count(); } ));
     }
 
     /**

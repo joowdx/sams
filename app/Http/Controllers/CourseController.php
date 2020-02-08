@@ -24,6 +24,7 @@ class CourseController extends Controller
         return view('courses.index', [
             'contentheader' => 'Courses',
             'courses' => Course::with(['faculty'])->get(),
+            'current' => Course::currentcourses(),
         ]);
     }
 

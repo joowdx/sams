@@ -27,7 +27,7 @@ class AttendanceController extends Controller
                 'id' => 'required_if:action,u|numeric',
                 'entityid' => 'required_if:action,i|numeric',
                 'date' => 'required_if:action,i|date_format:Y-m-d',
-                'remarks' => 'required|string|in:ok,late,absent,excuse',
+                'remarks' => 'required|string|in:ok,late,absent,excuse,leave',
                 'course' => 'required|numeric',
             ])->passes(),
             403, 'Unknown'

@@ -80,9 +80,6 @@
                     <li class="list-group-item">
                         <b>Students</b> <a class="float-right">{{ $course->students->count() }}</a>
                     </li>
-                    {{-- <li class="list-group-item">
-                        <b>Courses</b> <a class="float-right">{{ $department->courses->count() }}</a>
-                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -107,7 +104,7 @@
                         <div class="p-2" style="display: block;">
                             <div class="wrapper">
                                 <div class="scrollable-table">
-                                    {{-- <table class="table-header-rotated no-datatable">
+                                    <table class="table-header-rotated no-datatable">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -121,18 +118,21 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="headcol text-light" style="background: #0009;"> {{ $course->faculty->name }} </td>
+                                                <td class="headcol"> {{ $course->faculty->name }} </td>
                                                 @foreach ($course->faculty->logsto($course->id) as $log)
-                                                <td style="background: #0009;">
+                                                <td>
                                                     @switch($log->remarks ?? '')
                                                     @case('ok')
-                                                    <i class="fa fa-fw fad fa-check-circle text-success"></i>
+                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-check-circle" style="color : #4CAF50"></i>
                                                     @break
                                                     @case('late')
-                                                    <i class="fa fa-fw fad fa-scrubber text-info"></i>
+                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-dot-circle" style="color: #F57F17"></i>
                                                     @break
                                                     @case('absent')
-                                                    <i class="fa fa-fw fad fa-times-circle text-danger"></i>
+                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-times-circle" style="color: #f44336"></i>
+                                                    @break
+                                                    @case('excuse')
+                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-circle" style="color: #03A9F4"></i>
                                                     @break
                                                     @default
                                                     -
@@ -147,13 +147,16 @@
                                                 <td>
                                                     @switch($log->remarks ?? '')
                                                     @case('ok')
-                                                    <i class="fa fa-fw fad fa-check-circle text-success"></i>
+                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-check-circle" style="color : #4CAF50"></i>
                                                     @break
                                                     @case('late')
-                                                    <i class="fa fa-fw fad fa-scrubber text-info"></i>
+                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-dot-circle" style="color: #F57F17"></i>
                                                     @break
                                                     @case('absent')
-                                                    <i class="fa fa-fw fad fa-times-circle text-danger"></i>
+                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-times-circle" style="color: #f44336"></i>
+                                                    @break
+                                                    @case('excuse')
+                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-circle" style="color: #03A9F4"></i>
                                                     @break
                                                     @default
                                                     -
@@ -163,7 +166,7 @@
                                             </tr>
                                             @endforeach
                                         </tbody>
-                                    </table> --}}
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -172,29 +175,6 @@
             </div>
         </div>
     </div>
-
-
-    {{-- <div class="col-md-12">
-
-        <div class="card">
-
-            <div class="card-header bg-custom">
-                <h6>Records</h6>
-            </div>
-
-            <div class="card-body">
-                <div class="wrapper">
-                    <div class="scrollable-table">
-
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div> --}}
-
 </div>
 @endsection
 
@@ -213,9 +193,9 @@
             slotDuration: { day: 1 },
             slotLabelFormat: [{ weekday: 'short', day: '2-digit' }],
             resourceColumns: [{ labelText: 'Name', width: '70%' },{ labelText: 'A', field: 'absent', width: '10%' },{ labelText: 'L', field: 'late', width: '10%' },{ labelText: 'E', field: 'excuse', width: '10%' },],
-            resourceAreaWidth: '40%',
+            resourceAreaWidth: '35%',
             events: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.logs)),
-            resources: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.students)),
+            resources: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.entities)),
             validRange: {
                 start: '{{ $course->firstmeeting() }}',
                 end: '{{ $course->academic_period->end->format('Y-m-d') }}',
