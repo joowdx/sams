@@ -18,9 +18,7 @@
                 @include('layouts.sections.content')
             </div>
         </div>
-        {{-- @include('layouts.sections.footer') --}}
     </div>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.5.0/dist/svg-pan-zoom.min.js"></script> --}}
     <script src="{{ asset('js/app.js') }}"></script>
     <script> Pace.start() </script>
     @yield('scripts')

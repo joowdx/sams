@@ -29,12 +29,12 @@ class LogsForCalendarResource extends JsonResource
     private function color()
     {
         switch ($this->remarks) {
-            case 'ok': return 'check-circle';
-            case 'late': return 'dot-circle';
-            case 'absent': return 'times-circle';
-            case 'excuse': return 'scrubber';
-            case 'leave': return 'empty-set';
-            default: return '#000';
+            case 'ok': return '#4CAF50';
+            case 'late': return '#F57F17';
+            case 'absent': return '#f44336';
+            case 'excuse': return '#03A9F4';
+            case 'leave': return '#E91E63';
+            default: return '#0000';
         }
     }
 

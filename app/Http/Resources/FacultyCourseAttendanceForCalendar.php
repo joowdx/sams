@@ -16,7 +16,7 @@ class FacultyCourseAttendanceForCalendar extends JsonResource
     {
         return [
             'id' => '$'.$this->faculty->id.'-$'.$this->id,
-            'title' => "($this->code) $this->title",
+            'title' => "$this->title($this->code)",
             'ok' => $this->logs->filter(function($log) { return $log->remarks == 'ok'; })->count() ?: "0",
             'late' => $this->logs->filter(function($log) { return $log->remarks == 'late'; })->count() ?: "0",
             'excuse' => $this->logs->filter(function($log) { return $log->remarks == 'excuse'; })->count() ?: "0",

@@ -6,6 +6,7 @@ use App\Faculty;
 use App\User;
 use App\Course;
 use App\Student;
+use App\AcademicPeriod as Period;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
@@ -18,11 +19,11 @@ class FacultyController extends Controller
     public function index()
     {
         $this->authorize('hview', User::class);
-
-
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
-            'faculties' => Faculty::paginate(24),
+            'faculties' => Faculty::with(['courses', 'department'])->get(),
+            'semester' => Period::groupBy('semester')->orderBy('semester', 'desc')->get('semester')->pluck('semester'),
+            'schoolyears' => Period::groupBy('school_year')->orderBy('school_year', 'desc')->get('school_year')->pluck('school_year'),
         ]);
     }
 

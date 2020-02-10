@@ -117,29 +117,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="headcol"> {{ $course->faculty->name }} </td>
-                                                @foreach ($course->faculty->logsto($course->id) as $log)
-                                                <td>
-                                                    @switch($log->remarks ?? '')
-                                                    @case('ok')
-                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-check-circle" style="color : #4CAF50"></i>
-                                                    @break
-                                                    @case('late')
-                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-dot-circle" style="color: #F57F17"></i>
-                                                    @break
-                                                    @case('absent')
-                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-times-circle" style="color: #f44336"></i>
-                                                    @break
-                                                    @case('excuse')
-                                                    <i id="{{ get_class($course->faculty)."-$".$course->faculty->id."-$".$log->id }}" class="fa-fw fad fa-circle" style="color: #03A9F4"></i>
-                                                    @break
-                                                    @default
-                                                    -
-                                                    @endswitch
-                                                </td>
-                                                @endforeach
-                                            </tr>
                                             @foreach ($course->students as $student)
                                             <tr>
                                                 <td class="headcol"> {{ $student->name }} </td>
@@ -195,7 +172,7 @@
             resourceColumns: [{ labelText: 'Name', width: '70%' },{ labelText: 'A', field: 'absent', width: '10%' },{ labelText: 'L', field: 'late', width: '10%' },{ labelText: 'E', field: 'excuse', width: '10%' },],
             resourceAreaWidth: '35%',
             events: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.logs)),
-            resources: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.entities)),
+            resources: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.students)),
             validRange: {
                 start: '{{ $course->firstmeeting() }}',
                 end: '{{ $course->academic_period->end->format('Y-m-d') }}',
@@ -237,6 +214,23 @@
                     },
                 })
             },
+            dateClick: e => {
+                const id = e.resource.id.split('$').join('').split('-')[1]
+                if(moment(e.dateStr).isAfter(moment()) || !id) {
+                    return
+                }
+                const check = async () => {
+                    const response =  await fetch(`{{ route('queryclasses') }}`, {
+                        method: 'POST',
+                        headers: {'Accept': 'application/json','Content-Type': 'application/json'},
+                        body: JSON.stringify({id:id,date:moment().format('YYYY-MM-DD')}),
+                    }).then(e => e.json())
+                    if(response) {
+                        return swal.fire('Not possible', 'Please check the course\'s schedule or the calendar', 'error')
+                    }
+                }
+                check()
+            }
         })
         attendance.render()
         mark = (eventid, resourceid, remarks) => {

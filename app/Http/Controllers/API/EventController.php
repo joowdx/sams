@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Event;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\EventResource;
+use App\Http\Resources\EventResource as Events;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +29,7 @@ class EventController extends Controller
                 break;
             }
             default: {
-                return EventResource::collection(Event::where('remarks', 'like', "%$request->remarks%")->get());
+                return Events::collection(Event::where('remarks', 'like', "%$request->remarks%")->get());
             }
         }
     }

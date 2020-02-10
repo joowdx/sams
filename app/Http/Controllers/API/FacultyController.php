@@ -19,14 +19,12 @@ class FacultyController extends Controller
      */
     public function index(Request $request)
     {
-
         abort_unless(
             Validator::make($request->all(), [
                 'schoolyear' => 'required_with:semester',
                 'semester' => 'required_with:schoolyear'
             ])->passes(), 404
         );
-
         $schoolyear = $request->schoolyear ??  Period::currentschoolyear();
         $semester =  $request->semester ?? Period::currentsemester();
         $period = Period::where('school_year', $schoolyear)->where('semester', 'ilike', "%$semester%")->get()->pluck('id');

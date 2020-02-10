@@ -14,12 +14,6 @@
     .fc td, .fc-day-header {
         border-style: none !important;
     }
-    .fc-highlight {
-        background: #26c6da !important;
-    }
-    .fc-button-group button:focus {
-        outline: none !important;
-    }
 </style>
 @endsection
 
@@ -182,38 +176,8 @@
         $.ajax({
             url: '{{ url("api/events") }}',
             success: e => {
-                e.map(e => {
-                    e.allDay = true
-                    e.end = moment(e.end).add(1, 'days').format()
-                    e.textColor = 'white'
-                    return e
-                })
-                const nationalholidays = e.filter(e => e.remarks == 'national holiday').map(e => {
-                    e.color = '#f44336'
-                    return e
-                })
-                const localholidays = e.filter(e => e.remarks == 'local holiday').map(e => {
-                    e.color = '#ffb74d'
-                    return e
-                })
-                const breaks = e.filter(e => e.remarks == 'break').map(e => {
-                    e.color = '#ffc107'
-                    return e
-                })
-                const institutionalevents = e.filter(e => e.remarks == 'institutional event').map(e => {
-                    e.color = '#1976d2'
-                    return e
-                })
-                const classsuspensions = e.filter(e => e.remarks == 'class suspension').map(e => {
-                    e.color = '#9c27b0'
-                    return e
-                })
-                const infos = e.filter(e => e.remarks == 'info').map(e => {
-                    e.color = '#4dd0e1'
-                    return e
-                })
                 new Calendar(document.getElementById('calendar'), {
-                    plugins: [ dayGridPlugin, resourceTimeGridPlugin, resourceTimelinePlugin ],
+                    plugins: [ dayGridPlugin, interactionPlugin ],
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                     defaultView: 'dayGridMonth',
                     firstDay: 1,
@@ -228,18 +192,32 @@
                     lazyFetching: true,
                     displayEventTime: false,
                     eventSources: [
-                        nationalholidays,
-                        localholidays,
-                        institutionalevents,
-                        breaks,
-                        classsuspensions,
-                        infos,
+                        e
                     ],
-                    eventRender: function(event, element) {
-                        if(event.icon){
-                            element.find(".fc-title").prepend("<i class='fad fa-"+event.icon+"'></i>")
-                        }
-                    }
+                    eventRender: e => {
+                        console.log(e)
+                        tippy(e.el, {
+                            appendTo: document.body,
+                            content: () => {
+                                const container = $('<div></div').addClass('p-2')
+                                const title = $('<h6></h6>').html(e.event.title)
+                                container.html(title)
+                                container.prepend($('<span></span>').html(e.event.extendedProps.remarks).addClass('badge').css('background', e.event.backgroundColor))
+                                container.append($('<hr>').addClass('m-0 p-1'))
+                                container.append($('<p></p>').html(e.event.extendedProps.description).addClass('m-0'))
+                                return container[0]
+                                // return e.event.extendedProps.description
+                            },
+                            popperOptions: {
+                                modifiers: {
+                                    computeStyle: {
+                                        gpuAcceleration: false
+                                    }
+                                }
+                            }
+                        })
+                    },
+                    dateClick: e => alert(e.dateStr)
                 }).render()
             },
         })
