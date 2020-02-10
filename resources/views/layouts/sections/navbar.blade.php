@@ -1,8 +1,10 @@
 <nav class="main-header navbar navbar-expand navbar-dark">
     <ul class="navbar-nav">
+        @if(Auth::check())
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fad fa-bars"></i></a>
         </li>
+        @endif
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('home') }}" class="nav-link {{ Route::is('home') ? 'active' : '' }}">Home</a>
         </li>
