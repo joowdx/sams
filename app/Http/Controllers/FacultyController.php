@@ -22,7 +22,9 @@ class FacultyController extends Controller
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
             'faculties' => Faculty::with(['courses', 'department'])->get(),
-            'semester' => Period::groupBy('semester')->orderBy('semester', 'desc')->get('semester')->pluck('semester'),
+            'currentsemester' => Period::currentsemester(),
+            'currentschoolyear' => Period::currentschoolyear(),
+            'semesters' => Period::groupBy('semester')->get('semester')->pluck('semester'),
             'schoolyears' => Period::groupBy('school_year')->orderBy('school_year', 'desc')->get('school_year')->pluck('school_year'),
         ]);
     }

@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             AcademicPeriodSeeder::class,
             CourseSeeder::class,
             // EventSeeder::class,
-            LogSeeder::class,
+            // LogSeeder::class,
         ]);
     }
 }

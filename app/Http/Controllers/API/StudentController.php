@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Student;
+use App\AcademicPeriod as Period;
 use App\Http\Resources\StudentResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -36,9 +37,28 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $validator = \Validator::make($request->all(), [
+            'schoolyear' => 'string',
+            'semester' => 'string'
+        ]);
+        abort_unless(is_numeric($id), 404);
+        abort_unless($validator->passes(), 400);
+        $schoolyear = $request->schoolyear ??  Period::currentschoolyear();
+        $semester =  $request->semester ?? Period::currentsemester();
+        $period = Period::where('school_year', $schoolyear)->where('semester', 'ilike', "%$semester%")->get()->pluck('id');
+        $student = Student::findOrFail($id)->load([
+            'courses' =>  function($query) use($period) {
+                $query->whereIn('academic_period_id', $period);
+            },
+            'courses.logs' => function($query) use($id) {
+                $query->where('log_by_type', 'App\Student')->where('log_by_id', $id);
+            },
+            'courses.logs.course',
+        ]);
+
+        return new \App\Http\Resources\StudentAtt($student);
     }
 
     /**

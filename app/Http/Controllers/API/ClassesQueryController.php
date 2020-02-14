@@ -24,7 +24,9 @@ class ClassesQueryController extends Controller
             'id' => 'required_with:date|numeric|exists:courses',
             'date' => 'required_with:id|date_format:Y-m-d',
         ])->passes();
+
         abort_unless($validator, 403);
+
         switch ($validator && $request->id) {
             case true:
                 return response()->json(Course::find($request->id)->noclass(Carbon::create($request->date)));

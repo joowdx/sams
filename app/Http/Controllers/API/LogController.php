@@ -11,6 +11,9 @@ use App\Events\NewScannedLog;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Jobs\UnknownLogRequest;
+use App\Events\UnknownTag;
+use App\UnverifiedTag;
 
 class LogController extends Controller
 {
@@ -24,23 +27,22 @@ class LogController extends Controller
                     'f' => 'required|string' ,
                     'i' => 'required|string|numeric' ,
                 ]
-            )->passes() ,
-            403, 'Unknown'
+            )->passes(), 400
         );
 
         abort_unless(
-            $sf = Student::where(['uid' => $request->i])->first() ?? Faculty::where(['uid' => $request->i])->first() ,
-            403, 'Unknown Entity'
+            $sf = Student::where(['uid' => $request->i])->first() ?? Faculty::where(['uid' => $request->i])->first(),
+            404, 'Unknown Entity'
         );
 
         abort_unless(
             $gr = Room::where(['name' => $request->f])->first() ?? Gate::where(['name' => $request->f])->first(),
-            403, 'Unknown Location'
+            404, 'Unknown Location'
         );
 
         abort_unless(
             ($gt = get_class($gr) == 'App\Gate') || ($cc = $gr->session()) && ($fr = today()->setTime(explode(':', $cc->time_from)[0], explode(':', $cc->time_from)[1])),
-            403, 'No Class Found'
+            404, 'No Class Found'
         );
 
         abort_unless(
@@ -64,13 +66,15 @@ class LogController extends Controller
 
         event(
             new NewScannedLog(
-                $nl->load([
+                $nl->loadMissing([
                     'from_by:id,name',
                     'log_by:id,name,uid',
                     'course',
                 ])
             )
         );
+
+        return $nl;
 
     }
 }

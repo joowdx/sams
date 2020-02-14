@@ -11,6 +11,11 @@
 |
 */
 
+use App\Course;
+use App\Log;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+
 Auth::routes(['register' => false]);
 Route::any('/', 'HomeController')->name('home');
 Route::any('dashboard', 'DashboardController')->name('dashboard');
@@ -24,7 +29,7 @@ Route::resource('courses', 'CourseController');
 Route::resource('departments', 'DepartmentController');
 Route::resource('students', 'StudentController');
 Route::resource('faculties', 'FacultyController');
-Route::resource('tags', 'UnverifiedTagController')->only('index');
+Route::resource('tags', 'TagController')->only(['index', 'store']);
 Route::resource('users', 'UserController');
 Route::resource('logs', 'LogController');
 Route::resource('faculties.courses', 'FacultyCourseController');
@@ -35,10 +40,73 @@ Route::resource('profiles', 'ProfileController');
 Route::resource('deptheads', 'DeptHeadController');
 Route::resource('studentviews', 'StudentViewController');
 Route::any('test', function() {
-    $course = App\Course::find(2);
-    while ($day = $course->nextmeeting($day ?? $course->firstmeeting())) {
-        echo "$day<br>";
-
-        $next = $day;
-    }
+    DB::table('logs')->truncate();
+    DB::table('ended_classes')->truncate();
+    $ended = [];
+        $logs = [];
+        foreach(
+            Course::currentcourses()->load(['faculty', 'students', 'logs'])
+        as $course) {
+            foreach(
+                array_diff(
+                    iterator_to_array(
+                        CarbonPeriod::create(
+                            $course->academic_period->start, date('Y-m-d')
+                        )->filter(function($day) use($course) {
+                            return !$course->noclass($day);
+                        })->map(function($day) {
+                            return $day->format('Y-m-d');
+                        })
+                    ),
+                    DB::table('ended_classes')->where([
+                        'course_id' => $course->id,
+                    ])->get()->map(function($day) {
+                        return $day->date;
+                    })->all()
+                )
+            as $day) {
+                if(!$course->forchecking(Carbon::create($day))) {
+                    continue;
+                }
+                if(
+                    !$course->logs()->where([
+                        'log_by_id' => $course->faculty->id,
+                        'log_by_type' => get_class($course->faculty),
+                    ])->whereDate('date', $day)->first()
+                ) {
+                    $logs[] = [
+                        'log_by_id' => $course->faculty->id,
+                        'log_by_type' => get_class($course->faculty),
+                        'course_id' => $course->id,
+                        'date' => $day,
+                        'remarks' => 'absent',
+                        'process' => 'auto',
+                    ];
+                }
+                foreach($course->students as $student) {
+                    if(
+                        !$course->logs()->where([
+                            'log_by_id' => $student->id,
+                            'log_by_type' => get_class($student),
+                        ])->whereDate('date', $day)->first()
+                    ) {
+                        $logs[] = [
+                            'log_by_id' => $student->id,
+                            'log_by_type' => get_class($student),
+                            'course_id' => $course->id,
+                            'date' => $day,
+                            'remarks' => 'absent',
+                            'process' => 'auto',
+                        ];
+                    }
+                }
+                $ended[] = [
+                    'course_id' => $course->id,
+                    'date' => $day,
+                ];
+            }
+        }
+        // return response()->json($logs);
+        DB::table('ended_classes')->insert($ended);
+        DB::table('logs')->insert($logs);
 });

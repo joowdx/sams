@@ -8,6 +8,8 @@ use App\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Events\NewTag;
+use App\UnverifiedTag;
 
 class TagController extends Controller
 {
@@ -95,5 +97,18 @@ class TagController extends Controller
             }
         }
 
+    }
+
+    public function newtag(Request $request)
+    {
+        $validator = \Validator::make($request->all(), ['uid' => 'required|numeric',]);
+        abort_unless($validator->passes(), 400);
+        event(
+            new NewTag(UnverifiedTag::create([
+                'uid' => $request->uid,
+                'from' => $request->from ?? 'unknown',
+                'ip' => $request->ip(),
+            ]))
+        );
     }
 }

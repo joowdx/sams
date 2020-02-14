@@ -108,4 +108,10 @@ class Course extends Model
     {
         return $sf->entered();
     }
+
+    public function forchecking(Carbon $day = null)
+    {
+        $day = $day ?? today();
+        return $day->setTime(explode(':', $this->time_to)[0], explode(':', $this->time_to)[1])->lt(now());
+    }
 }

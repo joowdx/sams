@@ -8,7 +8,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Course;
-use App\AcademicPeriod;
 use App\Events\MarkAbsent as MarkAbsentEvent;
 use App\Student;
 use Illuminate\Support\Facades\DB;
@@ -37,14 +36,10 @@ class MarkAbsent implements ShouldQueue
      */
     public function handle()
     {
+        $ended = [];
+        $logs = [];
         foreach(
-            Course::whereIn('academic_period_id',
-                AcademicPeriod::where(function($query) {
-                    $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
-                })->get()->map(function($period) {
-                    return $period->id;
-                })->all()
-            )->with(['students', 'logs'])->get()
+            Course::currentcourses()->load(['faculty', 'students', 'logs'])
         as $course) {
             foreach(
                 array_diff(
@@ -52,7 +47,7 @@ class MarkAbsent implements ShouldQueue
                         CarbonPeriod::create(
                             $course->academic_period->start, date('Y-m-d')
                         )->filter(function($day) use($course) {
-                            return $course->noclass($day);
+                            return !$course->noclass($day);
                         })->map(function($day) {
                             return $day->format('Y-m-d');
                         })
@@ -64,6 +59,26 @@ class MarkAbsent implements ShouldQueue
                     })->all()
                 )
             as $day) {
+                if(!$course->forchecking(Carbon::create($day))) {
+                    continue;
+                }
+                if(
+                    !$course->logs()->where([
+                        'log_by_id' => $course->faculty->id,
+                        'log_by_type' => get_class($course->faculty),
+                    ])->whereDate('date', $day)->first()
+                ) {
+                    $logs[] = [
+                        'log_by_id' => $course->faculty->id,
+                        'log_by_type' => get_class($course->faculty),
+                        'course_id' => $course->id,
+                        'date' => $day,
+                        'remarks' => 'absent',
+                        'process' => 'auto',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
                 foreach($course->students as $student) {
                     if(
                         !$course->logs()->where([
@@ -71,15 +86,25 @@ class MarkAbsent implements ShouldQueue
                             'log_by_type' => get_class($student),
                         ])->whereDate('date', $day)->first()
                     ) {
-                        $course->logs()->save($student->logs()->create(['remarks' => 'absent', 'date' => $day]));
+                        $logs[] = [
+                            'log_by_id' => $student->id,
+                            'log_by_type' => get_class($student),
+                            'course_id' => $course->id,
+                            'date' => $day,
+                            'remarks' => 'absent',
+                            'process' => 'auto',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
                     }
                 }
-                DB::table('ended_classes')->insert([
+                $ended[] = [
                     'course_id' => $course->id,
-                    'date' => Carbon::createFromFormat('Y-m-d', $day),
-                ]);
+                    'date' => $day,
+                ];
             }
-
         }
+        DB::table('ended_classes')->insert($ended);
+        DB::table('logs')->insert($logs);
     }
 }

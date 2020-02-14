@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $fillable = [
-        'remarks', 'date'
+        'remarks', 'date', 'process',
     ];
 
     protected $dates = [
@@ -29,5 +29,10 @@ class Log extends Model
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function updatedby()
+    {
+        return $this->belongsTo(User::class);
     }
 }

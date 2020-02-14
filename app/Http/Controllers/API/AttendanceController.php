@@ -38,7 +38,7 @@ class AttendanceController extends Controller
                 abort_unless($log = Log::find($request->id), 404, 'Not Found');
                 abort_unless($cc = Course::find($request->course), 404, 'Not Found');
                 abort_unless($cc->logs->contains($log), 403, 'Not Allowed');
-                $log->update($request->all());
+                $log->update(['remarks' => $request->remarks, 'process' => 'overwritten']);
                 return $log->loadMissing(['log_by', 'course']);
                 break;
             }
@@ -48,7 +48,7 @@ class AttendanceController extends Controller
                     case 'f': abort_unless($sf = Faculty::find($request->entityid), 404, 'Not Found');
                     default: {
                         abort_unless($cc = Course::find($request->course), 404, 'Not Found');
-                        $nl = $sf->logs()->create(['remarks' => $request->remarks, 'date' => $request->date]);
+                        $nl = $sf->logs()->updateOrCreate(['date' => $request->date], ['remarks' => $request->remarks, 'process' => 'manual']);
                         $cc->logs()->save($nl);
                         $request->remarks != 'absent' ? $cc->room->logs()->save($nl) : null;
                         return $nl->loadMissing(['log_by', 'course']);

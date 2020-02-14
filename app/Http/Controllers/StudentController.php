@@ -6,6 +6,7 @@ use App\User;
 use App\Course;
 use App\Student;
 use App\Department;
+use App\AcademicPeriod as Period;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -89,6 +90,10 @@ class StudentController extends Controller
                 ]
             ],
             'student' => $student,
+            'currentsemester' => Period::currentsemester(),
+            'currentschoolyear' => Period::currentschoolyear(),
+            'semesters' => Period::groupBy('semester')->get('semester')->pluck('semester'),
+            'schoolyears' => Period::groupBy('school_year')->orderBy('school_year', 'desc')->get('school_year')->pluck('school_year'),
         ]);
     }
 

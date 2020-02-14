@@ -15,9 +15,10 @@ class CreateUnverifiedTagsTable extends Migration
     {
         Schema::create('unverified_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('type', ['student', 'faculty', 'others'])->default('others');
             $table->bigInteger('uid');
-            $table->enum('status', ['pending', 'ignored']);
+            $table->string('from')->default('unknown');
+            $table->string('ip');
+            $table->enum('status', ['saved'])->nullable();
             $table->timestamps();
         });
     }

@@ -83,16 +83,18 @@
                         <div class="form-group col">
                             <label for="schoolyear">School Year</label>
                             <select id="schoolyear">
+                                <option value="{{ $currentschoolyear }}"> Current </option>
                                 @foreach ($schoolyears as $schoolyear)
-                                    <option value="{{ $schoolyear }}"> {{ $schoolyear }} </option>
+                                <option value="{{ $schoolyear }}"> {{ $schoolyear }} </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group col">
                             <label for="semester">Semester</label>
                             <select id="semester">
-                                @foreach ($semester as $semester)
-                                    <option value="{{ $semester }}"> {{ $semester }} </option>
+                                <option value="{{ $currentsemester }}"> Current </option>
+                                @foreach ($semesters as $semester)
+                                <option value="{{ $semester }}"> {{ $semester }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -146,6 +148,7 @@
                         const i = $('<i></i>')
                             i.addClass(`fa-fw fad fa-${icon} my-1 ${last ? '' : 'mr-1'}`)
                             i.css('cursor', 'pointer').css('color', color)
+                            i.attr('aria-label', remarks)
                             i.attr('onclick', `mark(${info.event.id},'${info.event._def.resourceIds[0]}','${remarks}')`)
                             return i
                         }
@@ -200,10 +203,10 @@
         attendance.render()
         mark = async (eventid, resourceid, remarks) => {
             [...document.querySelectorAll('*')].forEach(node => {
-                    if (node._tippy) {
-                        node._tippy.hide();
-                    }
-                });
+                if (node._tippy) {
+                    node._tippy.hide();
+                }
+            });
             const [id, course] = resourceid.split('$').join('').split('-')
             await fetch(`{{ route('attendance') }}`, {
                 method: 'POST',

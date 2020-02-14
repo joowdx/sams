@@ -43,16 +43,16 @@ import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.flash.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
+import 'icheck-2/icheck.js'
 
 import 'pace-js/pace.min.js'
-
 
 window.swal = require('sweetalert2')
 window.alertify = require('alertifyjs')
 
-
 import './global.js'
 
+import validate from 'validate.js'
 import moment from 'moment'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -69,6 +69,7 @@ window.Draggable = Draggable
 window.resourceTimeGridPlugin = resourceTimeGridPlugin
 window.resourceTimelinePlugin = resourceTimelinePlugin
 window.moment = moment
+window.validate = validate
 
 $(document).ready(function(){
     $('table:not(.no-datatable)').DataTable({
@@ -81,6 +82,10 @@ $(document).ready(function(){
     })
     $('select:not(.no-select2)').select2({
         theme: 'bootstrap4',
+    })
+    $('input:not(no-icheck)').icheck({
+        checkboxClass: 'icheckbox_minimal-grey',
+        radioClass: 'iradio_minimal-grey'
     })
     $('section.content').fadeIn('slow')
 })

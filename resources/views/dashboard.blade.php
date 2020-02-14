@@ -58,7 +58,7 @@
                                     {{  $log->log_by->name }}
                                     <small> {{ "@".@$log->from_by->name }}</small>
                                 </span>
-                                <span class="direct-chat-timestamp float-right">{{  $log->created_at->diffForHumans()  }}</span>
+                                <span class="direct-chat-timestamp float-right">{{  $log->created_at ? $log->created_at->diffForHumans() : ''  }}</span>
                             </div>
                             <!-- /.direct-chat-infos -->
                             {{-- <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt=""> --}}
@@ -107,7 +107,7 @@
                         <ul class="contacts-list">
                             <li>
                                 <a href="#">
-                                    <img class="contacts-list-img" src="dist/img/user1-128x128.jpg">
+                                    {{-- <img class="contacts-list-img" src="dist/img/user1-128x128.jpg"> --}}
 
                                     <div class="contacts-list-info">
                                         <span class="contacts-list-name">
@@ -122,7 +122,7 @@
                             <!-- End Contact Item -->
                             <li>
                                 <a href="#">
-                                    <img class="contacts-list-img" src="dist/img/user7-128x128.jpg">
+                                    {{-- <img class="contacts-list-img" src="dist/img/user7-128x128.jpg"> --}}
 
                                     <div class="contacts-list-info">
                                         <span class="contacts-list-name">
@@ -137,7 +137,7 @@
                             <!-- End Contact Item -->
                             <li>
                                 <a href="#">
-                                    <img class="contacts-list-img" src="dist/img/user3-128x128.jpg">
+                                    {{-- <img class="contacts-list-img" src="dist/img/user3-128x128.jpg"> --}}
 
                                     <div class="contacts-list-info">
                                         <span class="contacts-list-name">
@@ -152,7 +152,7 @@
                             <!-- End Contact Item -->
                             <li>
                                 <a href="#">
-                                    <img class="contacts-list-img" src="dist/img/user5-128x128.jpg">
+                                    {{-- <img class="contacts-list-img" src="dist/img/user5-128x128.jpg"> --}}
 
                                     <div class="contacts-list-info">
                                         <span class="contacts-list-name">
@@ -167,7 +167,7 @@
                             <!-- End Contact Item -->
                             <li>
                                 <a href="#">
-                                    <img class="contacts-list-img" src="dist/img/user6-128x128.jpg">
+                                    {{-- <img class="contacts-list-img" src="dist/img/user6-128x128.jpg"> --}}
 
                                     <div class="contacts-list-info">
                                         <span class="contacts-list-name">
@@ -182,7 +182,7 @@
                             <!-- End Contact Item -->
                             <li>
                                 <a href="#">
-                                    <img class="contacts-list-img" src="dist/img/user8-128x128.jpg">
+                                    {{-- <img class="contacts-list-img" src="dist/img/user8-128x128.jpg"> --}}
 
                                     <div class="contacts-list-info">
                                         <span class="contacts-list-name">
@@ -420,7 +420,7 @@
 @section('scripts')
 <script>
     try {
-        Echo.private('logs').listen('NewScannedLog', function(e) {
+        Echo.private('logs').listen('NewScannedLog', e => {
             try {
                 $('#logs').children().length < 10 || $('#logs').children().last().remove()
                 $('#logs').prepend(
@@ -446,22 +446,26 @@
                     </p>
                 </div>
                 `
-                );
-                // notify({
-                    //     'icon': 'fad fa-info-circle fa-fw mr-2',
-                    //     'message': `${e.log.log_by.uid} ⁠— ${e.log.log_by.name} in ${e.log.from} at ${new Date(e.log.created_at).toLocaleString('en-gb', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'})}
+            );
+            // notify({
+                //     'icon': 'fad fa-info-circle fa-fw mr-2',
+                //     'message': `${e.log.log_by.uid} ⁠— ${e.log.log_by.name} in ${e.log.from} at ${new Date(e.log.created_at).toLocaleString('en-gb', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'})}
 
-                    //     ${$('#logs').children().length}
-                    //     `,
-                    // })
-                    console.log(e)
-                } catch(error) {
+                //     ${$('#logs').children().length}
+                //     `,
+                // })
+                console.log(e)
+            } catch(error) {
 
-                }
+            }
 
-            })
-        } catch (error) {
-            // location.reload()
-        }
-    </script>
-    @endsection
+        })
+        .listen('UnknownTag', e => {
+            console.log(e)
+        })
+    } catch (error) {
+        console.log(e)
+        // location.reload()
+    }
+</script>
+@endsection
