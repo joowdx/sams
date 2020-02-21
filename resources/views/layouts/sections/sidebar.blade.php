@@ -60,13 +60,6 @@
                         </li>
                     </ul>
                 </li>
-                {{-- @can('fview', App\AcademicPeriod::class) --}}
-                {{-- <li class="nav-item">
-                    <a href="{{ route('map') }}" class="nav-link {{ request()->is('map*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-map-marked-alt fa-fw"></i>
-                        <p> School Map </p>
-                    </a>
-                </li> --}}
                 <li class="nav-item">
                     <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiods*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-calendar-week fa-fw"></i>
@@ -74,25 +67,17 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('events.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-bahai fa-fw"></i>
-                        <p> Events </p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="{{ route('departments.index') }}" class="nav-link {{ request()->is('departments*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-ball-pile fa-fw"></i>
+                        <i class="nav-icon fad fa-university fa-fw"></i>
                         <p> Departments </p>
                     </a>
                 </li>
-                {{-- @endcan --}}
-                {{-- @can('fview', App\User::class) --}}
-                {{-- <li class="nav-item">
-                    <a href="{{ route('calendar') }}" class="nav-link {{ request()->is('calendar*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-calendar-week fa-fw"></i>
-                        <p> Calendar </p>
+                <li class="nav-item">
+                    <a href="{{ route('events.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-atom-alt fa-fw"></i>
+                        <p> Programs </p>
                     </a>
-                </li> --}}
+                </li>
                 @endcan
                 {{-- @endcan --}}
                 @can('rview', App\User::class)
@@ -100,14 +85,6 @@
                     <a href="{{ route('courses.index') }}" class="nav-link {{ request()->is('courses*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-book-spells fa-fw"></i>
                         <p> Courses </p>
-                    </a>
-                </li>
-                @endcan
-                @can('fview', App\User::class)
-                <li class="nav-item">
-                    <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-users-class fa-fw"></i>
-                        <p> Students </p>
                     </a>
                 </li>
                 @endcan
@@ -119,23 +96,19 @@
                     </a>
                 </li>
                 @endcan
+                @can('fview', App\User::class)
+                <li class="nav-item">
+                    <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-users-class fa-fw"></i>
+                        <p> Students </p>
+                    </a>
+                </li>
+                @endcan
                 @can('aview', App\User::class)
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-users-crown fa-fw"></i>
                         <p> Users </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('tags.index') }}" class="nav-link {{ request()->is('tags*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-tags fa-fw"></i>
-                        <p> Tags </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('configurations.index') }}" class="nav-link {{ request()->is('configurations*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-cogs fa-fw"></i>
-                        <p> Configurations </p>
                     </a>
                 </li>
                 @endcan

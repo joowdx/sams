@@ -2,27 +2,27 @@
 
 @section('styles')
 <style>
-    svg path {
-        fill: #303030;
-    }
-    svg path:hover {
-        fill: #6a6a6a !important;
-    }
-    .cls{
-        font-weight: 300;
-        font-family: Calibri;
-        font-size: 41.667px;
-        fill: #fff;
+    .cls-1 {
+        fill: red;
+        fill-rule: evenodd;
     }
 
-    .cls1{
-        font-weight: 300;
-        font-family: Calibri;
-        font-size: 30px;
-        fill: #fff;
+    .cls-2, .cls-3 {
+        font-size: 25px;
     }
-    #offices, #faculty, #lic, #mrc, #opl {
-        fill: #1a1a1a;
+
+    .cls-2, .cls-3, .cls-4 {
+        fill: #240203;
+        font-family: Tahoma;
+    }
+
+    .cls-2, .cls-4 {
+        text-anchor: middle;
+    }
+
+    .cls-4 {
+        font-size: 30px;
+        font-weight: 700;
     }
 </style>
 @endsection
@@ -446,26 +446,26 @@
                     </p>
                 </div>
                 `
-            );
-            // notify({
-                //     'icon': 'fad fa-info-circle fa-fw mr-2',
-                //     'message': `${e.log.log_by.uid} ⁠— ${e.log.log_by.name} in ${e.log.from} at ${new Date(e.log.created_at).toLocaleString('en-gb', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'})}
+                );
+                // notify({
+                    //     'icon': 'fad fa-info-circle fa-fw mr-2',
+                    //     'message': `${e.log.log_by.uid} ⁠— ${e.log.log_by.name} in ${e.log.from} at ${new Date(e.log.created_at).toLocaleString('en-gb', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'})}
 
-                //     ${$('#logs').children().length}
-                //     `,
-                // })
+                    //     ${$('#logs').children().length}
+                    //     `,
+                    // })
+                    console.log(e)
+                } catch(error) {
+
+                }
+
+            })
+            .listen('UnknownTag', e => {
                 console.log(e)
-            } catch(error) {
-
-            }
-
-        })
-        .listen('UnknownTag', e => {
+            })
+        } catch (error) {
             console.log(e)
-        })
-    } catch (error) {
-        console.log(e)
-        // location.reload()
-    }
-</script>
-@endsection
+            // location.reload()
+        }
+    </script>
+    @endsection

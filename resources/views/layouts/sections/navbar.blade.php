@@ -5,29 +5,31 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fad fa-bars"></i></a>
         </li>
         @endif
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('home') }}" class="nav-link {{ Route::is('home') ? 'active' : '' }}">Home</a>
+        <li class="nav-item d-inline-block">
+            <a href="{{ route('dashboard') }}" class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
+                <i class="fad fa-fw fa-chart-network"></i>
+                Dashboard
+            </a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('dashboard') }}" class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">Dashboard</a>
+        <li class="nav-item d-inline-block">
+            <a href="{{ route('calendar') }}" class="nav-link {{ Route::is('calendar') ? 'active' : '' }}">
+                <i class="fad fa-fw fa-calendar-check"></i>
+                Calendar
+            </a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('calendar') }}" class="nav-link {{ Route::is('calendar') ? 'active' : '' }}">Calendar</a>
+        <li class="nav-item d-inline-block">
+            <a href="{{ route('map') }}" class="nav-link {{ Route::is('map') ? 'active' : '' }}">
+                <i class="fad fa-fw fa-map-marker-alt"></i>
+                Map
+            </a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('map') }}" class="nav-link {{ Route::is('map') ? 'active' : '' }}">Map</a>
+        <li class="nav-item d-inline-block">
+            <a href="{{ route('tags.index') }}" class="nav-link {{ Route::is('tag*') ? 'active' : '' }}">
+                <i class="fad fa-fw fa-tags"></i>
+                Tags
+            </a>
         </li>
     </ul>
-    {{-- <form class="form-inline ml-3">
-        <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-    </form> --}}
     <ul class="navbar-nav ml-auto">
         @guest
             <li class="nav-item">
@@ -39,21 +41,25 @@
                 </li>
             @endif
         @else
-            @include('layouts.sections.notifications')
-            <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->name }} <span class="caret"></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
+            {{-- @include('layouts.sections.notifications') --}}
+            {{-- <li class="nav-item dropdown"> --}}
+                {{-- <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> --}}
+                    {{-- {{ Auth::user()->name }} <span class="caret"></span> --}}
+                {{-- </a> --}}
+                {{-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> --}}
+
+                {{-- </div> --}}
+            {{-- </li> --}}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}" id="logout" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fad fa-fw fa-sign-out-alt fa-lg"></i>
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
-                </div>
-            </li>
+                </li>
+            </ul>
         @endguest
     </ul>
 </nav>
