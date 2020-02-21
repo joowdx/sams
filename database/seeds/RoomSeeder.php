@@ -11,6 +11,8 @@ class RoomSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Room::class)->states(['CL1', 'CL2', 'CL3'])->create();
+        factory(App\Room::class)->states(['CL1'])->create();
+        factory(App\Room::class)->states(['CL2'])->create();
+        factory(App\Room::class)->states(['CL3'])->create();
     }
 }

@@ -60,7 +60,9 @@ import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import tippy from 'tippy.js'
+import svgPanZoon from 'svg-pan-zoom/dist/svg-pan-zoom.min.js';
 
+window.svgPanZoon = svgPanZoon
 window.tippy = tippy
 window.Calendar = Calendar
 window.dayGridPlugin = dayGridPlugin

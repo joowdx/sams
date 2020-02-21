@@ -50,15 +50,15 @@ class LogController extends Controller
             403, 'Student Not Enrolled'
         );
 
-        abort_unless(
-            $gt || $cc->allowed($sf),
-            403, 'Not Allowed'
-        );
+        // abort_unless(
+        //     $gt || $cc->allowed($sf),
+        //     403, 'Not Allowed'
+        // );
 
-        abort_unless(
-            $gt || $cc->nolog($sf),
-            403, 'Already Logged In'
-        );
+        // abort_unless(
+        //     $gt || $cc->nolog($sf),
+        //     403, 'Already Logged In'
+        // );
 
         $rk = $gt ? ($sf->exited() ? 'entry' : 'exit') : ($fr->diffInMinutes(now()) > 15 ? 'late' : 'ok');
         $nl = $gr->logs()->save($sf->logs()->create(['remarks' => $rk, 'date' => today()]));

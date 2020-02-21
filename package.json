@@ -49,6 +49,7 @@
     "pace-js": "^1.0.2",
     "pusher-js": "^5.0.2",
     "select2": "^4.0.13",
+    "svg-pan-zoom": "^3.6.1",
     "sweetalert2": "^8.18.5",
     "tippy.js": "^5.2.0",
     "validate.js": "^0.13.1"
