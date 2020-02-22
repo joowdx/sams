@@ -34,7 +34,7 @@ class ClassesQueryController extends Controller
             default:{
                 return Course::with(['logs' => function($query) {
                     $query->whereDate('date', today());
-                }, 'logs.log_by'])->whereIn('academic_period_id',
+                }, 'logs.log_by', 'faculty'])->whereIn('academic_period_id',
                     AcademicPeriod::where(function($query) {
                         $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
                     })->get()->map(function($period) {
