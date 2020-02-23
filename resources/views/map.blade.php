@@ -26,6 +26,11 @@
         font-size: 30px;
         font-weight: 700;
     }
+    .tippy-tooltip.transparency-theme {
+        background-color: #fffe;
+        color: #1a1a1a;
+        border: black;
+    }
 </style>
 @endsection
 
@@ -181,21 +186,33 @@
 
 </div>
 
-    {{-- <div class="col-lg-3 col-sm-2">
-        <div class="card" style="width: 18rem;">
+    {{-- <div class="col-lg-3">
+        <div class="card">
             <h5 class="card-header">Legend</h5>
             <div class="card-body">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fad fa-circle text-danger float-right"></i>
-                            Occupied
+                        <a class="nav-link">
+                            <i class="fad fa-circle text-dark float-right animated flash infinite slow"></i>
+                            No faculty yet
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a class="nav-link">
+                            <i class="fad fa-circle text-warning float-right animated flash infinite faster"></i>
+                            ID Removed
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <i class="fad fa-circle text-danger float-right"></i>
+                            Absent
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">
                             <i class="fad fa-circle text-success float-right"></i>
-                            Unoccupied
+                            Ok
                         </a>
                     </li>
                     <li class="nav-item">
@@ -216,32 +233,39 @@
 <script>
     $(e => {
         const clearmap = e => {
-            $('svg .cls-1').removeAttr('style').removeClass('animated flash infinite')
             $('#class_codes text').removeAttr('style').removeClass('animated flash infinite slow').text('')
+            $('svg .cls-1').removeAttr('style').removeClass('animated flash infinite')
+            tippies.forEach(e => e.destroy)
+            tippies.length = 0
         }
+
         const refreshmap = e => {
             clearmap()
             const tooltipinfo = e => {
-                const logs = e => {
-                    return e.reduce((a, c) =>
-                        a + `
-                        <div class="direct-chat-msg" style="width: 250px;">
-                            <div class="direct-chat-infos clearfix">
-                                <span class="direct-chat-name float-left">${c.log_by.name}</span>
-                                <span class="direct-chat-timestamp float-right">
-                                    <small>${moment(c.created_at).format('HH:mm:ss')}</small>
-                                </span>
-                            </div>
-                        </div>
-                        `
-                    , '')
-                }
+                const logs = e => e.sort((a, c) => moment(a.created_at).diff(moment(c.created_at))).reduce((a, c) => a + newlog(c), '')
                 return `
-                <div class="card-body p-3">
-                    <h6 class="direct-chat-name">
-                        ${ e.title } <small> (${ e.code }) </small>
-                    </h6>
-                    <div class="direct-chat-messages">
+                <div class="card-body p-3"  style="width: 250px;">
+                    <a class="nav-link p-0" href="courses/${e.id}">
+                        <h6 class="direct-chat-name mb-0">
+                            ${ e.title }<small class="ml-1">(${ e.code })</small>
+                        </h6>
+                    </a>
+                    <small>
+                        ${ e.time_from } - ${ e.time_to }
+                        <small class="ml-1"> ${ e.day_from } - ${ e.day_to } </small>
+                    </small>
+                    <hr class="my-2">
+                    <p class="direct-chat-name mb-0">${ e.faculty.name }</p>
+                    <div class="row">
+                        <div class="col-6 pr-0">
+                            <small class="direct-chat-name"> Round 1: <small>N/A</small> </small>
+                        </div>
+                        <div class="col-6 pl-0">
+                            <small class="direct-chat-name"> Round 2: <small>N/A</small> </small>
+                        </div>
+                    </div>
+                    <hr class="my-2">
+                    <div id="${e.code}-logs" class="direct-chat-messages">
                         ${logs(e.logs)}
                     </div>
                 </div>
@@ -251,32 +275,49 @@
                 console.log(e)
                 $room = $(`#${e.room.name}`)
                 $code = $(`#${e.room.name}_CODE`)
-                $room.css('fill', '#aca0a1').addClass('animated flash infinite slow')
+                $name = $(`#${e.room.name}-2`)
+                $room.css('fill', '#aca0a1').css('cursor', 'pointer').addClass('animated flash infinite slow')
                 $code.text(e.title).css('cursor', 'pointer').addClass('animated flash infinite')
-                tippy($code[0], {
+                const tippyi = tippy($code[0], {
                     appendTo: document.body,
                     content: tooltipinfo(e),
-                    theme: 'light-border',
+                    theme: 'transparency',
                     placement: 'left',
                     interactive: true,
-                    trigger: 'click',
+                    triggerTarget: [$code[0], $room[0], $name[0]]
+                    // trigger: 'click',
                 })
+                tippies = tippies.concat(tippyi)
             })
         }
-        const updatelogs = ({ from_by: { name: from } }) => {
-            console.log(from)
-            $(`#${from}`).css('fill', 'red')
-            $(`#${from}_`).text('asdas')
-        }
+
+        const newlog = e => `
+        <div class="direct-chat-msg">
+            <div class="direct-chat-infos clearfix">
+                <span class="float-left">
+                    ${e.log_by.name}
+                    <small>${ moment(e.created_at).format('HH:mm:ss') }</small>
+                </span>
+                <span class="float-right badge badge-${ badge(e.remarks) }">
+                    <small>${e.remarks}</small>
+                </span>
+            </div>
+        </div>
+        `
+
+        const updatelogs = e => $(`#${e.course.code}-logs`).append(newlog(e))
+
+        const badge = e => e == 'ok' ? 'success' : e == 'late' ? 'warning' : ''
+
         const onsession = e => {
 
         }
+
         Echo.private('map').listen('RefreshMap', e => refreshmap(JSON.parse(e.courses)))
-        Echo.private('logs').listen('NewScannedLog', e => updatelogs(e.log))
+        Echo.private('logs').listen('NewScannedLog', e => {updatelogs(e.log)})
         fetch('{{route('queryclasses')}}').then(e => e.json()).then(refreshmap)
-
+        tippies = []
     })
-
     $(function() {
         panZoomInstance = svgPanZoom('#paths', {
             zoomEnabled: true,
