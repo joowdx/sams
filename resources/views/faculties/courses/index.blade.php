@@ -30,6 +30,9 @@
                             <th style="width: 30%">
                                 Schedule
                             </th>
+                            <th style="width: 30%">
+                                Abenteeism Rate
+                            </th>
                             <th style="width: 8%" class="text-center">
                                 Students
                             </th>
@@ -68,6 +71,16 @@
                                 </small>
                                 <br>
                                 <small> {{ "$course->time_from - $course->time_to" }} </small>
+                            </td>
+                            <td>
+                                @switch($count = $faculty->logs()->where('course_id', $course->id)->count())
+                                @case(0)
+                                    0
+                                    @break
+                                @default
+                                {{ round(($faculty->logs()->where('remarks', 'absent')->where('course_id', $course->id)->count() /
+                                $faculty->logs()->where('course_id', $course->id)->count()) * 100, 2) }}
+                                @endswitch
                             </td>
                             <td class="align-middle project-state">
                                 {{ $course->students->count() }}

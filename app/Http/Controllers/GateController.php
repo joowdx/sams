@@ -14,7 +14,8 @@ class GateController extends Controller
      */
     public function index()
     {
-        //
+        return view('gates.index');
+
     }
 
     /**

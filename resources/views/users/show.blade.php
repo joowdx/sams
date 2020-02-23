@@ -67,9 +67,9 @@ span.tags
             <div class="card" style="border:10%">
                 <div class="col-md-12 col-sm-8">
                     <h2>{{ $user->name }}</h2>
-                    <p><strong>Username: </strong> {{ $user->username }} </p>
-                    <p><strong>Email: </strong> {{ $user->email }} </p>
-                    <p><strong>Phone Number: </strong>{{ $user->phone }} </p>
+                    <p><i class="nav-icon fad fa-user-visor fa-fw"></i><strong>Username: </strong> {{ $user->username }} </p>
+                    <p><i class="nav-icon fad fa-envelope-square fa-fw"><strong>Email: </strong> {{ $user->email }} </p>
+                    <p><i class="nav-icon fad fa-phone-square-alt fa-fw"></i><strong>Phone Number: </strong>{{ $user->phone }} </p>
                     <p><strong></strong>
                         <span class="tags">{{ $user->type }}</span>
                     </p>

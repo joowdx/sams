@@ -68,10 +68,10 @@ span.tags
         <div class="col-md-12" style="margin-top:20%; padding-right:10%; padding-left:10%">
             <div class="card" style="border:10%">
                 <div class="col-md-12 col-sm-8">
-                    <h2></h2>
-                    <p><strong>Username: {{Auth::user()->name}} </strong>  </p>
-                    <p><strong>Email: {{Auth::user()->email}} </strong>  </p>
-                    <p><strong>Phone Number: {{Auth::user()->phone }} </strong> </p>
+                    <h2>{{ Auth::user()->name }}</h2>
+                    <p><i class="nav-icon fad fa-user-visor fa-fw"></i><strong>Username: {{Auth::user()->username}} </strong>  </p>
+                    <p><i class="nav-icon fad fa-envelope-square fa-fw"></i><strong>Email: {{Auth::user()->email}} </strong>  </p>
+                    <p><i class="nav-icon fad fa-phone-square-alt fa-fw"></i><strong>Phone Number: {{Auth::user()->phone }} </strong> </p>
                     <p><strong></strong>
                     <span class="tags"> {{Auth::user()->type }} </span>
                     </p>

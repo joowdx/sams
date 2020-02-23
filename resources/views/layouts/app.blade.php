@@ -21,6 +21,7 @@
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
     <script> Pace.start() </script>
+
     @yield('scripts')
 </body>
 </html>

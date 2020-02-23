@@ -29,9 +29,9 @@ Vue.config.devtools = false
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+// const app = new Vue({
+//     el: '#app',
+// });
 
 // import './fontawesome-kit-pro.js'
 import 'admin-lte/dist/js/adminlte.min.js'
@@ -91,4 +91,5 @@ $(document).ready(function(){
     })
     $('section.content').fadeIn('slow')
 })
+
 

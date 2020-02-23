@@ -40,6 +40,10 @@
                     <li class="list-group-item">
                         <b>Current Courses Enrolled</b> <a class="float-right">{{ $student->enrolledcourses()->count() }}</a>
                     </li>
+                    <li class="list-group-item">
+                        <b>Overall Average Login Time</b><a id="resultAvg" class="float-right">
+                        </a>
+                    </li>
                 </ul>
 
             </div>
@@ -75,6 +79,9 @@
                                         </th>
                                         <th>
                                             Schedule
+                                        </th>
+                                        <th>
+                                            Absenteeism Rate
                                         </th>
                                         <th>
                                             Status
@@ -117,6 +124,16 @@
                                             </small>
                                             <br>
                                             <small> {{ "$course->time_from - $course->time_to" }} </small>
+                                        </td>
+                                        <td>
+                                            @switch($count = $student->logs()->where('course_id', $course->id)->count())
+                                            @case(0)
+                                                0
+                                                @break
+                                            @default
+                                            {{ round(($student->logs()->where('remarks', 'absent')->where('course_id', $course->id)->count() /
+                                            $student->logs()->where('course_id', $course->id)->count()) * 100, 2) }}{{"%"}}
+                                            @endswitch
                                         </td>
                                         <td class="align-middle">
                                             <span class="badge badge-{{ ($course->pivot->status == 'dropped' ? 'danger' : ($course->pivot->status == 'warning' ? 'warning' : 'success'))  }}">{{ $course->pivot->status ?? 'ok' }}</span>
@@ -220,6 +237,17 @@
                             </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header pb-1">
+                <h3 class="card-title">Frequency</h3>
+            </div>
+            <div class="card-body px-2 py-4" style="display: block;">
+                <canvas id="myChart" style="position: relative;" class="chartjs-render-monitor"></canvas>
             </div>
         </div>
     </div>

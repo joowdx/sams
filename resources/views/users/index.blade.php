@@ -2,8 +2,6 @@
 
 @section('styles')
 <style>
-
-
 </style>
 @endsection
 
@@ -11,7 +9,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <a href="{{ route('users.create') }}" id="add" class="btn"><span class="fa fa-plus"></span></a>
+            <a href="{{ route('users.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
         </div>
         <div class="col-md-12">
             <table id="usertable" class="table table-bordered" style="cursor:pointer;">

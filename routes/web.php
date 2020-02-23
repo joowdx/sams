@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -42,6 +43,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('profiles', 'ProfileController');
     Route::resource('deptheads', 'DeptHeadController');
     Route::resource('studentviews', 'StudentViewController');
+    Route::resource('gate', 'GateController');
 });
 
 Route::any('test', function() {

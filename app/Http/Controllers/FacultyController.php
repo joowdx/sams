@@ -75,7 +75,7 @@ class FacultyController extends Controller
     public function show(Faculty $faculty)
     {
         return view('faculties.show', compact('faculty'))->with([
-            'contentheader' => $faculty->name,
+            'contentheader' => 'Faculty',
             'courses'   => $faculty->ongoingcourses(),
             'students' => $faculty->students(),
             'breadcrumbs' => [

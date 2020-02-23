@@ -61,7 +61,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiods*') ? 'active' : '' }}">
+                    <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiod*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-calendar-week fa-fw"></i>
                         <p> Periods </p>
                     </a>

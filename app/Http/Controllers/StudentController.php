@@ -76,8 +76,16 @@ class StudentController extends Controller
      */
     public function show($id)
     {
+        // $sy = Period::currentschoolyear();
+        // $sm = Period::currentsemester();
+        // $ap = Period::where('school_year', $sy)->where('semester', $sm)->get('id')->pluck('id');
+        // $qwe = Student::find($id)->load(['courses' => function($query) use($ap) {
+        //     $query->whereIn('academic_period_id', $ap);
+        // }, 'courses.logs', 'courses.logs.course'])->courses->flatMap(function($courses) {
+        //      $courses->logs;
+        // });
         abort_unless(is_numeric($id), 404);
-        abort_unless($student = Student::find($id), 404);
+        abort_unless($student = Student::find($id)->load(['logs', 'logs.course']), 404);
         return view('students.show', [
             'contentheader' => $student->name,
             'breadcrumbs' => [
