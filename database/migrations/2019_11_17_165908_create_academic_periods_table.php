@@ -21,6 +21,7 @@ class CreateAcademicPeriodsTable extends Migration
             $table->date('start');
             $table->date('end');
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 

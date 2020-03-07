@@ -18,9 +18,10 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('schoolid')->nullable()->unique();
             $table->unsignedBigInteger('uid')->nullable()->unique();
             $table->string('name');
-            $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedBigInteger('program_id')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 

@@ -49,7 +49,8 @@ class CourseController extends Controller
             $course = Course::find($id)->load([
                 'faculty',
                 'students',
-                'students.department',
+                'students.program',
+                'students.program.department',
                 'logs',
                 'logs.log_by',
                 'students.logs' => function($query) use($id) {

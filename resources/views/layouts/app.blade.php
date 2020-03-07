@@ -9,7 +9,7 @@
     <script src={{ asset('vendor/fontawesome/js/all.min.js') }}></script>
     @yield('styles')
 </head>
-<body class="hold-transition {{ Auth::check() ? 'sidebar-mini sidebar-collapse layout-fixed layout-navbar-fixed' : 'layout-top-nav' }}">
+<body class="hold-transition {{ Auth::check() ? 'sidebar-mini layout-fixed layout-navbar-fixed' : 'layout-top-nav' }}">
     <div id="app">
         <div class="wrapper">
             @include('layouts.sections.navbar')

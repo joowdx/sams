@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Faculty;
 use App\Http\Requests\UpdateValidation;
 use App\Http\Requests\StoreValidation;
 use Illuminate\Support\Facades\Hash;
@@ -22,8 +23,9 @@ class UserController extends Controller
     {
         $this->authorize('aview', User::class);
 
-        return view('users.index')->with([
-            'contentheader' => 'Users'
+        return view('users.index', [
+            'contentheader' => 'Users',
+            'users' => User::all(),
         ]);
     }
 
@@ -35,7 +37,9 @@ class UserController extends Controller
     public function create()
     {
         $user = new User();
-        return view('users.create', compact('user'));
+        return view('users.create', compact('user'),[
+            'faculties' => Faculty::all(),
+        ]);
     }
 
     /**
@@ -60,7 +64,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         // $this->authorize('show', User::class);
-
+        return $this->edit($user);
         return view('users.show', compact('user'))->with([
             'contentheader' => 'User Info',
             'breadcrumbs' => [
@@ -94,7 +98,8 @@ class UserController extends Controller
                 [
                     'text' => 'Edit'
                 ]
-            ]
+            ],
+            'faculties' => Faculty::all(),
         ]);
     }
 

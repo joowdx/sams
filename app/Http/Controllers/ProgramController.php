@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Program;
+use App\Faculty;
+use App\Department;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -14,7 +16,14 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        //
+        return view('programs.index', [
+            'contentheader' => 'Programs',
+            'programs' => Program::with([
+                'faculty',
+                'students',
+                'students.courses',
+            ])->get(),
+        ]);
     }
 
     /**
@@ -24,7 +33,20 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        //
+        return view('programs.create', [
+            'contentheader' => 'Create',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Programs',
+                    'link' => route('programs.index'),
+                ],
+                [
+                    'text' => 'Create'
+                ]
+            ],
+            'faculties' => Faculty::all(),
+            'departments' => Department::all(),
+        ]);
     }
 
     /**
@@ -35,7 +57,14 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|unique:programs,name',
+            'shortname' => 'required|string|max:20|unique:programs,shortname',
+            'faculty_id' => 'sometimes|exists:faculties,id',
+        ]);
+        $program = Program::create($request->all());
+        $program->department()->associate($program->faculty->department);
+        return redirect(route('programs.index'));
     }
 
     /**
@@ -44,9 +73,31 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function show(Program $program)
+    public function show($id)
     {
-        //
+        abort_unless(is_numeric($id), 404);
+        abort_unless($program = Program::find($id)->load([
+            'faculty',
+            'faculty.program',
+            'faculty.program',
+            'faculty.courses',
+            'students',
+            'students.program',
+            'students.program.department',
+        ]), 404);
+        return view('programs.show', [
+            'contentheader' => $program->shortname,
+            'breadcrumbs' => [
+                [
+                    'text' => 'Programs',
+                    'link' => route('programs.index'),
+                ],
+                [
+                    'text' => $program->shortname
+                ]
+            ],
+            'program' => $program,
+        ]);
     }
 
     /**
@@ -55,9 +106,27 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function edit(Program $program)
+    public function edit($id)
     {
-        //
+        abort_unless(is_numeric($id), 404);
+        abort_unless($program = Program::find($id), 404);
+        return view('programs.edit', [
+            'contentheader' => 'Edit',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Program',
+                    'link' => route('programs.index'),
+                ],
+                [
+                    'text' => $program->shortname,
+                    'link' => route('programs.show', $program->id),
+                ],
+                [
+                    'text' => 'Edit',
+                ]
+            ],
+            'program' => $program,
+        ]);
     }
 
     /**
@@ -67,9 +136,15 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Program $program)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|unique:programs,name,'.$id,
+            'shortname' => 'required|string|max:20|unique:programs,name,'.$id,
+            'faculty_id' => 'sometimes|exists:faculties,id',
+        ]);
+        Program::find($id)->update($request->all());
+        return redirect(route('programs.show', $id));
     }
 
     /**
@@ -78,8 +153,11 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Program $program)
+    public function destroy($id)
     {
-        //
+        abort_unless(is_numeric($id), 404);
+        abort_unless($department = Department::find($id), 404);
+        $department->delete();
+        return redirect(route('departments.index'));
     }
 }

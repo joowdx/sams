@@ -75,7 +75,11 @@ window.validate = validate
 
 $(document).ready(function(){
     $('table:not(.no-datatable)').DataTable({
-        dom: 'ftp',
+        dom: '<"row d-print-none"<"col d-flex"l><"col d-flex flex-row-reverse"f>>tp',
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        language: {
+            lengthMenu: "_MENU_",
+        },
         fnDrawCallback: function(oSettings) {
             if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
                 $(oSettings.nTableWrapper).find('.dataTables_paginate').hide()

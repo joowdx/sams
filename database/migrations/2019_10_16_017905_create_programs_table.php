@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSchoolCalendarTable extends Migration
+class CreateProgramsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateSchoolCalendarTable extends Migration
      */
     public function up()
     {
-        Schema::create('school_calendar', function (Blueprint $table) {
+        Schema::create('programs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->enum('type', ['INFO', 'HOLIDAY', 'INSTITUTIONAL_EVENT']);
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->string('shortname');
+            $table->unsignedBigInteger('faculty_id')->nullable();
+            $table->unsignedBigInteger('department_id')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 
@@ -30,6 +31,6 @@ class CreateSchoolCalendarTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('programs');
     }
 }

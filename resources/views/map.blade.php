@@ -242,7 +242,7 @@
         const refreshmap = e => {
             clearmap()
             const tooltipinfo = e => {
-                const logs = e => e.sort((a, c) => moment(a.created_at).diff(moment(c.created_at))).reduce((a, c) => a + newlog(c), '')
+                const logs = e => e.filter(e => e.log_by_type.includes('Student') && e.remarks != 'absent').sort((a, c) => moment(a.created_at).diff(moment(c.created_at))).reduce((a, c) => a + newlog(c), '')
                 return `
                 <div class="card-body p-3"  style="width: 250px;">
                     <a class="nav-link p-0" href="courses/${e.id}">
@@ -272,7 +272,6 @@
                 `
             }
             e.forEach(e => {
-                console.log(e)
                 $room = $(`#${e.room.name}`)
                 $code = $(`#${e.room.name}_CODE`)
                 $name = $(`#${e.room.name}-2`)
@@ -285,7 +284,6 @@
                     placement: 'left',
                     interactive: true,
                     triggerTarget: [$code[0], $room[0], $name[0]]
-                    // trigger: 'click',
                 })
                 tippies = tippies.concat(tippyi)
             })

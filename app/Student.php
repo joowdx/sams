@@ -6,13 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    protected $with = [
+        // 'program',
+    ];
+
     protected $fillable = [
         'uid', 'schoolid', 'name', 'department_id'
     ];
 
     public function department()
     {
-        return $this->belongsTo(Department::class);
+        return $this->program->belongsTo(Department::class);
+    }
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
     }
 
     public function courses()
@@ -54,7 +63,10 @@ class Student extends Model
     {
         $schoolyear = $schoolyear ?? AcademicPeriod::currentschoolyear();
         $semester = $semester ?? AcademicPeriod::currentsemester();
-        return $this->courses()->whereIn('academic_period_id', AcademicPeriod::where('school_year', $schoolyear)->where('semester', $semester)->get()->pluck('id'))->get();
+        $period = AcademicPeriod::period($schoolyear, $semester);
+        return $this->courses->filter(function($course) use($period) {
+            return $period->contains($course->academic_period_id);
+        });
     }
 
 }

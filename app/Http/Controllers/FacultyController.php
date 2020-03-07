@@ -21,7 +21,7 @@ class FacultyController extends Controller
         $this->authorize('hview', User::class);
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
-            'faculties' => Faculty::with(['courses', 'department'])->get(),
+            'faculties' => Faculty::with(['courses', 'program', 'program.department'])->get(),
             'currentsemester' => Period::currentsemester(),
             'currentschoolyear' => Period::currentschoolyear(),
             'semesters' => Period::groupBy('semester')->get('semester')->pluck('semester'),

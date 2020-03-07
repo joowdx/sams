@@ -47,7 +47,7 @@ class StudentController extends Controller
         abort_unless($validator->passes(), 400);
         $schoolyear = $request->schoolyear ??  Period::currentschoolyear();
         $semester =  $request->semester ?? Period::currentsemester();
-        $period = Period::where('school_year', $schoolyear)->where('semester', 'ilike', "%$semester%")->get()->pluck('id');
+        $period = Period::where('school_year', $schoolyear)->where('semester', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$semester%")->get()->pluck('id');
         $student = Student::findOrFail($id)->load([
             'courses' =>  function($query) use($period) {
                 $query->whereIn('academic_period_id', $period);

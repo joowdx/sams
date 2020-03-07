@@ -19,9 +19,13 @@
                 <p class="text-muted">
                     {{ $student->schoolid ?? 'no school id set' }}
                 </p>
-                <strong><i class="fa-fw fad fa-ball-pile mr-1"></i> Department </strong>
+                <strong><i class="fa-fw fad fa-solar-system mr-1"></i> Program </strong>
                 <p class="text-muted">
-                    {{ $student->department->name ?? 'no department set' }}
+                    {{ $student->program->name ?? 'no program set' }}
+                </p>
+                <strong><i class="fa-fw fad fa-university mr-1"></i> Department </strong>
+                <p class="text-muted">
+                    {{ $student->department()->name ?? 'no department set' }}
                 </p>
             </div>
         </div>

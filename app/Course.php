@@ -3,13 +3,17 @@
 namespace App;
 
 use Carbon\Carbon;
-use App\Event;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+
+    protected $with = [
+        'room', 'academic_period'
+    ];
+
     protected $fillable = [
-        'code', 'title', 'description', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'room_id',
+        'code', 'title', 'description', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'reader_id',
     ];
 
     public static function currentcourses($schoolyear = null, $semester = null)
@@ -21,7 +25,7 @@ class Course extends Model
 
     public function room()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Reader::class, 'room_id', 'id');
     }
 
     public function faculty()

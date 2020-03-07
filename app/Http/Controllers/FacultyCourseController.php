@@ -16,7 +16,7 @@ class FacultyCourseController extends Controller
     public function index(Faculty $faculty)
     {
         return view('faculties.courses.index', compact('faculty'))->with([
-            'contentheader' => "$faculty->name's Courses",
+            'contentheader' => preg_match('/s$/', $faculty->name) ? "$faculty->name' Courses" :  "$faculty->name's Courses",
             'breadcrumbs' => [
                 [
                     'text' => 'Faculties',

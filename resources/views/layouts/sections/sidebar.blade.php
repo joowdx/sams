@@ -5,21 +5,18 @@
         <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
     </a>
     <div class="sidebar">
-        @if (Auth::check())
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <div class="img-circle elavation-2"></div>
-                    {{-- <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> --}}
-                    <i class="fad fa-user-secret fa-fw fa-2x" style="color: #ecf0f1"></i>
-                </div>
-                <div class="info">
-                    <a href="/profile" class="d-block">{{ Auth::user()->name }}</a>
-                </div>
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <div class="img-circle elavation-2"></div>
+                {{-- <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> --}}
+                <i class="fad fa-user-secret fa-fw fa-2x" style="color: #ecf0f1"></i>
             </div>
-        @endif
+            <div class="info">
+                <a href="/profile" class="d-block">{{ Auth::user()->name }}</a>
+            </div>
+        </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @can('aview', App\User::class)
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fad fa-bug fa-fw"></i>
@@ -61,7 +58,13 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiod*') ? 'active' : '' }}">
+                    <a href="{{ route('readers.index') }}" class="nav-link {{ request()->is('readers*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-signal-stream fa-fw"></i>
+                        <p> Readers </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiods*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-calendar-week fa-fw"></i>
                         <p> Periods </p>
                     </a>
@@ -73,45 +76,35 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('events.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-atom-alt fa-fw"></i>
+                    <a href="{{ route('programs.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-solar-system fa-fw"></i>
                         <p> Programs </p>
                     </a>
                 </li>
-                @endcan
-                {{-- @endcan --}}
-                @can('rview', App\User::class)
-                <li class="nav-item">
-                    <a href="{{ route('courses.index') }}" class="nav-link {{ request()->is('courses*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-book-spells fa-fw"></i>
-                        <p> Courses </p>
-                    </a>
-                </li>
-                @endcan
-                @can('hview', App\User::class)
                 <li class="nav-item">
                     <a href="{{ route('faculties.index') }}" class="nav-link {{ request()->is('faculties*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-chalkboard-teacher fa-fw"></i>
                         <p> Faculties </p>
                     </a>
                 </li>
-                @endcan
-                @can('fview', App\User::class)
                 <li class="nav-item">
                     <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-users-class fa-fw"></i>
                         <p> Students </p>
                     </a>
                 </li>
-                @endcan
-                @can('aview', App\User::class)
+                <li class="nav-item">
+                    <a href="{{ route('courses.index') }}" class="nav-link {{ request()->is('courses*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-book-spells fa-fw"></i>
+                        <p> Courses </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
                         <i class="nav-icon fad fa-users-crown fa-fw"></i>
                         <p> Users </p>
                     </a>
                 </li>
-                @endcan
             </ul>
         </nav>
     </div>

@@ -2,6 +2,7 @@
 
 @section('styles')
 <style>
+
 </style>
 @endsection
 
@@ -14,10 +15,7 @@
                     <i class="fad fa-hashtag"></i>
                 </th>
                 <th>
-                    Name
-                </th>
-                <th>
-                    Type
+                    Reader
                 </th>
                 <th>
                     Modified
@@ -25,26 +23,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
-            <tr onclick="window.location='{{ route('users.show', [$user->id]) }}'" style="cursor: pointer">
+            @foreach ($readers as $reader)
+            <tr onclick="window.location='{{ route('readers.show', [$reader->id]) }}'" style="cursor: pointer">
                 <td class="align-middle">
                     {{ $loop->iteration }}
                 </td>
-                <td class="align-middle">
-                    <small>{{ '@'.$user->username }}</small>
-                    <br>
-                    <b>{{ $user->name }}</b>
-                </td>
-                <td class="align-middle">
-                    <b>{{ ucfirst($user->type) }}</b>
+                <td>
+                    <p class="m-0 p-0">
+                        <small>{{ ucfirst($reader->type) }}</small> <b> {{ $reader->name }} </b>
+                    </p>
+                    <small>
+                        IP: {{ $reader->ip ?? 'Not set' }}
+                    </small>
                 </td>
                 <td class="align-middle">
                     <small>
-                        {{ $user->created_at == $user->updated_at ? 'Created' : 'Updated' }}
+                        {{ $reader->created_at == $reader->updated_at ? 'Created' : 'Updated' }}
+                        {{-- by {{ @$faculty->modify->name ?? 'unknown' }} --}}
                     </small>
-
                     <br>
-                    {{ $user->updated_at->format('F d, Y H:i') }}
+                    {{ $reader->updated_at->format('F d, Y H:i') }}
                 </td>
             </tr>
             @endforeach

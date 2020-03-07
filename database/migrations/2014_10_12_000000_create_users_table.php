@@ -22,8 +22,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->enum('type',['admin','h.r.','d.o.','faculty','student','depthead']);
+            $table->unsignedBigInteger('faculty_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\AcademicPeriod;
+use App\AcademicPeriod as Period;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,8 @@ class AcademicPeriodController extends Controller
     public function index()
     {
         return view('academicperiods.index')->with([
-            'academicperiods' => AcademicPeriod::all(),
+            'contentheader' => 'Academic Periods',
+            'periods' => Period::all(),
         ]);
     }
 
@@ -44,24 +45,40 @@ class AcademicPeriodController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\AcademicPeriod  $academicPeriod
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(AcademicPeriod $academicPeriod)
+    public function show($id)
     {
-        //
+        return $this->edit($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\AcademicPeriod  $academicPeriod
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(AcademicPeriod $academicperiod)
+    public function edit($id)
     {
-        return view('academicperiods.edit', compact('academicperiod'))->with([
-
+        abort_unless(is_numeric($id), 404);
+        abort_unless($period = Period::find($id), 404);
+        return view('academicperiods.edit', [
+            'contentheader' => 'Edit',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Periods',
+                    'link' => route('academicperiods.index'),
+                ],
+                [
+                    'text' => $period->name(),
+                    'link' => route('academicperiods.show', $period->id),
+                ],
+                [
+                    'text' => 'Edit',
+                ]
+            ],
+            'period' => $period,
         ]);
     }
 
@@ -69,7 +86,7 @@ class AcademicPeriodController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\AcademicPeriod  $academicperiod
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, AcademicPeriod $academicperiod)

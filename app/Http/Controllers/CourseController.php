@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\AcademicPeriod;
+use App\AcademicPeriod as Period;
 use App\Course;
 use App\Faculty;
 use App\Student;
+use App\Reader;
 use App\User;
 use App\Log;
 use Carbon\CarbonPeriod;
@@ -46,8 +47,9 @@ class CourseController extends Controller
                     'text' => 'Info'
                 ]
             ],
-            'faculties' => Faculties::all(),
-            'students' => Students::all(),
+            'faculties' => Faculty::all(),
+            'students' => Student::all(),
+            'rooms' => Reader::rooms(),
         ]);
     }
 
@@ -70,7 +72,7 @@ class CourseController extends Controller
             'time_from' => 'required|string',
             'time_to' => 'required|string',
             'units' => 'required|string|numeric|digits:1',
-            'room_id' => 'nullable|string|numeric|exists:room,id',
+            'reader_id' => 'nullable|string|numeric|exists:reader,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
         ]);
         Course::create($request->all());
@@ -130,6 +132,7 @@ class CourseController extends Controller
             ],
             'students' => Student::all(),
             'faculties' => Faculty::all(),
+            'rooms' => Reader::rooms(),
         ]);
     }
 
@@ -155,7 +158,7 @@ class CourseController extends Controller
             'time_from' => 'required_if:type,info|string',
             'time_to' => 'required_if:type,info|string',
             'units' => 'required_if:type,info|string|numeric|digits:1',
-            'room_id' => 'nullable|string|numeric|exists:room,id',
+            'reader_id' => 'nullable|string|numeric|exists:reader,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
             'students' => 'nullable|array',
             'students.*' => 'numeric|exists:students,id',
@@ -163,7 +166,7 @@ class CourseController extends Controller
 
         switch($request->type) {
             case 'info': {
-                $ap = AcademicPeriod::firstOrCreate([
+                $ap = Period::firstOrCreate([
                     'semester' => $request->semester,
                     'term' => $request->semester == 'SUMMER' ? 'SUMMER' : $request->term,
                 ]);

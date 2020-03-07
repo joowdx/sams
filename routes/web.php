@@ -19,14 +19,16 @@ use Carbon\CarbonPeriod;
 
 Auth::routes(['register' => false]);
 Route::middleware(['auth'])->group(function() {
-    // Route::any('/', 'HomeController')->name('home');
     Route::permanentRedirect('/', 'dashboard');
+    Route::permanentRedirect('/home', 'dashboard');
     Route::any('dashboard', 'DashboardController')->name('dashboard');
     Route::any('profile', 'ProfileController')->name('profile');
     Route::any('statistics', 'StatsController')->name('statistics');
+    Route::any('attendance', 'AttendanceController')->name('attendance');
     Route::any('map', 'MapController@index')->name('map');
-    Route::any('calendar', 'CalendarController@index')->name('calendar');
+    Route::any('calendar', 'CalendarController')->name('calendar');
     Route::resource('tags', 'TagController')->only(['index', 'store']);
+    Route::resource('readers', 'ReaderController');
     Route::resource('academicperiods', 'AcademicPeriodController');
     Route::resource('events', 'EventController');
     Route::resource('courses', 'CourseController');

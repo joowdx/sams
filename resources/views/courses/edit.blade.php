@@ -101,7 +101,7 @@
                         <div class="form-group row">
                             <label for="day_from" class="col-md-4 col-form-label text-md-right">Day</label>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 pr-1">
                                 <select id="day_from" name="day_from" class="selectpicker" title="FROM" data-width="100%">
                                     <option value="Mon" {{ (old('day_from') ?? $course->day_from) == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ (old('day_from') ?? $course->day_from) == 'Tue' ? 'selected' : '' }}> Tuesday </option>
@@ -119,7 +119,7 @@
                             </span>
                             @enderror
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 pl-1">
                                 <select id="day_to" name="day_to" class="selectpicker" title="TO" data-width="100%">
                                     <option value="Mon" {{ (old('day_to') ?? $course->day_to) == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ (old('day_to') ?? $course->day_to) == 'Tue' ? 'selected' : '' }}> Tuesday </option>
@@ -140,7 +140,7 @@
                         <div class="form-group row">
                             <label for="time_from" class="col-md-4 col-form-label text-md-right">Time</label>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 pr-1">
                                 <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" autocomplete="new-time_from" placeholder="FROM" value="{{ old('time_from') ?? $course->time_from }}">
 
                                 @error('time_from')
@@ -150,10 +150,29 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 pl-1">
                                 <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" autocomplete="new-time_to" placeholder="TO" value="{{ old('time_to') ?? $course->time_to }}">
 
                                 @error('time_to')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="room" class="col-md-4 col-form-label text-md-right">Room</label>
+
+                            <div class="col-md-6">
+                                <select id="room" name="reader_id" class="selectpicker" data-placeholder="ROOM" data-width="100%">
+                                    <option></option>
+                                    @foreach ($rooms as $room)
+                                        <option value="{{ $room->id }}" {{ (old('reader_id') ?? $course->room->id)  == $room->id ? 'selected' : '' }}> {{ $room->name }} </option>
+                                    @endforeach
+                                </select>
+
+                                @error('reader_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

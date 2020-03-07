@@ -18,6 +18,9 @@
                     Name
                 </th>
                 <th style="width: 5">
+                    Department
+                </th>
+                <th style="width: 5">
                     Head
                 </th>
                 <th style="width: 1">
@@ -29,32 +32,41 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($departments as $department)
-            <tr onclick="window.location='{{ route('departments.show', [$department->id]) }}'" style="cursor: pointer">
+            @foreach ($programs as $program)
+            <tr onclick="window.location='{{ route('programs.show', [$program->id]) }}'" style="cursor: pointer">
                 <td class="align-middle">
                     {{ $loop->iteration }}
                 </td>
                 <td>
                     <li class="list-inline-item">
-                        <b>{{ $department->shortname }}</b>
+                        <b>{{ $program->shortname }}</b>
                         <br>
                         <small>
-                            {{ $department->name }}
+                            {{ $program->name }}
+                        </small>
+                    </li>
+                </td>
+                <td>
+                    <li class="list-inline-item">
+                        <b>{{ $program->department->shortname }}</b>
+                        <br>
+                        <small>
+                            {{ $program->department->name }}
                         </small>
                     </li>
                 </td>
                 <td>
                     <small>
-                        {{ $department->faculty->uid ?? '' }}
+                        {{ $program->faculty->uid ?? '' }}
                     </small>
                     <br>
-                    {{ $department->faculty->name ?? '' }}
+                    {{ $program->faculty->name ?? '' }}
                 </td>
                 <td class="align-middle">
-                    {{ $department->faculties->count() }}
+                    {{ $program->faculties->count() }}
                 </td>
                 <td class="align-middle">
-                    {{ $department->students->count() }}
+                    {{ $program->students->filter(function($s) { return $s->enrolled(); } )->count() }}
                 </td>
             </tr>
             @endforeach

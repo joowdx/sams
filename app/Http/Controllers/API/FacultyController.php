@@ -27,7 +27,7 @@ class FacultyController extends Controller
         );
         $schoolyear = $request->schoolyear ??  Period::currentschoolyear();
         $semester =  $request->semester ?? Period::currentsemester();
-        $period = Period::where('school_year', $schoolyear)->where('semester', 'like', "%$semester%")->get()->pluck('id');
+        $period = Period::where('school_year', $schoolyear)->where('semester', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$semester%")->get()->pluck('id');
         return FacultyAttendance::collection(Faculty::with([
             'logs',
             'logs.course',

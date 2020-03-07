@@ -4,11 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class Reader extends Model
 {
     protected $fillable = [
-        'name',
+        'name', 'ip', 'type',
     ];
+
+    public static function rooms()
+    {
+        return Reader::where(['type' => 'room'])->get();
+    }
+
+    public static function gates()
+    {
+        return Reader::where(['type' => 'gate'])->get();
+    }
 
     public function courses()
     {

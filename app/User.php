@@ -38,12 +38,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function created_students() {
-        return $this->hasMany(Student::class, 'created_by');
-    }
-
-    public function created_faculties() {
-        return $this->hasMany(Faculty::class, 'created_by');
+    public function faculty()
+    {
+        return $this->hasOne(Faculty::class);
     }
 
 }

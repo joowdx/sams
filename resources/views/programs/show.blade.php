@@ -12,17 +12,17 @@
         <div class="card card-outline">
             <div class="card-body box-profile">
                 <h3 class="profile-username">
-                    {{ $department->name }}
+                    {{ $program->name }}
                 </h3>
                 <hr>
-                <strong><i class="fa-fw fad fa-book mr-1"></i> Description </strong>
+                <strong><i class="fa-fw fad fa-university mr-1"></i> Department </strong>
                 <p class="text-muted">
-                    {{ $department->description ?? 'no description given' }}
+                    {{ $program->department->name ?? 'no department given' }}
                 </p>
                 <hr>
                 <strong><i class="fa-fw fad fa-user-crown mr-1"></i> Head </strong>
                 <p class="text-muted mb-0">
-                    {{ @$department->faculty->name ?? 'no department head set' }}
+                    {{ @$program->faculty->name ?? 'no program head set' }}
                 </p>
             </div>
         </div>
@@ -31,13 +31,13 @@
                 <strong><i class="fa-fw fad fa-info mr-1"></i> Other info </strong>
                 <ul class="list-group list-group-unbordered my-3">
                     <li class="list-group-item">
-                        <b>Faculties</b> <a class="float-right">{{ $department->faculties->count() }}</a>
+                        <b>Faculties</b> <a class="float-right">{{ $program->faculties->count() }}</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Students</b> <a class="float-right">{{ $department->students->count() }}</a>
+                        <b>Students</b> <a class="float-right">{{ $program->students->count() }}</a>
                     </li>
                     <li class="list-group-item">
-                        {{-- <b>Courses</b> <a class="float-right">{{ $department->courses->count() }}</a> --}}
+                        {{-- <b>Courses</b> <a class="float-right">{{ $program->courses->count() }}</a> --}}
                     </li>
                 </ul>
             </div>
@@ -47,56 +47,13 @@
         <div class="card">
             <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#programs" data-toggle="tab">Programs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#faculties" data-toggle="tab">Faculties</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#faculties" data-toggle="tab">Faculties</a></li>
                     <li class="nav-item"><a class="nav-link" href="#students" data-toggle="tab">Students</a></li>
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="active tab-pane" id="programs">
-                        <div class="p-2" style="display: block;">
-                            <table class="table table-borderless table-hover projects">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <i class="fad fa-hashtag"></i>
-                                        </th>
-                                        <th>
-                                            Name
-                                        </th>
-                                        <th>
-                                            Head
-                                        </th>
-                                        <th>
-                                            Population
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($department->programs as $program)
-                                    <tr onclick="window.location='{{ route('programs.show', [$program->id]) }}'" style="cursor: pointer">
-                                        <td class="align-middle">
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td class="align-middle">
-                                            <b>{{ $program->shortname }}</b> <br>
-                                            <small> {{ $program->name }} </small>
-                                        </td>
-                                        <td class="align-middle">
-                                            <b>{{ $program->faculty->name }}</b> <br>
-                                            <small> {{ $program->faculty->description }} </small>
-                                        </td>
-                                        <td class="align-middle">
-                                            <b>{{ $program->students->count() }}</b>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="faculties">
+                    <div class="active tab-pane" id="faculties">
                         <div class="p-2" style="display: block;">
                             <table class="table table-borderless table-hover projects">
                                 <thead>
@@ -116,7 +73,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($department->faculties as $faculty)
+                                    @foreach ($program->faculties->filter(function($f) { return $f->loads(); }) as $faculty)
                                     <tr onclick="window.location='{{ route('faculties.show', [$faculty->id]) }}'" style="cursor: pointer">
                                         <td class="align-middle">
                                             {{ $loop->iteration }}
@@ -159,7 +116,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($department->students as $student)
+                                    @foreach ($program->students as $student)
                                     <tr onclick="window.location='{{ route('students.show', [$student->id]) }}'" style="cursor: pointer">
                                         <td class="align-middle">
                                             {{ $loop->iteration }}
@@ -172,7 +129,7 @@
                                             <b>{{ $student->name }}</b>
                                         </td>
                                         <td class="align-middle">
-                                            <b>{{ $student->program->shortname }}</b> <br>
+                                            <b>{{ $student->program->shortname }}</b><br>
                                             <small> {{ $student->program->name }} </small>
                                         </td>
                                     </tr>

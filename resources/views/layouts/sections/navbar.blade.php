@@ -1,14 +1,19 @@
 <nav class="main-header navbar navbar-expand navbar-dark">
     <ul class="navbar-nav">
-        @if(Auth::check())
+        @auth
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fad fa-bars"></i></a>
         </li>
-        @endif
         <li class="nav-item d-inline-block">
             <a href="{{ route('dashboard') }}" class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
                 <i class="fad fa-fw fa-chart-network"></i>
                 Dashboard
+            </a>
+        </li>
+        <li class="nav-item d-inline-block">
+            <a href="{{ route('attendance') }}" class="nav-link {{ Route::is('attendance') ? 'active' : '' }}">
+                <i class="fad fa-fw fa-badge-check"></i>
+                Attendance
             </a>
         </li>
         <li class="nav-item d-inline-block">
@@ -29,6 +34,7 @@
                 Tags
             </a>
         </li>
+        @endauth
     </ul>
     <ul class="navbar-nav ml-auto">
         @guest

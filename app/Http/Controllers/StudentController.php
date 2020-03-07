@@ -86,6 +86,9 @@ class StudentController extends Controller
         // });
         abort_unless(is_numeric($id), 404);
         abort_unless($student = Student::find($id)->load(['logs', 'logs.course']), 404);
+        abort_unless($student = Student::find($id)->load([
+            'program', 'program.department'
+        ]), 404);
         return view('students.show', [
             'contentheader' => $student->name,
             'breadcrumbs' => [

@@ -25,6 +25,7 @@ class CreateLogsTable extends Migration
             $table->enum('remarks', ['ok', 'late', 'excuse', 'absent', 'leave', 'entry', 'exit']);
             $table->enum('process', ['default', 'auto', 'overwritten', 'manual'])->default('default');
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 

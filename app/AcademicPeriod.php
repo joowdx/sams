@@ -14,14 +14,42 @@ class AcademicPeriod extends Model
         'start', 'end',
     ];
 
+    private static $currentschoolyear, $currentsemester, $current;
+
+    private static $periods = [];
+
+    private static function setcurrent($get = null)
+    {
+        $current = AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->first();
+        AcademicPeriod::$currentschoolyear = $current->school_year;
+        AcademicPeriod::$currentsemester = $current->semester;
+        AcademicPeriod::$current = AcademicPeriod::where('school_year', AcademicPeriod::$currentschoolyear)->where('semester', AcademicPeriod::$currentsemester)->get();
+        AcademicPeriod::$periods[AcademicPeriod::$currentschoolyear.AcademicPeriod::$currentsemester] = AcademicPeriod::$current;
+        switch($get) {
+            case 'sy': return AcademicPeriod::$currentschoolyear;
+            case 'sm': return AcademicPeriod::$currentsemester;
+            case 'cr': return AcademicPeriod::$current;
+        }
+    }
+
     public static function currentschoolyear()
     {
-        return AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->first()->pluck('school_year')->unique()->first();
+        return AcademicPeriod::$currentschoolyear ?? AcademicPeriod::setcurrent('sy');
     }
 
     public static function currentsemester()
     {
-        return AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->first()->pluck('semester')->unique()->first();
+        return AcademicPeriod::$currentsemester ?? AcademicPeriod::setcurrent('sm');
+    }
+
+    public static function current()
+    {
+        return AcademicPeriod::$current ?? AcademicPeriod::setcurrent('cr');
+    }
+
+    public static function period($schoolyear = null, $semester = null)
+    {
+        return AcademicPeriod::$periods[$schoolyear.$semester] ?? AcademicPeriod::$periods[$schoolyear.$semester] = AcademicPeriod::where('school_year', $schoolyear)->where('semester', $semester)->get();
     }
 
     public function courses()
@@ -57,5 +85,15 @@ class AcademicPeriod extends Model
     public function iscurrentperiod()
     {
         return now()->between($this->start, $this->end);
+    }
+
+    public function name()
+    {
+        if($this->term != 'SEMESTER' && $this->semester != 'SUMMER') {
+            return "$this->semester Sem - $this->term Term ($this->school_year)";
+        }
+        else {
+            return $this->semester . ($this->semester  == 'SUMMER' ? '' : 'Sem') . " ($this->school_year)";
+        }
     }
 }

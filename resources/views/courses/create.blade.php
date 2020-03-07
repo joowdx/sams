@@ -2,9 +2,6 @@
 
 @section('styles')
 <style>
-.form-control {
-    border: 0;
-}
 #add {
   position: fixed; /* Fixed/sticky position */
   bottom: 20px; /* Place the button at the bottom of the page */
@@ -62,7 +59,7 @@
                             <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
 
                             <div class="col-md-6">
-                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" required autocomplete="new-title" placeholder="TITLE"  value="{{ old('title') }}">
+                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" autocomplete="new-title" placeholder="TITLE"  value="{{ old('title') }}">
 
                                 @error('title')
                                 <span class="invalid-feedback" role="alert">
@@ -76,7 +73,7 @@
                             <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
 
                             <div class="col-md-6">
-                                <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" required autocomplete="new-description" placeholder="DESCRIPTION"  value="{{ old('description') }}">
+                                <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" autocomplete="new-description" placeholder="DESCRIPTION"  value="{{ old('description') }}">
 
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
@@ -90,7 +87,8 @@
                             <label for="semester" class="col-md-4 col-form-label text-md-right">Semester</label>
 
                             <div class="col-md-6">
-                                <select id="semester" name="semester" class="selectpicker" title="SEMESTER" data-width="100%">
+                                <select id="semester" name="semester" class="selectpicker" data-placeholder="SEMESTER" data-width="100%">
+                                    <option></option>
                                     <option value="1ST" {{ old('semester') == '1ST' ? 'selected' : '' }}> 1ST </option>
                                     <option value="2ND" {{ old('semester') == '2ND' ? 'selected' : '' }}> 2ND </option>
                                     <option value="SUMMER" {{ old('semester') == 'SUMMER' ? 'selected' : '' }}> SUMMER </option>
@@ -108,7 +106,8 @@
                             <label for="term" class="col-md-4 col-form-label text-md-right">Term</label>
 
                             <div class="col-md-6">
-                                <select id="term" name="term" class="selectpicker" title="TERM" data-width="100%">
+                                <select id="term" name="term" class="selectpicker" data-placeholder="TERM" data-width="100%">
+                                    <option></option>
                                     <option value="1ST" {{ old('term') == '1ST' ? 'selected' : '' }}> 1ST </option>
                                     <option value="2ND" {{ old('term') == '2ND' ? 'selected' : '' }}> 2ND </option>
                                     <option value="SEMESTER" {{ old('term') == 'SUMMER' ? 'selected' : '' }}> SEMESTER </option>
@@ -122,12 +121,12 @@
                             </div>
                         </div>
 
-
                         <div class="form-group row">
                             <label for="day_from" class="col-md-4 col-form-label text-md-right">Day</label>
 
-                            <div class="col-md-3">
-                                <select id="day_from" name="day_from" class="selectpicker" title="FROM" data-width="100%">
+                            <div class="col-md-3 pr-1">
+                                <select id="day_from" name="day_from" class="selectpicker" data-placeholder="FROM" data-width="100%">
+                                    <option></option>
                                     <option value="Mon" {{ old('day_from') == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ old('day_from') == 'Tue' ? 'selected' : '' }}> Tuesday </option>
                                     <option value="Wed" {{ old('day_from') == 'Wed' ? 'selected' : '' }}> Wednesday </option>
@@ -144,8 +143,9 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
-                                <select id="day_to" name="day_to" class="selectpicker" title="TO" data-width="100%">
+                            <div class="col-md-3 pl-1">
+                                <select id="day_to" name="day_to" class="selectpicker" data-placeholder="TO" data-width="100%">
+                                    <option></option>
                                     <option value="Mon" {{ old('day_to') == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ old('day_to') == 'Tue' ? 'selected' : '' }}> Tuesday </option>
                                     <option value="Wed" {{ old('day_to') == 'Wed' ? 'selected' : '' }}> Wednesday </option>
@@ -166,8 +166,8 @@
                         <div class="form-group row">
                             <label for="time_from" class="col-md-4 col-form-label text-md-right">Time</label>
 
-                            <div class="col-md-3">
-                                <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" required autocomplete="new-time_from" oninput="this.value=this.value.replace(/[^\d]/,'')" placeholder="FROM" value="{{ old('time_from') }}">
+                            <div class="col-md-3 pr-1">
+                                <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" autocomplete="new-time_from" placeholder="FROM" value="{{ old('time_from') }}">
 
                                 @error('time_from')
                                 <span class="invalid-feedback" role="alert">
@@ -176,10 +176,29 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
-                                <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" required autocomplete="new-time_to" oninput="this.value=this.value.replace(/[^\d]/,'')" placeholder="TO" value="{{ old('time_to') }}">
+                            <div class="col-md-3 pl-1">
+                                <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" autocomplete="new-time_to" placeholder="TO" value="{{ old('time_to') }}">
 
                                 @error('time_to')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="room" class="col-md-4 col-form-label text-md-right">Room</label>
+
+                            <div class="col-md-6">
+                                <select id="room" name="reader_id" class="selectpicker" data-placeholder="ROOM" data-width="100%">
+                                    <option></option>
+                                    @foreach ($rooms as $room)
+                                        <option value="{{ $room->id }}" {{ old('reader_id') == $room->id ? 'selected' : '' }}> {{ $room->name }} </option>
+                                    @endforeach
+                                </select>
+
+                                @error('reader_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::any('logs', 'API\LogController');
+Route::any('logs', 'API\LogController')->middleware('reader');
 Route::any('tags', 'API\TagController');
 Route::resource('users', 'API\Usercontroller');
 Route::resource('faculties', 'API\FacultyController');

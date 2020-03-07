@@ -19,6 +19,7 @@ class CourseStudentTable extends Migration
             $table->enum('status', ['dropped', 'warning'])->nullable();
             $table->boolean('dismissed')->default(false);
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 
