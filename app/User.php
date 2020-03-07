@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     public function faculty()
     {
-        return $this->hasOne(Faculty::class);
+        return $this->belongsTo(Faculty::class);
     }
 
 }

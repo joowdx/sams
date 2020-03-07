@@ -9,8 +9,10 @@ use App\Student;
 use App\Reader;
 use App\User;
 use App\Log;
+use App\Program;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -21,10 +23,15 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $this->authorize('rview', User::class);
+        // $course = null;
+        // $user = Auth::user();
+        // $user = Auth::user();
+        // if($user->faculty && $user->type != 'admin') {
+        //     $courses = $user->faculty->courses();
+        // }
         return view('courses.index', [
             'contentheader' => 'Courses',
-            'courses' => Course::with(['faculty'])->get(),
+            'courses' => $courses ?? Course::with(['faculty'])->get(),
             'current' => Course::currentcourses(),
         ]);
     }
@@ -36,6 +43,7 @@ class CourseController extends Controller
      */
     public function create()
     {
+        $this->authorize('courses_data', User::class);
         return view('courses.create', [
             'contentheader' => 'Create',
             'breadcrumbs' => [
@@ -61,6 +69,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('courses_data', User::class);
         $request->validate([
             'code' => 'required|string|numeric|digits_between:0,7',
             'title' => 'required|string|max:10',
@@ -115,6 +124,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
+        $this->authorize('courses_data', User::class);
         return view('courses.edit', compact('course'))->with([
             'contentheader' => 'Edit',
             'breadcrumbs' => [
@@ -145,7 +155,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-
+        $this->authorize('courses_data', User::class);
         $request->validate([
             'type' => 'required|string|in:info,students',
             'code' => 'required_if:type,info|string|numeric|digits_between:0,7',

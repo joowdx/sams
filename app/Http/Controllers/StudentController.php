@@ -18,7 +18,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $this->authorize('fview', User::class);
+        // $this->authorize('faculty_view', User::class);
+
         return view('students.index', [
             'contentheader' => 'Students',
             'students' => Student::all(),
@@ -33,7 +34,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', User::class);
+        $this->authorize('students_data', User::class);
         return view('students.create', [
             'contentheader' => 'Create',
             'breadcrumbs' => [
@@ -57,7 +58,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', User::class);
+        $this->authorize('students_data', User::class);
         $request->validate([
             'uid' => 'sometimes|numeric|unique:students,uid',
             'schoolid' => 'sometimes|numeric|unique:students,schoolid',
@@ -117,6 +118,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('students_data', User::class);
         abort_unless(is_numeric($id), 404);
         abort_unless($student = Student::find($id), 404);
         return view('students.edit', [
@@ -148,7 +150,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('update', User::class);
+        $this->authorize('students_data', User::class);
         $request->validate([
             'id' => 'required|numeric|exists:students,id',
             'uid' => 'sometimes|numeric|unique:students,uid,'.$id,
@@ -169,7 +171,7 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete', User::class);
+        $this->authorize('students_data', User::class);
         abort_unless(is_numeric($id), 404);
         abort_unless($department = Student::find($id), 404);
         $student->delete();

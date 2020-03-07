@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Program;
 use App\Faculty;
 use App\Department;
+use App\User;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -16,6 +17,8 @@ class ProgramController extends Controller
      */
     public function index()
     {
+        $this->authorize('programs_data', User::class);
+
         return view('programs.index', [
             'contentheader' => 'Programs',
             'programs' => Program::with([
@@ -33,6 +36,8 @@ class ProgramController extends Controller
      */
     public function create()
     {
+        $this->authorize('programs_data', User::class);
+
         return view('programs.create', [
             'contentheader' => 'Create',
             'breadcrumbs' => [
@@ -57,6 +62,8 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('programs_data', User::class);
+
         $request->validate([
             'name' => 'required|string|unique:programs,name',
             'shortname' => 'required|string|max:20|unique:programs,shortname',
@@ -75,6 +82,8 @@ class ProgramController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('programs_data', User::class);
+
         abort_unless(is_numeric($id), 404);
         abort_unless($program = Program::find($id)->load([
             'faculty',
@@ -108,6 +117,8 @@ class ProgramController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('programs_data', User::class);
+
         abort_unless(is_numeric($id), 404);
         abort_unless($program = Program::find($id), 404);
         return view('programs.edit', [
@@ -138,6 +149,8 @@ class ProgramController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('programs_data', User::class);
+
         $request->validate([
             'name' => 'required|string|unique:programs,name,'.$id,
             'shortname' => 'required|string|max:20|unique:programs,name,'.$id,
@@ -155,6 +168,8 @@ class ProgramController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('programs_data', User::class);
+
         abort_unless(is_numeric($id), 404);
         abort_unless($department = Department::find($id), 404);
         $department->delete();

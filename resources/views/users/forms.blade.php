@@ -4,13 +4,10 @@
         <div class="col-md-6">
             <select class="custom-select type" id="type" name="type">
                 @foreach([
-                "admin"     =>  "Admin",
-                "d.o."      =>  "Deans Office",
-                "h.r."      =>  "Human Resouce",
-                "faculty"   =>  "Faculty",
-                "depthead"  =>  "Department Head",
-                "student"   =>  "Student",
-                ] as $type  => $user_label)
+                "admin"         =>  "Admin",
+                "h.r."          =>  "Human Resouce",
+                "faculty"       =>  "Faculty",
+                ] as $type      => $user_label)
                 <option value="{{ $type }}">{{ $user_label }}</option>
                 @endforeach
             </select>

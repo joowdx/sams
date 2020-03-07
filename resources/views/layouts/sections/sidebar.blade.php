@@ -17,6 +17,7 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @can('admin_view', App\User::class)
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fad fa-bug fa-fw"></i>
@@ -63,48 +64,70 @@
                         <p> Readers </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiods*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-calendar-week fa-fw"></i>
-                        <p> Periods </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('departments.index') }}" class="nav-link {{ request()->is('departments*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-university fa-fw"></i>
-                        <p> Departments </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('programs.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-solar-system fa-fw"></i>
-                        <p> Programs </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('faculties.index') }}" class="nav-link {{ request()->is('faculties*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-chalkboard-teacher fa-fw"></i>
-                        <p> Faculties </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-users-class fa-fw"></i>
-                        <p> Students </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('courses.index') }}" class="nav-link {{ request()->is('courses*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-book-spells fa-fw"></i>
-                        <p> Courses </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
-                        <i class="nav-icon fad fa-users-crown fa-fw"></i>
-                        <p> Users </p>
-                    </a>
-                </li>
+                @endcan
+
+                @can('admin_view', App\User::class)
+                    <li class="nav-item">
+                        <a href="{{ route('academicperiods.index') }}" class="nav-link {{ request()->is('academicperiods*') ? 'active' : '' }}">
+                            <i class="nav-icon fad fa-calendar-week fa-fw"></i>
+                            <p> Periods </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('admin_view', App\User::class)
+                    <li class="nav-item">
+                        <a href="{{ route('departments.index') }}" class="nav-link {{ request()->is('departments*') ? 'active' : '' }}">
+                            <i class="nav-icon fad fa-university fa-fw"></i>
+                            <p> Departments </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('programs_view', App\User::class)
+                    <li class="nav-item">
+                        <a href="{{ route('programs.index') }}" class="nav-link {{ request()->is('events*') ? 'active' : '' }}">
+                            <i class="nav-icon fad fa-solar-system fa-fw"></i>
+                            <p> Programs </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('courses_view', App\User::class)
+                    <li class="nav-item">
+                        <a href="{{ route('courses.index') }}" class="nav-link {{ request()->is('courses*') ? 'active' : '' }}">
+                            <i class="nav-icon fad fa-book-spells fa-fw"></i>
+                            <p> Courses </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('faculties_view', App\User::class)
+                    <li class="nav-item">
+                        <a href="{{ route('faculties.index') }}" class="nav-link {{ request()->is('faculties*') ? 'active' : '' }}">
+                            <i class="nav-icon fad fa-chalkboard-teacher fa-fw"></i>
+                            <p> Faculties </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('students_view', App\User::class)
+                    <li class="nav-item">
+                        <a href="{{ route('students.index') }}" class="nav-link {{ request()->is('students*') ? 'active' : '' }}">
+                            <i class="nav-icon fad fa-users-class fa-fw"></i>
+                            <p> Students </p>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('admin_view', App\User::class)
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
+                            <i class="nav-icon fad fa-users-crown fa-fw"></i>
+                            <p> Users </p>
+                        </a>
+                    </li>
+                @endcan
             </ul>
         </nav>
     </div>

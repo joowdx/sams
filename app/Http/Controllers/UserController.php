@@ -21,8 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->authorize('aview', User::class);
-
+        $this->authorize('users_data', User::class);
         return view('users.index', [
             'contentheader' => 'Users',
             'users' => User::all(),
@@ -36,6 +35,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('users_data', User::class);
         $user = new User();
         return view('users.create', compact('user'),[
             'faculties' => Faculty::all(),
@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function store(StoreValidation $request)
     {
-        $this->authorize('create', User::class);
+        $this->authorize('users_data', User::class);
         User::create($request->all())->update(['password' => Hash::make($request->input('password'))]);
         return redirect('users');
     }
@@ -63,7 +63,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        // $this->authorize('show', User::class);
+        $this->authorize('users_data', User::class);
         return $this->edit($user);
         return view('users.show', compact('user'))->with([
             'contentheader' => 'User Info',
@@ -87,7 +87,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $this->authorize('show', User::class);
+        $this->authorize('users_data', User::class);
         return view('users.edit', compact('user'))->with([
             'contentheader' => 'Update user',
             'breadcrumbs' => [
@@ -112,7 +112,7 @@ class UserController extends Controller
      */
     public function update(UpdateValidation $request, $id)
     {
-        $this->authorize('update', User::class);
+        $this->authorize('users_data', User::class);
         $user = User::findOrFail($id);
         $user->type     =   $request->type;
         $user->name     =   $request->name;
@@ -135,7 +135,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('delete', User::class);
+        $this->authorize('users_data', User::class);
         $user->delete();
 
         return redirect('users');

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Faculty;
 use App\User;
 use App\Course;
+use App\Program;
 use App\Student;
 use App\AcademicPeriod as Period;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FacultyController extends Controller
 {
@@ -18,10 +20,22 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $this->authorize('hview', User::class);
+
+        // return Auth::user()->faculty;
+        // $faculties = null;
+        // $user = Auth::user();
+        // if($user->faculty && $user->type != 'admin') {
+        //     if($user->faculty->isdepartmenthead()) {
+        //         $faculties = @Program::where(['department_id' => $user->faculty->department->id])->with(['faculties', 'faculties.courses', 'faculties.program', 'faculties.program.department'])->get()->pluck('faculties')[0];
+        //     } else if($user->faculty->isprogramhead()) {
+        //         $faculties = Faculty::with(['courses', 'program', 'program.department'])->where(['program_id' => $user->id])->get();
+        //     }
+        // }
+        // return $faculties;
+        // $this->authorize('hr_view', User::class);
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
-            'faculties' => Faculty::with(['courses', 'program', 'program.department'])->get(),
+            'faculties' => $faculties ?? Faculty::with(['courses', 'program', 'program.department'])->get(),
             'currentsemester' => Period::currentsemester(),
             'currentschoolyear' => Period::currentschoolyear(),
             'semesters' => Period::groupBy('semester')->get('semester')->pluck('semester'),
@@ -36,6 +50,9 @@ class FacultyController extends Controller
      */
     public function create()
     {
+
+        $this->authorize('faculties_data', User::class);
+
         return view('faculties.create')->with([
             'contentheader' => 'New faculty',
             'breadcrumbs' => [
@@ -58,6 +75,8 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('faculties_data', User::class);
+
         $request->validate([
             'uid' => 'required|string|numeric',
             'name' => 'required|string',
@@ -74,6 +93,8 @@ class FacultyController extends Controller
      */
     public function show(Faculty $faculty)
     {
+
+
         return view('faculties.show', compact('faculty'))->with([
             'contentheader' => 'Faculty',
             'courses'   => $faculty->ongoingcourses(),
@@ -98,6 +119,8 @@ class FacultyController extends Controller
      */
     public function edit(Faculty $faculty)
     {
+        $this->authorize('faculties_data', User::class);
+
         return view('faculties.edit', compact('faculty'))->with([
             'contentheader' => $faculty->name,
             'courses' => Course::all(),
@@ -122,6 +145,8 @@ class FacultyController extends Controller
      */
     public function update(Request $request, Faculty $faculty)
     {
+        $this->authorize('faculties_data', User::class);
+
         $request->validate([
             'type' => 'required|string|in:info,courses',
             'uid' => 'required_if:type,info|string|numeric',
@@ -151,6 +176,8 @@ class FacultyController extends Controller
      */
     public function destroy(Faculty $faculty)
     {
+        $this->authorize('faculties_data', User::class);
+
         $this->authorize('delete', User::class);
 
 

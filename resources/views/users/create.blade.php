@@ -37,7 +37,6 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
-
                 <div class="card-body">
                     <form method="POST" id="createform" action="{{ route('users.store') }}" autocomplete="off">
                         @include('users.forms')

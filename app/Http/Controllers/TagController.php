@@ -17,6 +17,7 @@ class TagController extends Controller
      */
     public function index()
     {
+        $this->authorize('admin_view', User::class);
         return view('tags.index', [
             'contentheader' => 'Tags',
         ]);

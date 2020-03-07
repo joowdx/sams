@@ -7,7 +7,9 @@
 @endsection
 
 @section('content')
-
+<div class="col-md-12">
+    <a href="{{ route('courses.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+</div>
 
 <div class="card">
     <div class="card-header p-2">

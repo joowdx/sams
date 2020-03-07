@@ -44,6 +44,7 @@ import 'datatables.net-buttons/js/buttons.flash.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
 import 'icheck-2/icheck.js'
+import 'chart.js/dist/Chart.js'
 
 import 'pace-js/pace.min.js'
 
@@ -60,9 +61,9 @@ import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import tippy from 'tippy.js'
-import svgPanZoon from 'svg-pan-zoom/dist/svg-pan-zoom.min.js';
+import svgPanZoom from 'svg-pan-zoom/dist/svg-pan-zoom.min.js';
 
-window.svgPanZoon = svgPanZoon
+window.svgPanZoom = svgPanZoom
 window.tippy = tippy
 window.Calendar = Calendar
 window.dayGridPlugin = dayGridPlugin

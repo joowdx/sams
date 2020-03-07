@@ -4,36 +4,46 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fad fa-bars"></i></a>
         </li>
+        @can('admin_view', App\User::class)
         <li class="nav-item d-inline-block">
             <a href="{{ route('dashboard') }}" class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
                 <i class="fad fa-fw fa-chart-network"></i>
                 Dashboard
             </a>
         </li>
+        @endcan
+        @can('attendance_view', App\User::class)
         <li class="nav-item d-inline-block">
             <a href="{{ route('attendance') }}" class="nav-link {{ Route::is('attendance') ? 'active' : '' }}">
                 <i class="fad fa-fw fa-badge-check"></i>
                 Attendance
             </a>
         </li>
-        <li class="nav-item d-inline-block">
-            <a href="{{ route('calendar') }}" class="nav-link {{ Route::is('calendar') ? 'active' : '' }}">
-                <i class="fad fa-fw fa-calendar-check"></i>
-                Calendar
-            </a>
-        </li>
-        <li class="nav-item d-inline-block">
-            <a href="{{ route('map') }}" class="nav-link {{ Route::is('map') ? 'active' : '' }}">
-                <i class="fad fa-fw fa-map-marker-alt"></i>
-                Map
-            </a>
-        </li>
+        @endcan
+        @can('calendar_view', App\User::class)
+            <li class="nav-item d-inline-block">
+                <a href="{{ route('calendar') }}" class="nav-link {{ Route::is('calendar') ? 'active' : '' }}">
+                    <i class="fad fa-fw fa-calendar-check"></i>
+                    Calendar
+                </a>
+            </li>
+        @endcan
+        @can('map_view', App\User::class)
+            <li class="nav-item d-inline-block">
+                <a href="{{ route('map') }}" class="nav-link {{ Route::is('map') ? 'active' : '' }}">
+                    <i class="fad fa-fw fa-map-marker-alt"></i>
+                    Map
+                </a>
+            </li>
+        @endcan
+        @can('admin_view', App\User::class)
         <li class="nav-item d-inline-block">
             <a href="{{ route('tags.index') }}" class="nav-link {{ Route::is('tag*') ? 'active' : '' }}">
                 <i class="fad fa-fw fa-tags"></i>
                 Tags
             </a>
         </li>
+        @endcan
         @endauth
     </ul>
     <ul class="navbar-nav ml-auto">
