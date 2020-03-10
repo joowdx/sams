@@ -1,5 +1,11 @@
 <nav class="main-header navbar navbar-expand navbar-dark">
     <ul class="navbar-nav">
+        @guest
+        <a href="index3.html" class="navbar-brand">
+            <img src="{{ asset('/assets/img/umdc.png') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
+        </a>
+        @endguest
         @auth
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fad fa-bars"></i></a>

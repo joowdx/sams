@@ -78,7 +78,7 @@ class FacultyController extends Controller
         $this->authorize('faculties_data', User::class);
 
         $request->validate([
-            'uid' => 'required|string|numeric',
+            'uid' => 'required|string',
             'name' => 'required|string',
         ]);
         Faculty::create($request->all());
@@ -149,7 +149,7 @@ class FacultyController extends Controller
 
         $request->validate([
             'type' => 'required|string|in:info,courses',
-            'uid' => 'required_if:type,info|string|numeric',
+            'uid' => 'required_if:type,info|string',
             'name' => 'required_if:type,info|string',
             'courses' => 'required_if:type,courses|array',
             'courses.*' => 'numeric|exists:courses,id',

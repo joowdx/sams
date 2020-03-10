@@ -17,7 +17,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $this->authorize('admin_view', User::class);
+        // $this->authorize('admin_view', User::class);
         return view('tags.index', [
             'contentheader' => 'Tags',
         ]);
@@ -32,7 +32,7 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'uid' => 'required|numeric',
+            'uid' => 'required|string',
             'type' => 'required|in:s,f',
             'id' => 'required|numeric',
         ]);

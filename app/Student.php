@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,11 @@ class Student extends Model
     protected $fillable = [
         'uid', 'schoolid', 'name', 'department_id'
     ];
+
+    public static function findbyuid($uid)
+    {
+        return Student::where(['uid' => $uid])->first();
+    }
 
     public function department()
     {
@@ -41,12 +47,20 @@ class Student extends Model
 
     public function entered()
     {
-        return @$this->logs()->where('from_by_type', 'App\Gate')->latest()->first()->remarks == 'entry';
+        return @$this->logs()
+            ->whereDate('date', today())
+            ->whereIn('remarks', ['entry', 'exit'])
+            ->whereNotIn('reader_id', Reader::rooms())
+            ->latest()->first()->remarks == 'entry';
     }
 
     public function exited()
     {
-        return @$this->logs()->where('from_by_type', 'App\Gate')->latest()->first()->remarks != 'entry';
+        return @$this->logs()
+            ->whereDate('date', today())
+            ->whereIn('remarks', ['entry', 'exit'])
+            ->whereNotIn('reader_id', Reader::rooms())
+            ->latest()->first()->remarks != 'entry';
     }
 
     public function logsto($course)

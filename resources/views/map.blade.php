@@ -235,7 +235,7 @@
         const clearmap = e => {
             $('#class_codes text').removeAttr('style').removeClass('animated flash infinite slow').text('')
             $('svg .cls-1').removeAttr('style').removeClass('animated flash infinite')
-            tippies.forEach(e => e.destroy)
+            tippies.forEach(e => e.destroy())
             tippies.length = 0
         }
 

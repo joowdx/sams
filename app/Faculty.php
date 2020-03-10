@@ -13,6 +13,11 @@ class Faculty extends Model
         'uid', 'name',
     ];
 
+    public static function findbyuid($uid)
+    {
+        return Faculty::where(['uid' => $uid])->first();
+    }
+
     public function department()
     {
         return $this->program->belongsTo(Department::class);
@@ -67,6 +72,24 @@ class Faculty extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function entered()
+    {
+        return @$this->logs()
+            ->whereDate('date', today())
+            ->whereIn('remarks', ['entry', 'exit'])
+            ->whereNotIn('reader_id', Reader::rooms())
+            ->latest()->first()->remarks == 'entry';
+    }
+
+    public function exited()
+    {
+        return @$this->logs()
+            ->whereDate('date', today())
+            ->whereIn('remarks', ['entry', 'exit'])
+            ->whereNotIn('reader_id', Reader::rooms())
+            ->latest()->first()->remarks != 'entry';
+    }
+
     public function ongoingcourses()
     {
         return $this->courses()->whereIn('academic_period_id', AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->get()->pluck('id'))->get();
@@ -81,4 +104,15 @@ class Faculty extends Model
             return $period->contains($course->academic_period_id);
         });
     }
+
+    public function facultyattendance()
+    {
+
+    }
+
+    public function formatlogs()
+    {
+
+    }
+
 }

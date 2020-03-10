@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUnverifiedTagsTable extends Migration
+class CreateUnknownLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateUnverifiedTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('unverified_tags', function (Blueprint $table) {
+        Schema::create('unknown_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('uid');
-            $table->string('from')->default('unknown');
+            $table->string('uid')->nullable();
+            $table->string('from')->nullable();
             $table->string('ip');
+            $table->string('method');
+            $table->string('remarks');
+            $table->json('data')->nullable();
             $table->enum('status', ['saved'])->nullable();
             $table->timestamps();
         });

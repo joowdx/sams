@@ -3,13 +3,14 @@
 namespace App\Http\Middleware;
 
 use App\UnknownLog;
-use App\Reader;
+use App\Student;
+use App\Faculty;
 use App\Helpers\CommonHelper as CH;
 
 use \Illuminate\Http\Request;
 use Closure;
 
-class ReaderVerification
+class TagVerification
 {
     /**
      * Handle an incoming request.
@@ -20,10 +21,8 @@ class ReaderVerification
      */
     public function handle(Request $request, Closure $next)
     {
-        $reader = Reader::findbyname($request->f);
-        $nullip = $reader ? ($reader->ip ? false : true) : null;
-        $passed = @$reader->ip == $request->ip();
-        if($passed || $nullip) {
+        $passed = Student::findbyuid($request->i) ?? Faculty::findbyuid($request->i);
+        if($passed) {
             return $next($request);
         }
         UnknownLog::create([
@@ -32,8 +31,8 @@ class ReaderVerification
             'ip' => $request->ip(),
             'method' => $request->method(),
             'data' => $request->all(),
-            'remarks' => $reader ? 'ip mismatch' : 'unknown location',
+            'remarks' => 'unknown tag'
         ]);
-        abort(404, 'Unknown Location');
+        abort(404, 'Unknown Tag');
     }
 }

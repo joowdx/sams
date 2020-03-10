@@ -60,7 +60,7 @@ class StudentController extends Controller
     {
         $this->authorize('students_data', User::class);
         $request->validate([
-            'uid' => 'sometimes|numeric|unique:students,uid',
+            'uid' => 'sometimes|string|unique:students,uid',
             'schoolid' => 'sometimes|numeric|unique:students,schoolid',
             'name' => 'required|string',
             'department_id' => 'sometimes|exists:departments,id',
@@ -153,7 +153,7 @@ class StudentController extends Controller
         $this->authorize('students_data', User::class);
         $request->validate([
             'id' => 'required|numeric|exists:students,id',
-            'uid' => 'sometimes|numeric|unique:students,uid,'.$id,
+            'uid' => 'sometimes|string|unique:students,uid,'.$id,
             'schoolid' => 'sometimes|numeric|unique:students,schoolid,'.$id,
             'name' => 'required|string',
             'department_id' => 'sometimes|exists:departments,id',

@@ -30,8 +30,8 @@ class Search extends Controller
         switch ($request->entity) {
             case 's':
                 return response()->json(['results' => SearchResource::collection(
-                    Student::where('name', 'ilike', "%$request->search%")
-                    ->orWhere('schoolid', 'ilike', "%$request->search%")
+                    Student::where('name', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$request->search%")
+                    ->orWhere('schoolid', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$request->search%")
                     ->take(12)
                     ->get()
                 )]);

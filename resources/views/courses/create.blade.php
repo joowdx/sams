@@ -191,14 +191,14 @@
                             <label for="room" class="col-md-4 col-form-label text-md-right">Room</label>
 
                             <div class="col-md-6">
-                                <select id="room" name="reader_id" class="selectpicker" data-placeholder="ROOM" data-width="100%">
+                                <select id="room" name="room_id" class="selectpicker" data-placeholder="ROOM" data-width="100%">
                                     <option></option>
                                     @foreach ($rooms as $room)
-                                        <option value="{{ $room->id }}" {{ old('reader_id') == $room->id ? 'selected' : '' }}> {{ $room->name }} </option>
+                                        <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}> {{ $room->name }} </option>
                                     @endforeach
                                 </select>
 
-                                @error('reader_id')
+                                @error('room_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

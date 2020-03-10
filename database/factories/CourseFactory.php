@@ -28,7 +28,7 @@ $factory->state(Course::class, 'IT111L', function(Faker $faker) {
         'time_from' => '15:30',
         'time_to' => '17:30',
         'units' => 6,
-        'room_id' => 1,
+        'room_id' => 3,
         'faculty_id' => 1,
     ];
 });
@@ -43,7 +43,7 @@ $factory->state(Course::class, 'IT112L', function(Faker $faker) {
         'time_from' => '13:30',
         'time_to' => '15:30',
         'units' => 6,
-        'room_id' => 1,
+        'room_id' => 4,
         'faculty_id' => 1,
     ];
 });

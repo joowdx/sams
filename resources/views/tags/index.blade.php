@@ -20,7 +20,7 @@
                         <label for="uid" class="col-md-4 col-form-label text-md-right"> UID </label>
 
                         <div class="col-md-6">
-                            <input id="uid" type="text" class="form-control" name="uid" oninput="this.value=this.value.replace(/[^\d]/,'')" readonly>
+                            <input id="uid" type="text" class="form-control" name="uid" readonly>
                         </div>
                     </div>
 
@@ -127,7 +127,7 @@
             }
 
             const newtag = async e => {
-                const val = $uid.val(e.toString().replace(/[\D]/g,'')).trigger('change').val()
+                const val = $uid.val(e.toString()).trigger('change').val()
                 await $type.removeAttr('disabled')
                 $type.select2('open')
                 return val

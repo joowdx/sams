@@ -81,7 +81,7 @@ class CourseController extends Controller
             'time_from' => 'required|string',
             'time_to' => 'required|string',
             'units' => 'required|string|numeric|digits:1',
-            'reader_id' => 'nullable|string|numeric|exists:reader,id',
+            'room_id' => 'nullable|string|numeric|exists:readers,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
         ]);
         Course::create($request->all());
@@ -157,7 +157,7 @@ class CourseController extends Controller
     {
         $this->authorize('courses_data', User::class);
         $request->validate([
-            'type' => 'required|string|in:info,students',
+            'type' => 'required|string|in:info,students,faculty',
             'code' => 'required_if:type,info|string|numeric|digits_between:0,7',
             'title' => 'required_if:type,info|string|max:10',
             'description' => 'required_if:type,info|string',
@@ -168,7 +168,7 @@ class CourseController extends Controller
             'time_from' => 'required_if:type,info|string',
             'time_to' => 'required_if:type,info|string',
             'units' => 'required_if:type,info|string|numeric|digits:1',
-            'reader_id' => 'nullable|string|numeric|exists:reader,id',
+            'room_id' => 'nullable|string|numeric|exists:readers,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
             'students' => 'nullable|array',
             'students.*' => 'numeric|exists:students,id',

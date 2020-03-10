@@ -16,7 +16,7 @@ class CreateFacultiesTable extends Migration
         Schema::create('faculties', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('schoolid')->nullable()->unique();
-            $table->unsignedBigInteger('uid')->nullable()->unique();
+            $table->string('uid')->nullable()->unique();
             $table->string('name', 60);
             $table->string('description')->nullable();
             $table->enum('sex', ['male', 'female'])->nullable();

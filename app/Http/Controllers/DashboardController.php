@@ -17,7 +17,6 @@ class DashboardController extends Controller
         return view('dashboard')->with([
             'contentheader' => 'Dashboard',
             'logs' => Log::with([
-                'from_by:id,name' ,
                 'log_by:id,name,uid' ,
                 'course' ,
             ])->where('remarks', '<>', 'absent')->limit(10)->orderBy('created_at', 'desc')->get(),
