@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Faculty;
+use App\Log;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+
 
 class FacultyCourseController extends Controller
 {
@@ -65,7 +68,7 @@ class FacultyCourseController extends Controller
         abort_unless($faculty->courses->contains($course), 404);
         return view('faculties.courses.show', compact('faculty'))->with([
             'contentheader' => "$course->title($course->code)",
-            'courses'   => $faculty->ongoingcourses(),
+            'course'   => $course,
             'students' => $faculty->students(),
             'breadcrumbs' => [
                 [
@@ -84,7 +87,7 @@ class FacultyCourseController extends Controller
                     'text' => "$course->title($course->code)",
                     // 'link' => route('faculties.courses.show', [$faculty->id, $course->id]),
                 ]
-            ]
+                ],
         ]);
     }
 

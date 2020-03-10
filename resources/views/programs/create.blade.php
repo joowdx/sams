@@ -7,7 +7,8 @@
 @endsection
 
 @section('content')
-<div class="row">
+
+<div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
@@ -63,12 +64,17 @@
                         <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Program Head</label>
 
                         <div class="col-md-6">
-                            <select id="faculty_id" name="faculty_id" class="selectpicker" data-width="100%" data-live-search="true" data-placeholder="Program Head">
+                            <select id="faculty_id" name="faculty_id" class="selectpicker form-control @error('faculty_id') is-invalid @enderror" data-width="100%" data-live-search="true" data-placeholder="Program Head">
                                 <option></option>
                                 @foreach ($faculties as $faculty)
                                 <option value="{{ $faculty->id }}" {{ old('faculty_id') == $faculty->id ? 'selected' : '' }}> {{ $faculty->name }} </option>
                                 @endforeach
                             </select>
+                            @error('faculty_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ "Empty!" }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
 

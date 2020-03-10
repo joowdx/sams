@@ -7,7 +7,7 @@ Use App\Log;
 use App\Students;
 use Illuminate\Http\Request;
 
-class GateController extends Controller
+class Gate0Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class GateController extends Controller
      */
     public function index()
     {
-        return view('gates.index')->with([
+        return view('gates0.index')->with([
             'logs' => Log::with([
                 'from_by:id,name',
                 'log_by:avatar,id,name,uid',

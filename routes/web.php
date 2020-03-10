@@ -45,7 +45,8 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('profiles', 'ProfileController');
     Route::resource('deptheads', 'DeptHeadController');
     Route::resource('studentviews', 'StudentViewController');
-    Route::resource('gate', 'GateController');
+    Route::resource('gate0', 'Gate0Controller');
+    Route::resource('gate1', 'Gate1Controller');
 });
 
 Route::any('x/{id}', 'StudentXcontroller')->middleware('guest');

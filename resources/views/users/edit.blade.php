@@ -5,24 +5,28 @@
 @endsection
 @section('content')
 <div class="container">
-    {{ $errors }}
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Edit Details for {{ $user->name }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="/users/{{ $user->id }}">
+                        <form method="POST" action="/users/{{ $user->id }}" enctype="multipart/form-data" >
                         @method('PATCH')
                         @csrf
                             @include('users.forms')
                             <hr>
                             <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                <div class="col-md-12 text-center">
+                                    <small class="text-center" style="color:red">LEAVE PORTION BELOW UNLESS YOU WANT CHANGES</small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('New Password') }}</label>
 
                                 <div class="col-md-6 text-center">
                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="new-password">
-                                    <small class="text-center" style="color:red">LEAVE BLANK UNLESS YOU WANT CHANGES</small>
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

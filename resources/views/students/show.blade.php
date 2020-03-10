@@ -7,6 +7,31 @@
 @endsection
 
 @section('content')
+@can('admin_view', App\User::class)
+<div id="circularMenu" class="circular-menu">
+
+    <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
+        <i class="fa fa-bars" style="color:white"></i>
+    </a>
+
+    <menu class="items-wrapper">
+
+    <a href="{{ $student->id }}/edit" class="menu-item">
+            <i class="fa fa-edit"></i>
+        </a>
+
+        <a class="menu-item">
+            <form method="post" id="deleteform" action="">
+                    @method('DELETE')
+                        @csrf
+                        <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
+            </form>
+        </a>
+
+    </menu>
+
+</div>
+@endcan
 <div class="row">
     <div class="col-md-3">
         <div class="card card-outline">
@@ -45,7 +70,7 @@
                         <b>Current Courses Enrolled</b> <a class="float-right">{{ $student->enrolledcourses()->count() }}</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Overall Average Login Time</b><a id="resultAvg" class="float-right">
+                        <b>Average Login Time</b><a id="resultAvg" class="float-right">
                         </a>
                     </li>
                 </ul>
@@ -190,6 +215,9 @@
                                                 Schedule
                                             </th>
                                             <th>
+                                                Absenteeism rate
+                                            </th>
+                                            <th>
                                                 Status
                                             </th>
                                         </tr>
@@ -231,6 +259,16 @@
                                                 <br>
                                                 <small> {{ "$course->time_from - $course->time_to" }} </small>
                                             </td>
+                                            <td>
+                                                @switch($count = $student->logs()->where('course_id', $course->id)->count())
+                                                @case(0)
+                                                    0
+                                                    @break
+                                                @default
+                                                {{ round(($student->logs()->where('remarks', 'absent')->where('course_id', $course->id)->count() /
+                                                $student->logs()->where('course_id', $course->id)->count()) * 100, 2) }}{{"%"}}
+                                                @endswitch
+                                            </td>
                                             <td class="align-middle">
                                                 <span class="badge badge-{{ ($course->pivot->status == 'dropped' ? 'danger' : ($course->pivot->status == 'warning' ? 'warning' : 'success'))  }}">{{ $course->pivot->status ?? 'ok' }}</span>
                                             </td>
@@ -248,7 +286,7 @@
     <div class="col-md-3">
         <div class="card">
             <div class="card-header pb-1">
-                <h3 class="card-title">Frequency</h3>
+                <h3 class="card-title">Pattern/Frequency</h3>
             </div>
             <div class="card-body px-2 py-4" style="display: block;">
                 <canvas id="myChart" style="position: relative;" class="chartjs-render-monitor"></canvas>
@@ -298,5 +336,93 @@
             attendance.refetchEvents()
         })
     })
+
+
+    async function getData(){
+        const attreq    = await fetch('http://localhost:8000/api/records');
+        const attdata   = await attreq.json();
+        const filter    = await attdata.filter(data => data.student)
+        const clean     = await filter.map(data => ({
+            days: new Date(data.time).toLocaleString('en-us', { weekday: 'long' }),
+            studentid: data.student.id,
+            remarks: data.remarks,
+        })).filter( e=> (e.studentid == {{ $student->id }}))
+
+        return clean;
+    }
+
+    async function getChart(){
+
+        var data = await getData(),
+            grouped = function(array) {
+            var r = [];
+            array.forEach(function(a) {
+                if (!this[a.days]) {
+                    this[a.days] = { days: a.days, late: 0, absent: 0};
+                    r.push(this[a.days]);
+                }
+                this[a.days][a.remarks]++;
+            }, Object.create(null));
+
+            nd = [];
+            nd[0] = r.find(e => e.days == 'Monday')     || {days: 'Monday', late:0,absent:0}
+            nd[1] = r.find(e => e.days == 'Tuesday')    || {days: 'Tuesday', late:0,absent:0}
+            nd[2] = r.find(e => e.days == 'Wednesday')  || {days: 'Wednesday', late:0,absent:0}
+            nd[3] = r.find(e => e.days == 'Thursday')   || {days: 'Thursday', late:0,absent:0}
+            nd[4] = r.find(e => e.days == 'Friday')     || {days: 'Friday', late:0,absent:0}
+            nd[5] = r.find(e => e.days == 'Saturday')   || {days: 'Saturday', late:0,absent:0}
+
+            r = nd;
+            return r;
+            }(data);
+
+        var labels = grouped.map(function(e){
+            return e.days;
+        });
+
+        var late = grouped.map(function(e){
+            return e.late;
+        });
+
+        var absent = grouped.map(function(e){
+            return e.absent;
+        });
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Lates',
+                borderColor: '#ffae42',
+                fill: false,
+                data: late,
+                borderWidth: 1,
+                order: 1
+            }, {
+                label: 'Absences',
+                borderColor: '#d9534f',
+                fill: false,
+                data: absent,
+                borderWidth: 1,
+                order: 2
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+
+                }]
+            }
+        }
+    });
+
+    }
+    getChart();
 </script>
 @endsection

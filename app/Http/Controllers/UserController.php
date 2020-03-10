@@ -51,7 +51,24 @@ class UserController extends Controller
     public function store(StoreValidation $request)
     {
         $this->authorize('users_data', User::class);
-        User::create($request->all())->update(['password' => Hash::make($request->input('password'))]);
+        $user = User::create($request->all());
+        $user->update(['password' => Hash::make($request->input('password'))]);
+
+        // if(request()->has('avatar'))
+        // {
+        //     $user->update([
+        //         'avatar' => request()->avatar->store('avatars','public', '' .''. request()->avatar->getClientOriginalName()),
+        //     ]);
+        // }
+
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $user->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $user->update(['avatar' => $file]);
+        }
+
         return redirect('users');
     }
 
@@ -122,6 +139,14 @@ class UserController extends Controller
         if(!empty($request->input('password'))){
             $user->password =   Hash::make($request->password);
         }
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $user->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $user->update(['avatar' => $file]);
+        }
+
         $user->save();
 
         return view('users.show',compact('user'));

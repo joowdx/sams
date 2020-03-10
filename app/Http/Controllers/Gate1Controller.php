@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\gate;
-Use App\Log;
-use App\Students;
+use App\Log;
 use Illuminate\Http\Request;
 
-class GateController extends Controller
+class Gate1Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +14,13 @@ class GateController extends Controller
      */
     public function index()
     {
-        return view('gates.index')->with([
+        return view('gates1.index')->with([
             'logs' => Log::with([
                 'from_by:id,name',
                 'log_by:avatar,id,name,uid',
                 'course' ,
             ])->where('remarks', '<>', 'absent')->limit(1)->orderBy('created_at', 'desc')->get(),
         ]);
-
     }
 
     /**
@@ -50,10 +47,10 @@ class GateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\gate  $gate
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(gate $gate)
+    public function show($id)
     {
         //
     }
@@ -61,10 +58,10 @@ class GateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\gate  $gate
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(gate $gate)
+    public function edit($id)
     {
         //
     }
@@ -73,10 +70,10 @@ class GateController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\gate  $gate
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, gate $gate)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -84,10 +81,10 @@ class GateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\gate  $gate
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(gate $gate)
+    public function destroy($id)
     {
         //
     }

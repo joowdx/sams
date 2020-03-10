@@ -26,7 +26,6 @@
 @endsection
 
 @section('content')
-{{ $errors }}
 <div class="container">
     <div class="row justify-content-center">
 
@@ -40,7 +39,7 @@
 
                 <div class="card-body">
                     <br>
-                    <form method="post" action="{{ route('faculties.store') }}">z
+                    <form method="post" action="{{ route('faculties.store') }}">
                         @csrf
                         <div class="form-group row">
                             <label for="uid" class="col-md-4 col-form-label text-md-right">{{ __('UID') }}</label>
@@ -67,6 +66,18 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Program</label>
+                            <div class="col-md-6">
+                                <select id="program_id" name="program_id" data-width="100%" data-live-search="true" data-placeholder="Program">
+                                    <option></option>
+                                    @foreach ($programs as $program)
+                                        <option value="{{ $program->id }}" {{ @$student->program->id == $program->id ? 'selected' : '' }}> {{  $program->shortname }} </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

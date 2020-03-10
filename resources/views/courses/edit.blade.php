@@ -65,7 +65,7 @@
                             <label for="semester" class="col-md-4 col-form-label text-md-right">Semester</label>
 
                             <div class="col-md-6">
-                                <select id="semester" name="semester" class="selectpicker" title="SEMESTER" data-width="100%">
+                                <select id="semester" name="semester" class="selectpicker form-control @error('semester') is-invalid @enderror" title="SEMESTER" data-width="100%">
                                     <option value="1ST" {{ (old('semester') == '1ST' || @$course->academic_period->semester == '1ST')? 'selected' : '' }}> 1ST </option>
                                     <option value="2ND" {{ (old('semester') == '2ND' || @$course->academic_period->semester == '2ND') ? 'selected' : '' }}> 2ND </option>
                                     <option value="SUMMER" {{ (old('semester') == 'SUMMER' || @$course->academic_period->semester == 'SUMMER') ? 'selected' : '' }}> SUMMER </option>
@@ -83,7 +83,7 @@
                             <label for="term" class="col-md-4 col-form-label text-md-right">Term</label>
 
                             <div class="col-md-6">
-                                <select id="term" name="term" class="selectpicker" title="TERM" data-width="100%">
+                                <select id="term" name="term" class="selectpicker form-control @error('term') is-invalid @enderror" title="TERM" data-width="100%">
                                     <option value="1ST" {{ (old('term') == '1ST' || @$course->academic_period->term == '1ST') ? 'selected' : '' }}> 1ST </option>
                                     <option value="2ND" {{ (old('term') == '2ND' || @$course->academic_period->term == '2ND') ? 'selected' : '' }}> 2ND </option>
                                     <option value="SEMESTER" {{ (old('term') == 'SUMMER' || @$course->academic_period->term == 'SEMESTER') ? 'selected' : '' }}> SEMESTER </option>
@@ -102,7 +102,7 @@
                             <label for="day_from" class="col-md-4 col-form-label text-md-right">Day</label>
 
                             <div class="col-md-3 pr-1">
-                                <select id="day_from" name="day_from" class="selectpicker" title="FROM" data-width="100%">
+                                <select id="day_from" name="day_from" class="selectpicker form-control @error('day_from') is-invalid @enderror" title="FROM" data-width="100%">
                                     <option value="Mon" {{ (old('day_from') ?? $course->day_from) == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ (old('day_from') ?? $course->day_from) == 'Tue' ? 'selected' : '' }}> Tuesday </option>
                                     <option value="Wed" {{ (old('day_from') ?? $course->day_from) == 'Wed' ? 'selected' : '' }}> Wednesday </option>
@@ -120,7 +120,7 @@
                             @enderror
 
                             <div class="col-md-3 pl-1">
-                                <select id="day_to" name="day_to" class="selectpicker" title="TO" data-width="100%">
+                                <select id="day_to" name="day_to" class="selectpicker form-control @error('day_to') is-invalid @enderror" title="TO" data-width="100%">
                                     <option value="Mon" {{ (old('day_to') ?? $course->day_to) == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ (old('day_to') ?? $course->day_to) == 'Tue' ? 'selected' : '' }}> Tuesday </option>
                                     <option value="Wed" {{ (old('day_to') ?? $course->day_to) == 'Wed' ? 'selected' : '' }}> Wednesday </option>
@@ -165,7 +165,7 @@
                             <label for="room" class="col-md-4 col-form-label text-md-right">Room</label>
 
                             <div class="col-md-6">
-                                <select id="room" name="room_id" class="selectpicker" data-placeholder="ROOM" data-width="100%">
+                                <select id="room" name="room_id" class="selectpicker form-control @error('room') is-invalid @enderror" data-placeholder="ROOM" data-width="100%">
                                     <option></option>
                                     @foreach ($rooms as $room)
                                         <option value="{{ $room->id }}" {{ (old('room_id') ?? $course->room->id)  == $room->id ? 'selected' : '' }}> {{ $room->name }} </option>

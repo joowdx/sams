@@ -26,25 +26,26 @@
 
 @section('content')
 
+<div id="circularMenu" class="circular-menu">
+    <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
+        <i class="fa fa-bars" style="color:white"></i>
+    </a>
+    <menu class="items-wrapper">
+        <a href="{{ $faculty->id }}/edit" class="menu-item">
+            <i class="fa fa-edit"></i>
+        </a>
+        <a class="menu-item">
+            <form method="post" id="deleteform" action="{{ route('faculties.destroy', $faculty->id) }}">
+                @method('DELETE')
+                @csrf
+                <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
+            </form>
+        </a>
+    </menu>
+</div>
 
 <div class="row">
-    <div id="circularMenu" class="circular-menu">
-        <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
-            <i class="fa fa-bars" style="color:white"></i>
-        </a>
-        <menu class="items-wrapper">
-            <a href="{{ $faculty->id }}/edit" class="menu-item">
-                <i class="fa fa-edit"></i>
-            </a>
-            <a class="menu-item">
-                <form method="post" id="deleteform" action="{{ route('faculties.destroy', $faculty->id) }}">
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
-                </form>
-            </a>
-        </menu>
-    </div>
+
     <div class="col-md-12">
         <ul class="nav info">
 
@@ -86,16 +87,13 @@
 
         </ul>
     </div>
-</div>
-<div class="row mt-3">
-
 
     <div class="col-md-8">
-        <div class="card px-2">
+        <div class="card">
             <div class="card-header pb-1">
                 <h3 class="card-title">Students</h3>
             </div>
-            <div class="card-body px-2 py-4" style="display: block;">
+            <div class="card-body px-4 py-4" style="display: block;">
                 <table class="table table-borderless projects">
                     <thead>
                         <tr>
@@ -148,7 +146,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header pb-1">
-                <h3 class="card-title">Frequency</h3>
+                <h3 class="card-title">Pattern/Frequency</h3>
             </div>
             <div class="card-body px-2 py-4" style="display: block;">
                 <canvas id="myChart" style="position: relative;" class="chartjs-render-monitor"></canvas>

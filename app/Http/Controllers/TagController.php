@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use App\Faculty;
+use App\User;
 use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,6 +32,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('admin_view', User::class);
         $validator = Validator::make($request->all(), [
             'uid' => 'required|string',
             'type' => 'required|in:s,f',

@@ -2,26 +2,7 @@
 
 @section('styles')
 <style>
-#add {
-  position: fixed; /* Fixed/sticky position */
-  bottom: 20px; /* Place the button at the bottom of the page */
-  right: 30px; /* Place the button 30px from the right */
-  z-index: 99; /* Make sure it does not overlap */
-  border: none; /* Remove borders */
-  outline: none; /* Remove outline */
-  color: white; /* Text color */
-  cursor: pointer; /* Add a mouse pointer on hover */
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  line-height: 40px;
-  text-align: center;
-  font-size: 18px; /* Increase font size */
-}
 
-#add:hover {
-  background-color: #555; /* Add a dark-grey background on hover */
-}
 </style>
 @endsection
 
@@ -44,7 +25,7 @@
                         <div class="form-group row">
                             <label for="code" class="col-md-4 col-form-label text-md-right">Code</label>
 
-                            <div class="col-md-6">
+                        <div class="col-md-6">
                                 <input id="code" type="text" class="form-control @error('code') is-invalid @enderror" name="code" autocomplete="new-code" oninput="this.value=this.value.replace(/[^\d]/,'')" placeholder="CODE" value="{{ old('code') }}">
 
                                 @error('code')
@@ -87,7 +68,7 @@
                             <label for="semester" class="col-md-4 col-form-label text-md-right">Semester</label>
 
                             <div class="col-md-6">
-                                <select id="semester" name="semester" class="selectpicker" data-placeholder="SEMESTER" data-width="100%">
+                                <select id="semester" name="semester" class="selectpicker form-control @error('semester') is-invalid @enderror" data-placeholder="SEMESTER" data-width="100%">
                                     <option></option>
                                     <option value="1ST" {{ old('semester') == '1ST' ? 'selected' : '' }}> 1ST </option>
                                     <option value="2ND" {{ old('semester') == '2ND' ? 'selected' : '' }}> 2ND </option>
@@ -106,7 +87,7 @@
                             <label for="term" class="col-md-4 col-form-label text-md-right">Term</label>
 
                             <div class="col-md-6">
-                                <select id="term" name="term" class="selectpicker" data-placeholder="TERM" data-width="100%">
+                                <select id="term" name="term" class="selectpicker form-control @error('term') is-invalid @enderror" data-placeholder="TERM" data-width="100%">
                                     <option></option>
                                     <option value="1ST" {{ old('term') == '1ST' ? 'selected' : '' }}> 1ST </option>
                                     <option value="2ND" {{ old('term') == '2ND' ? 'selected' : '' }}> 2ND </option>
@@ -125,7 +106,7 @@
                             <label for="day_from" class="col-md-4 col-form-label text-md-right">Day</label>
 
                             <div class="col-md-3 pr-1">
-                                <select id="day_from" name="day_from" class="selectpicker" data-placeholder="FROM" data-width="100%">
+                                <select id="day_from" name="day_from" class="selectpicker form-control @error('day_from') is-invalid @enderror" data-placeholder="FROM" data-width="100%">
                                     <option></option>
                                     <option value="Mon" {{ old('day_from') == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ old('day_from') == 'Tue' ? 'selected' : '' }}> Tuesday </option>
@@ -144,7 +125,7 @@
                             </div>
 
                             <div class="col-md-3 pl-1">
-                                <select id="day_to" name="day_to" class="selectpicker" data-placeholder="TO" data-width="100%">
+                                <select id="day_to" name="day_to" class="selectpicker form-control @error('day_to') is-invalid @enderror" data-placeholder="TO" data-width="100%">
                                     <option></option>
                                     <option value="Mon" {{ old('day_to') == 'Mon' ? 'selected' : '' }}> Monday </option>
                                     <option value="Tue" {{ old('day_to') == 'Tue' ? 'selected' : '' }}> Tuesday </option>
@@ -191,7 +172,7 @@
                             <label for="room" class="col-md-4 col-form-label text-md-right">Room</label>
 
                             <div class="col-md-6">
-                                <select id="room" name="room_id" class="selectpicker" data-placeholder="ROOM" data-width="100%">
+                                <select id="room" name="room_id" class="selectpicker form-control @error('room') is-invalid @enderror" data-placeholder="ROOM" data-width="100%">
                                     <option></option>
                                     @foreach ($rooms as $room)
                                         <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}> {{ $room->name }} </option>

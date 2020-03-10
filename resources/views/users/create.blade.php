@@ -26,7 +26,6 @@
 @endsection
 
 @section('content')
-{{ $errors }}
 <div class="container">
     <div class="row justify-content-center">
 
@@ -38,7 +37,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
                 <div class="card-body">
-                    <form method="POST" id="createform" action="{{ route('users.store') }}" autocomplete="off">
+                    <form enctype="multipart/form-data" method="POST" id="createform" action="{{ route('users.store') }}" autocomplete="off">
                         @include('users.forms')
 
                         <div class="form-group row">
@@ -62,6 +61,8 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
+
+                        <hr>
 
                         <div class="form-group row">
                             <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Faculty</label>

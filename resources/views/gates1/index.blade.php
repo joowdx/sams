@@ -172,7 +172,9 @@ $(e => {
 
 
     }
-    Echo.private('logs').listen('NewScannedLog', e => gate(e.log))
+    Echo.private('logs').listen('NewScannedLog', e =>{
+       ((e.log.from_by.name == "G2") ? gate(e.log) : '')
+    })
 })
 </script>
 @endsection

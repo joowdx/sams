@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-xs-12 col-sm-9 col-md-6">
         <div class="card">
             <div class="card-header">Associate</div>
@@ -20,27 +20,42 @@
                         <label for="uid" class="col-md-4 col-form-label text-md-right"> UID </label>
 
                         <div class="col-md-6">
-                            <input id="uid" type="text" class="form-control" name="uid" readonly>
+                            <input id="uid" type="text" class="form-control @error('uid') is-invalid @enderror" name="uid" oninput="this.value=this.value.replace(/[^\d]/,'')" readonly>
+                            @error('uid')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="entity" class="col-md-4 col-form-label text-md-right">Type</label>
                         <div class="col-md-6">
-                            <select id="entity" name="type" data-width="100%" disabled>
+                            <select id="entity" class="form-control @error('entity') is-invalid @enderror" name="type" data-width="100%" disabled>
                                 <option></option>
                                 <option value="f"> Faculty </option>
                                 <option value="s"> Student </option>
                             </select>
+                            @error('entity')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="form-group row" style="display: none;">
                         <label for="entities" class="col-md-4 col-form-label text-md-right"></label>
                         <div class="col-md-6">
-                            <select id="entities" name="id" data-width="100%" data-live-search="true">
+                            <select id="entities" class="form-control @error('entities') is-invalid @enderror" name="email" name="id" data-width="100%" data-live-search="true">
                                 <option></option>
                             </select>
+                            @error('entities')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
 

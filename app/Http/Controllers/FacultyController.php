@@ -64,6 +64,7 @@ class FacultyController extends Controller
                     'text' => 'Create'
                 ]
             ],
+            'programs' => Program::all(),
         ]);
     }
 

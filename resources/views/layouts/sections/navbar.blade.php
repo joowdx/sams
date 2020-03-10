@@ -43,12 +43,12 @@
             </li>
         @endcan
         @can('admin_view', App\User::class)
-        <li class="nav-item d-inline-block">
-            <a href="{{ route('tags.index') }}" class="nav-link {{ Route::is('tag*') ? 'active' : '' }}">
-                <i class="fad fa-fw fa-tags"></i>
-                Tags
-            </a>
-        </li>
+            <li class="nav-item d-inline-block">
+                <a href="{{ route('tags.index') }}" class="nav-link {{ Route::is('tag*') ? 'active' : '' }}">
+                    <i class="fad fa-fw fa-tags"></i>
+                    Tags
+                </a>
+            </li>
         @endcan
         @endauth
     </ul>

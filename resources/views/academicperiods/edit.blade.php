@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="container-fluid row">
+<div class="container-fluid row justify-content-center">
     <div class="col-md-8">
         <div class="card card-dark">
             <div class="card-header">Update Academic Period</div>
@@ -33,7 +33,7 @@
                         <label for="semester" class="col-md-4 col-form-label text-md-right">Semester</label>
 
                         <div class="col-md-6">
-                            <select id="semester" name="semester" class="selectpicker" title="SEMESTER" data-width="100%">
+                            <select id="semester" name="semester" class="selectpicker form-control @error('semester') is-invalid @enderror" title="SEMESTER" data-width="100%">
                                 <option value="1ST" {{ (old('semester') == '1ST' || $period->semester == '1ST') ? 'selected' : '' }}> 1ST </option>
                                 <option value="2ND" {{ (old('semester') == '1ST' || $period->semester == '2ND') ? 'selected' : '' }}> 2ND </option>
                                 <option value="SUMMER" {{ (old('semester') == 'SUMMER' || $period->semester == 'SUMMER') ? 'selected' : '' }}> SUMMER </option>
@@ -51,7 +51,7 @@
                         <label for="term" class="col-md-4 col-form-label text-md-right">Term</label>
 
                         <div class="col-md-6">
-                            <select id="term" name="term" class="selectpicker" title="TERM" data-width="100%">
+                            <select id="term" name="term" class="selectpicker form-control @error('term') is-invalid @enderror" title="TERM" data-width="100%">
                                 <option value="1ST" {{ (old('term') == '1ST' || $period->term == '1ST') ? 'selected' : '' }}> 1ST </option>
                                 <option value="2ND" {{ (old('term') == '2ND' || $period->term == '2ND') ? 'selected' : '' }}> 2ND </option>
                                 <option value="SEMESTER" {{ (old('SEMESTER') == '1ST' || $period->term == 'SEMESTER') ? 'selected' : '' }}> SEMESTER </option>

@@ -15,6 +15,7 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('avatar')->default('public/avatars/no-image.png');
             $table->unsignedBigInteger('schoolid')->nullable()->unique();
             $table->string('uid')->nullable()->unique();
             $table->string('name');

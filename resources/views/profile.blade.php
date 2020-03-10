@@ -33,7 +33,7 @@ span.tags
 <div class="container-fluid">
     <div class="row">
 
-        @can('aview', App\User::class)
+        @can('admin_view', App\User::class)
         <div id="circularMenu" class="circular-menu">
 
             <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
@@ -68,17 +68,14 @@ span.tags
         <div class="col-md-12" style="margin-top:20%; padding-right:10%; padding-left:10%">
             <div class="card" style="border:10%">
                 <div class="col-md-12 col-sm-8">
-                    <h2>{{ Auth::user()->name }}</h2>
+                    <img class="img-fluid" src="storage/avatars/{{ Auth::user()->avatar }}" alt="" style="width:200px; height:200px; border-radius:50%; float:left">
                     <p><i class="nav-icon fad fa-user-visor fa-fw"></i><strong>Username: {{Auth::user()->username}} </strong>  </p>
                     <p><i class="nav-icon fad fa-envelope-square fa-fw"></i><strong>Email: {{Auth::user()->email}} </strong>  </p>
                     <p><i class="nav-icon fad fa-phone-square-alt fa-fw"></i><strong>Phone Number: {{Auth::user()->phone }} </strong> </p>
-                    <p><strong></strong>
-                    <span class="tags"> {{Auth::user()->type }} </span>
-                    </p>
+                    <p><span class="tags"> {{Auth::user()->type }} </span></p>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @endsection

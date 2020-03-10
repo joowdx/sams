@@ -7,6 +7,7 @@ use App\Course;
 use App\Student;
 use App\Department;
 use App\AcademicPeriod as Period;
+use App\Program;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -46,7 +47,7 @@ class StudentController extends Controller
                     'text' => 'Create'
                 ]
             ],
-            'departments' => Department::all(),
+            'programs' => Program::all(),
         ]);
     }
 
@@ -63,10 +64,17 @@ class StudentController extends Controller
             'uid' => 'sometimes|string|unique:students,uid',
             'schoolid' => 'sometimes|numeric|unique:students,schoolid',
             'name' => 'required|string',
-            'department_id' => 'sometimes|exists:departments,id',
+            'program_id' => 'sometimes|exists:programs,id',
         ]);
-        Student::create($request->all());
-        return redirect('students.index');
+        $student = Student::create($request->all());
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $student->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $student->update(['avatar' => $file]);
+        }
+        return redirect('students');
     }
 
     /**
@@ -138,6 +146,7 @@ class StudentController extends Controller
             ],
             'student' => $student,
             'departments' => Department::all(),
+            'programs' => Program::all()
         ]);
     }
 
@@ -158,9 +167,18 @@ class StudentController extends Controller
             'name' => 'required|string',
             'department_id' => 'sometimes|exists:departments,id',
         ]);
-        Student::find($id)->update($request->all());
-        return redirect('students');
+        $student = Student::find($id);
+        $student->update($request->all());
 
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $student->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $student->update(['avatar' => $file]);
+
+        }
+        return redirect('students');
     }
 
     /**

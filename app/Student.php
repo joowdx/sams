@@ -12,7 +12,7 @@ class Student extends Model
     ];
 
     protected $fillable = [
-        'uid', 'schoolid', 'name', 'department_id'
+        'uid', 'schoolid', 'name', 'program_id', 'avatar'
     ];
 
     public static function findbyuid($uid)

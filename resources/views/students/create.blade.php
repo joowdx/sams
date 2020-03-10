@@ -7,13 +7,12 @@
 @endsection
 
 @section('content')
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">{{ __('New Student') }}</div>
-
             <div class="card-body">
-                <form method="POST" id="createform" action="{{ route('students.store') }}">
+                <form enctype="multipart/form-data" method="POST" id="createform" action="{{ route('students.store') }}">
                     @include('students.forms')
 
                     <div class="form-group row mb-0">

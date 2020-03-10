@@ -7,6 +7,31 @@
 @endsection
 
 @section('content')
+@can('admin_view', App\User::class)
+<div id="circularMenu" class="circular-menu">
+
+    <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
+        <i class="fa fa-bars" style="color:white"></i>
+    </a>
+
+    <menu class="items-wrapper">
+
+    <a href="{{ $program->id }}/edit" class="menu-item">
+            <i class="fa fa-edit"></i>
+        </a>
+
+        <a class="menu-item">
+            <form method="post" id="deleteform" action="">
+                    @method('DELETE')
+                        @csrf
+                        <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
+            </form>
+        </a>
+
+    </menu>
+
+</div>
+@endcan
 <div class="row">
     <div class="col-md-3">
         <div class="card card-outline">
