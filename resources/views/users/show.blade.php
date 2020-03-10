@@ -66,7 +66,7 @@ span.tags
         <div class="col-md-12" style="margin-top:20%; padding-right:10%; padding-left:10%">
             <div class="card" style="border:10%">
                 <div class="col-md-12 col-sm-8">
-                    <img class="img-fluid" src="{{ $user->avatar }}" alt="" style="width:200px; height:200px; border-radius:50%; float:left">
+                    <img class="img-fluid" src="/storage/avatars/{{ $user->avatar }}" alt="" style="width:200px; height:200px; border-radius:50%; float:left">
                     <p><i class="nav-icon fad fa-user-visor fa-fw"></i><strong>Username: {{$user->username}} </strong>  </p>
                     <p><i class="nav-icon fad fa-envelope-square fa-fw"></i><strong>Email: {{$user->email}} </strong>  </p>
                     <p><i class="nav-icon fad fa-phone-square-alt fa-fw"></i><strong>Phone Number: {{$user->phone }} </strong> </p>
