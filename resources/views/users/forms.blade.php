@@ -1,16 +1,26 @@
 @csrf
     <div class="form-group row">
+        <label for="avatar" class="col-md-4 col-form-label text-md-right">{{ __('Avatar') }}</label>
+        <div class="col-md-6">
+            <input id="avatar" type="file" class="@error('avatar') is-invalid @enderror" name="avatar" value="{{ old('avatar') ?? $student->avatar ?? '' }}"  autofocus>
+            @error('avatar')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+    </div>
+
+    <div class="form-group row">
         <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Office') }}</label>
         <div class="col-md-6">
-            <select class="custom-select type" id="type" name="type">
+            <select class="form-control @error('type') is-invalid @enderror custom-select type" id="type" name="type" required>
+                <option aria-placeholder="">---</option>
                 @foreach([
-                "admin"     =>  "Admin",
-                "d.o."      =>  "Deans Office",
-                "h.r."      =>  "Human Resouce",
-                "faculty"   =>  "Faculty",
-                "depthead"  =>  "Department Head",
-                "student"   =>  "Student",
-                ] as $type  => $user_label)
+                "admin"         =>  "Admin",
+                "h.r."          =>  "Human Resouce",
+                "faculty"       =>  "Faculty",
+                ] as $type      => $user_label)
                 <option value="{{ $type }}">{{ $user_label }}</option>
                 @endforeach
             </select>

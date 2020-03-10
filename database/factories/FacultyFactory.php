@@ -11,16 +11,26 @@ $factory->define(Faculty::class, function (Faker $faker) {
         'schoolid' => '91023',
         'name' => $faker->name(),
         'description' => 'i love bacons',
-        'department_id' => 1,
+        'program_id' => 1,
     ];
 });
 
-$factory->state(Faculty::class, 'John Doe', function($faker) {
+$factory->state(Faculty::class, 'Max', function($faker) {
     return [
         'uid' => 10000,
         'schoolid' => '91023',
-        'name' => 'John Doe',
-        'description' => 'i love bacons',
-        'department_id' => 1,
+        'name' => 'Maximus',
+        'description' => 'i love optimists',
+        'program_id' => 1,
+    ];
+});
+
+$factory->state(Faculty::class, 'Min', function($faker) {
+    return [
+        'uid' => 10001,
+        'schoolid' => '91024',
+        'name' => 'Minimus',
+        'description' => 'i love pessimists',
+        'program_id' => 2,
     ];
 });

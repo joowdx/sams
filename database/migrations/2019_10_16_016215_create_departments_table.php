@@ -19,6 +19,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('shortname', 20)->nullable();
             $table->bigInteger('faculty_id')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 

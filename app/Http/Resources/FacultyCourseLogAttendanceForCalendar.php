@@ -56,7 +56,7 @@ class FacultyCourseLogAttendanceForCalendar extends JsonResource
             case 'absent': return 'absent';
             case 'excuse': return 'excuse';
             case 'leave': return 'leave';
-            default: return $this->created_at->format('H:i:s');
+            default: return $this->created_at ? $this->created_at->format('H:i:s') : null;
         }
     }
 }

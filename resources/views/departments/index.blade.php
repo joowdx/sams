@@ -7,6 +7,9 @@
 @endsection
 
 @section('content')
+<div class="col-md-12">
+    <a href="{{ route('departments.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+</div>
 <div class="p-2" style="display: block;">
     <table class="table table-borderless table-hover projects">
         <thead>
@@ -54,7 +57,7 @@
                     {{ $department->faculties->count() }}
                 </td>
                 <td class="align-middle">
-                    {{ $students->filter(function($student) use($department) { return $student->department->id == $department->id && $student->enrolled(); })->count() }}
+                    {{ $department->students->count() }}
                 </td>
             </tr>
             @endforeach

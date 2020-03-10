@@ -29,4 +29,6 @@ Route::any('statsclass', 'API\StatsClassController');
 Route::any('records', 'API\RecordsController')->name('records');
 Route::any('queryclasses', 'API\ClassesQueryController')->name('queryclasses');
 Route::any('events', 'API\EventController')->name('events');
-Route::any('attendance', 'API\AttendanceController')->name('attendance');
+Route::any('attendance', 'API\AttendanceController')->name('api.attendance');
+Route::any('search', 'API\Search')->name('search');
+Route::any('newtag', 'API\TagController@newtag')->name('newtag');

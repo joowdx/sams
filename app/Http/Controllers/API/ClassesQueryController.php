@@ -24,13 +24,17 @@ class ClassesQueryController extends Controller
             'id' => 'required_with:date|numeric|exists:courses',
             'date' => 'required_with:id|date_format:Y-m-d',
         ])->passes();
+
         abort_unless($validator, 403);
+
         switch ($validator && $request->id) {
             case true:
                 return response()->json(Course::find($request->id)->noclass(Carbon::create($request->date)));
             break;
             default:{
-                return Course::whereIn('academic_period_id',
+                return Course::with(['logs' => function($query) {
+                    $query->whereDate('date', today());
+                }, 'logs.log_by', 'faculty'])->whereIn('academic_period_id',
                     AcademicPeriod::where(function($query) {
                         $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
                     })->get()->map(function($period) {

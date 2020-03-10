@@ -13,9 +13,19 @@ class Faculty extends Model
         'uid', 'name',
     ];
 
+    public static function findbyuid($uid)
+    {
+        return Faculty::where(['uid' => $uid])->first();
+    }
+
     public function department()
     {
-        return $this->belongsTo(Department::class);
+        return $this->program->belongsTo(Department::class);
+    }
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
     }
 
     public function logs()
@@ -26,6 +36,21 @@ class Faculty extends Model
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function modify()
+    {
+        return $this->belongsTo(User::class, 'id', 'modified_by');
+    }
+
+    public function isdepartmenthead()
+    {
+        return $this->department->faculty->id == $this->id;
+    }
+
+    public function isprogramhead()
+    {
+        return $this->program->faculty->id == $this->id;
     }
 
     public function students()
@@ -47,8 +72,47 @@ class Faculty extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function entered()
+    {
+        return @$this->logs()
+            ->whereDate('date', today())
+            ->whereIn('remarks', ['entry', 'exit'])
+            ->whereNotIn('reader_id', Reader::rooms())
+            ->latest()->first()->remarks == 'entry';
+    }
+
+    public function exited()
+    {
+        return @$this->logs()
+            ->whereDate('date', today())
+            ->whereIn('remarks', ['entry', 'exit'])
+            ->whereNotIn('reader_id', Reader::rooms())
+            ->latest()->first()->remarks != 'entry';
+    }
+
     public function ongoingcourses()
     {
         return $this->courses()->whereIn('academic_period_id', AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->get()->pluck('id'))->get();
     }
+
+    public function loads()
+    {
+        $schoolyear = $schoolyear ?? AcademicPeriod::currentschoolyear();
+        $semester = $semester ?? AcademicPeriod::currentsemester();
+        $period = AcademicPeriod::period($schoolyear, $semester);
+        return $this->courses->filter(function($course) use($period) {
+            return $period->contains($course->academic_period_id);
+        });
+    }
+
+    public function facultyattendance()
+    {
+
+    }
+
+    public function formatlogs()
+    {
+
+    }
+
 }

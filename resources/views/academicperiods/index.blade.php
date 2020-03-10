@@ -7,57 +7,70 @@
 @endsection
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <a href="{{ route('academicperiods.create') }}" id="add" class="btn"><span class="fa fa-plus"></a>
-        </div>
-        <div class="col-md-12">
-            <table id="aptable" class="table table-bordered" style="cursor:pointer;"></table>
-        </div>
-    </div>
+<div class="col-md-12">
+    <a href="{{ route('academicperiods.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+</div>
+<div class="p-2" style="display: block;">
+    <table class="table table-borderless table-hover projects">
+        <thead>
+            <tr>
+                <th>
+                    <i class="fad fa-hashtag"></i>
+                </th>
+                <th>
+                    Period
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Modified
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($periods as $period)
+            <tr onclick="window.location='{{ route('academicperiods.show', [$period->id]) }}'" style="cursor: pointer">
+                <td class="align-middle">
+                    {{ $loop->iteration }}
+                </td>
+                <td>
+                    <p class="m-0 p-0">
+                    @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
+                        <b>{{ $period->semester }}</b> <small> Sem </small>/
+                        <b>{{ $period->term }} </b> <small> Term </small>
+                    @else
+                        <b>{{ $period->semester }}</b>
+                        @if($period->semester != 'SUMMER') <small> Sem </small> @endif
+                    @endif
+                    </p>
+                    <small>
+                        SY: {{ $period->school_year }}
+                    </small>
+                </td>
+                <td class="align-middle">
+                    <small> <b> Start: </b> </small> {{ $period->start->format('M d, Y') }}
+                    <br>
+                    <small> <b> End: </b> </small> {{ $period->end->format('M d, Y') }}
+                    <br>
+                </td>
+                <td class="align-middle">
+                    <small>
+                        {{ $period->created_at == $period->updated_at ? 'Created' : 'Updated' }}
+                        {{-- by {{ @$faculty->modify->name ?? 'unknown' }} --}}
+                    </small>
+                    <br>
+                    {{ $period->updated_at->format('F d, Y H:i') }}
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection
 
 @section('scripts')
 <script>
-$('#aptable').DataTable({
-    'destroy': true,
-        retrieve: true,
-        columnDefs: [],
-        "aaSorting": [],
-        'ajax': {
-            'url': '{{ url("/api/academicperiods") }}',
-            'type': 'get',
-            'dataSrc': e => e,
-        },
-        'columns': [
-        {
-            'title': 'School Year',
-            'data': 'school_year',
-        },
-        {
-            'title': 'Semester',
-            'data': 'semester',
-        },
-        {
-            'title': 'Term',
-            'data': 'term',
-        },
-        {
-            'title': 'Start - End dates',
-            'data': 'start',
-            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-            $(nTd).append(' - '+oData['end']);
-        }
-        },
-        ],
-});
 
-var table = $('#aptable').DataTable();
-$('#aptable tbody').on('click', 'tr', function () {
-    var data = table.row( this ).data();
-    window.location.href="academicperiods/" + data.id
-} );
 </script>
 @endsection

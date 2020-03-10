@@ -7,19 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $fillable = [
-        'remarks', 'date'
+        'remarks', 'date', 'process', 'info'
     ];
 
     protected $dates = [
         'date',
     ];
 
-    public $timestamps = true;
+    protected $casts = [
+        'info' => 'array',
+    ];
 
-    public function from_by()
-    {
-        return $this->morphTo();
-    }
+    public $timestamps = true;
 
     public function log_by()
     {
@@ -29,5 +28,15 @@ class Log extends Model
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function updatedby()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reader()
+    {
+        return $this->belongsTo(Reader::class);
     }
 }

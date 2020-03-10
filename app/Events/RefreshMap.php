@@ -23,7 +23,7 @@ class RefreshMap implements ShouldBroadcast
      *
      * @var string|null
      */
-    public $queue = 'refreshmap';
+    # public $queue = 'default';
 
     /**
      * Create a new event instance.

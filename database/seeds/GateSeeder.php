@@ -11,6 +11,7 @@ class GateSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Gate::class)->states(['G1', 'G2'])->create();
+        factory(App\Gate::class)->states(['G1'])->create();
+        factory(App\Gate::class)->states(['G2'])->create();
     }
 }

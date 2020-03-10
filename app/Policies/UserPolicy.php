@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\User;
+use App\Course;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -29,14 +30,15 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function aview(User $user)
+
+     public function admin_view(User $user)
     {
         return in_array($user->type, [
             'admin',
         ]);
     }
-
-    public function hview(User $user)
+    //  NAV VIEWS
+    public function map_view(User $user)
     {
         return in_array($user->type, [
             'admin',
@@ -44,25 +46,100 @@ class UserPolicy
         ]);
     }
 
-    public function fview(User $user)
+    public function calendar_view(User $user)
     {
         return in_array($user->type, [
             'admin',
-            'faculty'
-        ]);
+            'faculty',
+            'd.o.',
+            'h.r.'
+        ]) || ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
     }
 
-    public function rview(User $user)
+    public function attendance_view(User $user)
     {
         return in_array($user->type, [
             'admin',
-            'registrar'
-        ]);
+            'd.o.',
+            'h.r.'
+        ]) || ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
     }
+    //END NAV VIEWS
 
-    public function show(User $user)
+    //SIDE VIEWS
+    public function programs_view(User $user)
     {
         return in_array($user->type, [
+            'admin',
+            'depthead',
+            'd.o.'
+        ]) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+
+    public function courses_view(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+            'faculty',
+            'd.o.'
+        ]) || ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+
+    public function faculties_view(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+            'faculty',
+            'd.o.',
+            'h.r.'
+        ]) || ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+
+    public function students_view(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+        ]) || ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+    //END SIDE VIEWS
+
+    //DATA
+    public function users_data(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+        ]);
+    }
+    public function courses_data(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+        ])|| ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+    public function faculties_data(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+        ])|| ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+    public function students_data(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+        ])|| ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+    public function programs_data(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+        ])|| ($user->faculty && $user->faculty->isdepartmenthead());
+    }
+    //END DATA
+
+    public function view(User $user, Course $course)
+    {
+        return in_array($user->type, [
+            'faculty',
             'admin'
         ]);
     }

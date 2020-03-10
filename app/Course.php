@@ -3,11 +3,18 @@
 namespace App;
 
 use Carbon\Carbon;
-use App\Event;
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+
+    private $parsedfacultylogs;
+
+    protected $with = [
+        'room', 'academic_period'
+    ];
+
     protected $fillable = [
         'code', 'title', 'description', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'room_id',
     ];
@@ -19,9 +26,31 @@ class Course extends Model
         return Course::whereIn('academic_period_id', AcademicPeriod::where('school_year', $schoolyear)->where('semester', $semester)->get()->pluck('id'))->with('faculty')->get();
     }
 
+    public static function findforattendance($room)
+    {
+        return Course::currentcourses()
+            ->filter(function($course) use($room) {
+                return $course->room->name == $room;
+            })
+            ->first(function($course) {
+                return $course->forattendance();
+            });
+    }
+
+    public static function findonsession($room)
+    {
+        return Course::currentcourses()
+            ->filter(function($course) use($room) {
+                return $course->room->name == $room;
+            })
+            ->first(function($course) {
+                return !$course->noclass() && $course->onsession();
+            });
+    }
+
     public function room()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Reader::class, 'room_id', 'id');
     }
 
     public function faculty()
@@ -47,9 +76,35 @@ class Course extends Model
     public function logsof(Carbon $dt = null)
     {
         $dt = $dt ?: today();
-        $dt->setTime(explode(':', $this->time_from)[0], explode(':', $this->time_from)[1]);
-        $te = $dt->copy()->setTime(explode(':', $this->time_to)[0], explode(':', $this->time_to)[1]);
-        return $this->logs->filter(function($log) use($dt, $te) { return $log->created_at->between($dt, $te); });
+        return $this->logs()->whereDate('created_at', $dt)->get();
+    }
+
+    public function logsbyasof($sf, $dt = null)
+    {
+        $dt = $dt ?: today();
+        return $this->logs()
+            ->whereDate('created_at', $dt)
+            ->where(['log_by_type' => get_class($sf), 'log_by_id' => $sf->id])
+            ->get();
+    }
+
+    public function forattendance()
+    {
+        return !$this->noclass() && now()->between(Carbon::createFromTimeString($this->time_from)->subMinutes(5), Carbon::createFromTimeString($this->time_from)->addMinutes(15));
+    }
+
+    public function facultyloggedontime(Carbon $dt = null)
+    {
+        return $this->logs()
+            ->whereDate('created_at', $dt ?? today())
+            ->whereTime('created_at', '>=', Carbon::createFromTimeString($this->time_from)->subMinutes(5))
+            ->whereTime('created_at', '<=', Carbon::createFromTimeString($this->time_from)->addMinutes(15))
+            ->latest()->first();
+    }
+
+    public function facultylateststamp(Carbon $dt = null)
+    {
+        return @$this->logs()->whereDate('created_at', $dt ?? today())->where('remarks', 'stamp')->latest()->first()->created_at;
     }
 
     public function haslogged($sf, Carbon $dt = null)
@@ -60,12 +115,17 @@ class Course extends Model
 
     public function nolog($sf, Carbon $dt = null)
     {
-        return !$this->logs()->where('log_by_id', $sf->id)->where('log_by_type', get_class($sf))->whereDate('date', $dt ?? today())->first();
+        return !$this->logs()
+            ->where('log_by_id', $sf->id)
+            ->where('log_by_type', get_class($sf))
+            ->whereDate('date', $dt ?? today())
+            ->whereNot('remarks', 'denied')
+            ->first();
     }
 
     public function onsession()
     {
-        return $this->academic_period->iscurrentperiod() && now()->between(today()->setTime(explode(':', $this->time_from)[0], explode(':', $this->time_from)[1]), today()->setTime(explode(':', $this->time_to)[0], explode(':', $this->time_to)[1]));
+        return $this->academic_period->iscurrentperiod() && now()->between(Carbon::createFromTimeString($this->time_from)->subMinutes(5), Carbon::createFromTimeString($this->time_to)->subMinutes(5));
     }
 
     public function ongoing()
@@ -107,5 +167,62 @@ class Course extends Model
     public function allowed($sf)
     {
         return $sf->entered();
+    }
+
+    public function forchecking(Carbon $day = null)
+    {
+        $day = $day ?? today();
+        return $day->setTime(explode(':', $this->time_to)[0], explode(':', $this->time_to)[1])->lt(now());
+    }
+
+    public function facultyattendance()
+    {
+        return $this->logs()->where(['log_by_type' => Faculty::class, 'remarks' => 'summary'])->get();
+    }
+
+    public function parsefacultylogs()
+    {
+        foreach(CarbonPeriod::create($this->academic_period->start, $this->academic_period->end) as $date) {
+            $this->parsedfacultylogs[$date->format('Y-m-d')] = $this->parsefacultylogsbydate($date);
+        }
+    }
+
+    public function parsefacultylogsbydate(Carbon $dt = null)
+    {
+        $dt = $dt ?: today();
+        if($l = $this->logs()->whereDate('date', $dt)->where(['remarks' => 'summary'])->first()) {
+            $l->delete();
+            unset($l);
+        }
+        $logs = $this->logs
+        ->filter(function($log) use($dt) {
+            return $log->date == $dt && $log->remarks == 'stamp';
+        })
+        ->map(function($log) {
+            return $log->created_at;
+        })
+        ->sort(function($e, $f){
+            return $e->gt($f);
+        });
+        $info = $this->logs()->create([
+            'date' => $dt,
+            'remarks' => $logs ? ($logs->first()->gt(Carbon::createFromTimeString($this->time_from)) ? 'late' : 'ok') : 'absent' ,
+            'process' => 'auto',
+            'info' => $logs ? [
+                'first' => $logs->first()->format('H:i:s'),
+                'last' => $logs->last()->format('H:i:s'),
+                'minutes' => $logs->count(),
+            ] : null,
+        ]);
+        $this->faculty->logs()->save($this->room->logs()->save($info));
+        return dd($info);
+        // $from = Carbon::createFromTimeString($this->time_from);
+        // $to = Carbon::createFromTimeString($this->time_to);
+        // $timeframe = collect([]);
+        // do {
+        //     $timeframe->push($from);
+        // } while($from->addMinute() <= $to);
+        // $log =
+
     }
 }

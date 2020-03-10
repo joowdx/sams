@@ -33,7 +33,6 @@ class FetchHolidays implements ShouldQueue
      */
     public function handle()
     {
-        exec('touch /home/joowdx/hello.txt');
         for($x = date('Y') - 5, $y = []; $x < date('Y') + 5; $x++) {
             $y[] = $x;
         }

@@ -124,13 +124,14 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        abort_unless(is_numeric($id), 404);
+        abort_unless($department = Department::find($id), 404);
         $request->validate([
-            'id' => 'required|numeric|exists:departments,id',
             'name' => 'required|string|unique:departments,name,'.$id,
-            'shortname' => 'required|string|max:20|unique:departments,name'.$id,
+            'shortname' => 'required|string|max:20|unique:departments,name,'.$id,
             'faculty_id' => 'sometimes|exists:faculties,id',
         ]);
-        Department::find($id)->update($request->all());
+        $department->update($request->all());
         return redirect(route('departments.show', $id));
     }
 

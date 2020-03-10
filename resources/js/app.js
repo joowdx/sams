@@ -29,9 +29,9 @@ Vue.config.devtools = false
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+// const app = new Vue({
+//     el: '#app',
+// });
 
 // import './fontawesome-kit-pro.js'
 import 'admin-lte/dist/js/adminlte.min.js'
@@ -43,16 +43,17 @@ import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.flash.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
+import 'icheck-2/icheck.js'
+import 'chart.js/dist/Chart.js'
 
 import 'pace-js/pace.min.js'
-
 
 window.swal = require('sweetalert2')
 window.alertify = require('alertifyjs')
 
-
 import './global.js'
 
+import validate from 'validate.js'
 import moment from 'moment'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -60,7 +61,9 @@ import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import tippy from 'tippy.js'
+import svgPanZoom from 'svg-pan-zoom/dist/svg-pan-zoom.min.js';
 
+window.svgPanZoom = svgPanZoom
 window.tippy = tippy
 window.Calendar = Calendar
 window.dayGridPlugin = dayGridPlugin
@@ -69,10 +72,15 @@ window.Draggable = Draggable
 window.resourceTimeGridPlugin = resourceTimeGridPlugin
 window.resourceTimelinePlugin = resourceTimelinePlugin
 window.moment = moment
+window.validate = validate
 
 $(document).ready(function(){
     $('table:not(.no-datatable)').DataTable({
-        dom: 'ftp',
+        dom: '<"row d-print-none"<"col d-flex"l><"col d-flex flex-row-reverse"f>>tp',
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        language: {
+            lengthMenu: "_MENU_",
+        },
         fnDrawCallback: function(oSettings) {
             if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
                 $(oSettings.nTableWrapper).find('.dataTables_paginate').hide()
@@ -82,6 +90,11 @@ $(document).ready(function(){
     $('select:not(.no-select2)').select2({
         theme: 'bootstrap4',
     })
+    $('input:not(no-icheck)').icheck({
+        checkboxClass: 'icheckbox_minimal-grey',
+        radioClass: 'iradio_minimal-grey'
+    })
     $('section.content').fadeIn('slow')
 })
+
 

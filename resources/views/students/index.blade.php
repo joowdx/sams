@@ -7,6 +7,9 @@
 @endsection
 
 @section('content')
+<div class="col-md-12">
+    <a href="{{ route('students.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+</div>
 <div class="p-2" style="display: block;">
     <table class="table table-borderless table-hover projects">
         <thead>
@@ -21,13 +24,10 @@
                     Name
                 </th>
                 <th>
-                    Department
+                    Program
                 </th>
                 <th>
                     Modified
-                </th>
-                <th>
-                    Enrolled
                 </th>
             </tr>
         </thead>
@@ -48,7 +48,9 @@
                     <b>{{ $student->name }}</b>
                 </td>
                 <td class="align-middle">
-                    <b>{{ $student->department->shortname }}</b>
+                    <b>{{ $student->program->shortname }}</b>
+                    <br>
+                    <small> {{ $student->program->name }} </small>
                 </td>
                 <td class="align-middle">
                     <small>
@@ -56,10 +58,7 @@
                     </small>
 
                     <br>
-                    {{ $student->updated_at->format('d F Y') }}
-                </td>
-                <td class="align-middle">
-                    <span class="badge badge-{{ $student->enrolled() ? 'success' : 'danger' }}"> {{ $student->enrolled() ? 'yes' : 'no' }} </span>
+                    {{ $student->updated_at->format('F d, Y H:i') }}
                 </td>
             </tr>
             @endforeach

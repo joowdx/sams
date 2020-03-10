@@ -27,9 +27,11 @@ class FacultyController extends Controller
         );
         $schoolyear = $request->schoolyear ??  Period::currentschoolyear();
         $semester =  $request->semester ?? Period::currentsemester();
-        $period = Period::where('school_year', $schoolyear)->where('semester', 'ilike', "%$semester%")->get()->pluck('id');
+        $period = Period::where('school_year', $schoolyear)->where('semester', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$semester%")->get()->pluck('id');
         return FacultyAttendance::collection(Faculty::with([
-            'logs',
+            'logs' => function($query) {
+                $query->whereIn('remarks', ['ok', 'late', 'absent', 'excuse', 'leave']);
+            },
             'logs.course',
             'logs.log_by',
             'courses' => function($query) use($schoolyear, $semester, $period) {
@@ -37,7 +39,7 @@ class FacultyController extends Controller
             },
             'courses.faculty',
             'courses.logs' => function($query) {
-                $query->where('log_by_type', 'App\Faculty');
+                $query->where('log_by_type', 'App\Faculty')->where('remarks', '!=', 'stamp');
             },
         ])->get()->filter(function($faculty) { return $faculty->courses->count(); } ));
     }

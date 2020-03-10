@@ -7,6 +7,31 @@
 @endsection
 
 @section('content')
+@can('admin_view', App\User::class)
+<div id="circularMenu" class="circular-menu">
+
+    <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
+        <i class="fa fa-bars" style="color:white"></i>
+    </a>
+
+    <menu class="items-wrapper">
+
+    <a href="{{ $department->id}}/edit" class="menu-item">
+            <i class="fa fa-edit"></i>
+        </a>
+
+        <a class="menu-item">
+            <form method="post" id="deleteform" action="">
+                    @method('DELETE')
+                        @csrf
+                        <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
+            </form>
+        </a>
+
+    </menu>
+
+</div>
+@endcan
 <div class="row">
     <div class="col-md-3">
         <div class="card card-outline">
@@ -37,7 +62,7 @@
                         <b>Students</b> <a class="float-right">{{ $department->students->count() }}</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Courses</b> <a class="float-right">{{ $department->courses->count() }}</a>
+                        {{-- <b>Courses</b> <a class="float-right">{{ $department->courses->count() }}</a> --}}
                     </li>
                 </ul>
             </div>
@@ -47,13 +72,56 @@
         <div class="card">
             <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#faculties" data-toggle="tab">Faculties</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#programs" data-toggle="tab">Programs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#faculties" data-toggle="tab">Faculties</a></li>
                     <li class="nav-item"><a class="nav-link" href="#students" data-toggle="tab">Students</a></li>
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="active tab-pane" id="faculties">
+                    <div class="active tab-pane" id="programs">
+                        <div class="p-2" style="display: block;">
+                            <table class="table table-borderless table-hover projects">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <i class="fad fa-hashtag"></i>
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Head
+                                        </th>
+                                        <th>
+                                            Population
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($department->programs as $program)
+                                    <tr onclick="window.location='{{ route('programs.show', [$program->id]) }}'" style="cursor: pointer">
+                                        <td class="align-middle">
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td class="align-middle">
+                                            <b>{{ $program->shortname }}</b> <br>
+                                            <small> {{ $program->name }} </small>
+                                        </td>
+                                        <td class="align-middle">
+                                            <b>{{ $program->faculty->name }}</b> <br>
+                                            <small> {{ $program->faculty->description }} </small>
+                                        </td>
+                                        <td class="align-middle">
+                                            <b>{{ $program->students->count() }}</b>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="faculties">
                         <div class="p-2" style="display: block;">
                             <table class="table table-borderless table-hover projects">
                                 <thead>
@@ -68,7 +136,7 @@
                                             Name
                                         </th>
                                         <th style="width: 4">
-                                            Courses
+                                            Program
                                         </th>
                                     </tr>
                                 </thead>
@@ -79,13 +147,16 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="align-middle">
-                                            <b>{{ $faculty->schoolid }}</b>
+                                            <b>{{ $faculty->schoolid }}</b> <br>
+                                            <small> {{ $faculty->uid }} </small>
                                         </td>
                                         <td class="align-middle">
-                                            <b>{{ $faculty->name }}</b>
+                                            <b>{{ $faculty->name }}</b> <br>
+                                            <small> {{ $faculty->description }} </small>
                                         </td>
                                         <td class="align-middle">
-                                            {{ $faculty->courses->count() }}
+                                            <b>{{ $faculty->program->shortname }}</b> <br>
+                                            <small> {{ $faculty->program->name }} </small>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -108,7 +179,7 @@
                                             Name
                                         </th>
                                         <th>
-                                            Courses
+                                            Program
                                         </th>
                                     </tr>
                                 </thead>
@@ -119,13 +190,15 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="align-middle">
-                                            <b>{{ $student->schoolid }}</b>
+                                            <b>{{ $student->schoolid }}</b> <br>
+                                            <small> {{ $student->uid }} </small>
                                         </td>
                                         <td class="align-middle">
                                             <b>{{ $student->name }}</b>
                                         </td>
                                         <td class="align-middle">
-                                            {{ $student->courses->count() }}
+                                            <b>{{ $student->program->shortname }}</b> <br>
+                                            <small> {{ $student->program->name }} </small>
                                         </td>
                                     </tr>
                                     @endforeach

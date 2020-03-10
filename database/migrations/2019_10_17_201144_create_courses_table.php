@@ -27,6 +27,7 @@ class CreateCoursesTable extends Migration
             $table->unsignedBigInteger('room_id')->nullable();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('modified_by')->default(1);
         });
     }
 

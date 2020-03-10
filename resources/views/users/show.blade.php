@@ -66,17 +66,14 @@ span.tags
         <div class="col-md-12" style="margin-top:20%; padding-right:10%; padding-left:10%">
             <div class="card" style="border:10%">
                 <div class="col-md-12 col-sm-8">
-                    <h2>{{ $user->name }}</h2>
-                    <p><strong>Username: </strong> {{ $user->username }} </p>
-                    <p><strong>Email: </strong> {{ $user->email }} </p>
-                    <p><strong>Phone Number: </strong>{{ $user->phone }} </p>
-                    <p><strong></strong>
-                        <span class="tags">{{ $user->type }}</span>
-                    </p>
+                    <img class="img-fluid" src="{{ $user->avatar }}" alt="" style="width:200px; height:200px; border-radius:50%; float:left">
+                    <p><i class="nav-icon fad fa-user-visor fa-fw"></i><strong>Username: {{$user->username}} </strong>  </p>
+                    <p><i class="nav-icon fad fa-envelope-square fa-fw"></i><strong>Email: {{$user->email}} </strong>  </p>
+                    <p><i class="nav-icon fad fa-phone-square-alt fa-fw"></i><strong>Phone Number: {{$user->phone }} </strong> </p>
+                    <p><span class="tags"> {{$user->type }} </span></p>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @endsection

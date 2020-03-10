@@ -6,6 +6,8 @@ use App\User;
 use App\Course;
 use App\Student;
 use App\Department;
+use App\AcademicPeriod as Period;
+use App\Program;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -17,7 +19,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $this->authorize('fview', User::class);
+        // $this->authorize('faculty_view', User::class);
+
         return view('students.index', [
             'contentheader' => 'Students',
             'students' => Student::all(),
@@ -32,7 +35,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', User::class);
+        $this->authorize('students_data', User::class);
         return view('students.create', [
             'contentheader' => 'Create',
             'breadcrumbs' => [
@@ -44,7 +47,7 @@ class StudentController extends Controller
                     'text' => 'Create'
                 ]
             ],
-            'departments' => Department::all(),
+            'programs' => Program::all(),
         ]);
     }
 
@@ -56,15 +59,22 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', User::class);
+        $this->authorize('students_data', User::class);
         $request->validate([
-            'uid' => 'sometimes|numeric|unique:students,uid',
+            'uid' => 'sometimes|string|unique:students,uid',
             'schoolid' => 'sometimes|numeric|unique:students,schoolid',
             'name' => 'required|string',
-            'department_id' => 'sometimes|exists:departments,id',
+            'program_id' => 'sometimes|exists:programs,id',
         ]);
-        Student::create($request->all());
-        return redirect('students.index');
+        $student = Student::create($request->all());
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $student->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $student->update(['avatar' => $file]);
+        }
+        return redirect('students');
     }
 
     /**
@@ -75,8 +85,19 @@ class StudentController extends Controller
      */
     public function show($id)
     {
+        // $sy = Period::currentschoolyear();
+        // $sm = Period::currentsemester();
+        // $ap = Period::where('school_year', $sy)->where('semester', $sm)->get('id')->pluck('id');
+        // $qwe = Student::find($id)->load(['courses' => function($query) use($ap) {
+        //     $query->whereIn('academic_period_id', $ap);
+        // }, 'courses.logs', 'courses.logs.course'])->courses->flatMap(function($courses) {
+        //      $courses->logs;
+        // });
         abort_unless(is_numeric($id), 404);
-        abort_unless($student = Student::find($id), 404);
+        abort_unless($student = Student::find($id)->load(['logs', 'logs.course']), 404);
+        abort_unless($student = Student::find($id)->load([
+            'program', 'program.department'
+        ]), 404);
         return view('students.show', [
             'contentheader' => $student->name,
             'breadcrumbs' => [
@@ -89,6 +110,10 @@ class StudentController extends Controller
                 ]
             ],
             'student' => $student,
+            'currentsemester' => Period::currentsemester(),
+            'currentschoolyear' => Period::currentschoolyear(),
+            'semesters' => Period::groupBy('semester')->get('semester')->pluck('semester'),
+            'schoolyears' => Period::groupBy('school_year')->orderBy('school_year', 'desc')->get('school_year')->pluck('school_year'),
         ]);
     }
 
@@ -101,6 +126,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('students_data', User::class);
         abort_unless(is_numeric($id), 404);
         abort_unless($student = Student::find($id), 404);
         return view('students.edit', [
@@ -120,6 +146,7 @@ class StudentController extends Controller
             ],
             'student' => $student,
             'departments' => Department::all(),
+            'programs' => Program::all()
         ]);
     }
 
@@ -132,17 +159,26 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('update', User::class);
+        $this->authorize('students_data', User::class);
         $request->validate([
             'id' => 'required|numeric|exists:students,id',
-            'uid' => 'sometimes|numeric|unique:students,uid,'.$id,
+            'uid' => 'sometimes|string|unique:students,uid,'.$id,
             'schoolid' => 'sometimes|numeric|unique:students,schoolid,'.$id,
             'name' => 'required|string',
             'department_id' => 'sometimes|exists:departments,id',
         ]);
-        Student::find($id)->update($request->all());
-        return redirect('students');
+        $student = Student::find($id);
+        $student->update($request->all());
 
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $student->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $student->update(['avatar' => $file]);
+
+        }
+        return redirect('students');
     }
 
     /**
@@ -153,7 +189,7 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete', User::class);
+        $this->authorize('students_data', User::class);
         abort_unless(is_numeric($id), 404);
         abort_unless($department = Student::find($id), 404);
         $student->delete();

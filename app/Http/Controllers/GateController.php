@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\gate;
+Use App\Log;
+use App\Students;
 use Illuminate\Http\Request;
 
 class GateController extends Controller
@@ -14,7 +16,14 @@ class GateController extends Controller
      */
     public function index()
     {
-        //
+        return view('gates.index')->with([
+            'logs' => Log::with([
+                'from_by:id,name',
+                'log_by:avatar,id,name,uid',
+                'course' ,
+            ])->where('remarks', '<>', 'absent')->limit(1)->orderBy('created_at', 'desc')->get(),
+        ]);
+
     }
 
     /**

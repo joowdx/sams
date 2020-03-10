@@ -7,7 +7,9 @@
 @endsection
 
 @section('content')
-
+<div class="col-md-12">
+    <a href="{{ route('courses.create') }}" id="add" class="btn btn-primary"><span class="fa fa-plus"></span></a>
+</div>
 
 <div class="card">
     <div class="card-header p-2">
@@ -60,13 +62,18 @@
                                     </li>
                                 </td>
                                 <td>
-                                    {{ strtolower($course->academic_period->semester) }} Semester
+                                    @php $period = $course->academic_period @endphp
+                                    <p class="m-0 p-0">
+                                        @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
+                                            <b>{{ $period->semester }}</b> <small> Sem </small>/
+                                            <b>{{ $period->term }} </b> <small> Term </small>
+                                        @else
+                                            <b>{{ $period->semester }}</b>
+                                            @if($period->semester != 'SUMMER') <small> Sem </small> @endif
+                                        @endif
+                                    </p>
                                     <small>
-                                        ({{ ($term = $course->academic_period->term) == 'SEMESTER' ? 'Sem' : (strtolower($term). 'Term') }})
-                                    </small>
-                                    <br>
-                                    <small>
-                                        {{ $course->academic_period->school_year }}
+                                        SY: {{ $period->school_year }}
                                     </small>
                                 </td>
                                 <td>
@@ -125,13 +132,18 @@
                                     </li>
                                 </td>
                                 <td>
-                                    {{ strtolower($course->academic_period->semester) }} Semester
+                                    @php $period = $course->academic_period @endphp
+                                    <p class="m-0 p-0">
+                                        @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
+                                            <b>{{ $period->semester }}</b> <small> Sem </small>/
+                                            <b>{{ $period->term }} </b> <small> Term </small>
+                                        @else
+                                            <b>{{ $period->semester }}</b>
+                                            @if($period->semester != 'SUMMER') <small> Sem </small> @endif
+                                        @endif
+                                    </p>
                                     <small>
-                                        ({{ ($term = $course->academic_period->term) == 'SEMESTER' ? 'Sem' : (strtolower($term). 'Term') }})
-                                    </small>
-                                    <br>
-                                    <small>
-                                        {{ $course->academic_period->school_year }}
+                                        SY: {{ $period->school_year }}
                                     </small>
                                 </td>
                                 <td>

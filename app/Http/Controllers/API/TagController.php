@@ -8,6 +8,8 @@ use App\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Events\NewTag;
+use App\UnknownLog;
 
 class TagController extends Controller
 {
@@ -29,7 +31,7 @@ class TagController extends Controller
                 $request->all() ,
                 [
                     'f' => 'nullable|string|in:U,O' ,
-                    'i' => 'required|string|numeric' ,
+                    'i' => 'required|string' ,
                     'n' => 'required|string|regex:/^[A-Za-z-. ]+$/|max:30' ,
                     'e' => 'required|string|in:S,F' ,
                 ]
@@ -95,5 +97,21 @@ class TagController extends Controller
             }
         }
 
+    }
+
+    public function newtag(Request $request)
+    {
+        $validator = \Validator::make($request->all(), ['i' => 'required|string',]);
+        abort_unless($validator->passes(), 400);
+        event(
+            new NewTag(UnknownLog::create([
+                'uid' => $request->i,
+                'from' => $request->f ?? 'unknown',
+                'method' => $request->method(),
+                'ip' => $request->ip(),
+                'data' => $request->all(),
+                'remarks' => 'register'
+            ]))
+        );
     }
 }

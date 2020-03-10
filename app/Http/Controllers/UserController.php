@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Faculty;
 use App\Http\Requests\UpdateValidation;
 use App\Http\Requests\StoreValidation;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +21,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->authorize('aview', User::class);
-
-        return view('users.index')->with([
-            'contentheader' => 'Users'
+        $this->authorize('users_data', User::class);
+        return view('users.index', [
+            'contentheader' => 'Users',
+            'users' => User::all(),
         ]);
     }
 
@@ -34,8 +35,11 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('users_data', User::class);
         $user = new User();
-        return view('users.create', compact('user'));
+        return view('users.create', compact('user'),[
+            'faculties' => Faculty::all(),
+        ]);
     }
 
     /**
@@ -46,8 +50,25 @@ class UserController extends Controller
      */
     public function store(StoreValidation $request)
     {
-        $this->authorize('create', User::class);
-        User::create($request->all())->update(['password' => Hash::make($request->input('password'))]);
+        $this->authorize('users_data', User::class);
+        $user = User::create($request->all());
+        $user->update(['password' => Hash::make($request->input('password'))]);
+
+        // if(request()->has('avatar'))
+        // {
+        //     $user->update([
+        //         'avatar' => request()->avatar->store('avatars','public', '' .''. request()->avatar->getClientOriginalName()),
+        //     ]);
+        // }
+
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $user->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $user->update(['avatar' => $file]);
+        }
+
         return redirect('users');
     }
 
@@ -59,8 +80,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        // $this->authorize('show', User::class);
-
+        $this->authorize('users_data', User::class);
+        return $this->edit($user);
         return view('users.show', compact('user'))->with([
             'contentheader' => 'User Info',
             'breadcrumbs' => [
@@ -83,7 +104,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $this->authorize('show', User::class);
+        $this->authorize('users_data', User::class);
         return view('users.edit', compact('user'))->with([
             'contentheader' => 'Update user',
             'breadcrumbs' => [
@@ -94,7 +115,8 @@ class UserController extends Controller
                 [
                     'text' => 'Edit'
                 ]
-            ]
+            ],
+            'faculties' => Faculty::all(),
         ]);
     }
 
@@ -107,7 +129,7 @@ class UserController extends Controller
      */
     public function update(UpdateValidation $request, $id)
     {
-        $this->authorize('update', User::class);
+        $this->authorize('users_data', User::class);
         $user = User::findOrFail($id);
         $user->type     =   $request->type;
         $user->name     =   $request->name;
@@ -117,6 +139,14 @@ class UserController extends Controller
         if(!empty($request->input('password'))){
             $user->password =   Hash::make($request->password);
         }
+        if(request()->hasFile('avatar'))
+        {
+            $avatar = request()->file('avatar')->getClientOriginalExtension();
+            $file = $user->name.".".$avatar;
+            request()->file('avatar')->storeAs('public/avatars', '' . '/' . $file, '');
+            $user->update(['avatar' => $file]);
+        }
+
         $user->save();
 
         return view('users.show',compact('user'));
@@ -130,7 +160,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('delete', User::class);
+        $this->authorize('users_data', User::class);
         $user->delete();
 
         return redirect('users');

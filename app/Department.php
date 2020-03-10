@@ -19,21 +19,26 @@ class Department extends Model
 
     public function faculties()
     {
-        return $this->hasMany(Faculty::class);
+        return $this->hasManyDeep(Faculty::class, [Program::class]);
     }
 
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasManyDeep(Student::class, [Program::class]);
     }
 
-    public function courses()
+    public function programs()
     {
-        return $this->hasManyDeep(Course::class, [Faculty::class])->
-        where(function($query) {
-            $query->where('faculty_id', $this->id)->whereIn('academic_period_id', AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->get()->pluck('id'));
-        });
+        return $this->hasMany(Program::class);
     }
+
+    // public function courses()
+    // {
+    //     return $this->hasManyDeep(Course::class, [Faculty::class])->
+    //     where(function($query) {
+    //         $query->where('faculty_id', $this->id)->whereIn('academic_period_id', AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->get()->pluck('id'));
+    //     });
+    // }
 
     public function enrolledstudents()
     {

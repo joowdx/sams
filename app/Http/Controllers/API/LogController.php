@@ -3,74 +3,119 @@
 namespace App\Http\Controllers\API;
 
 use App\Log;
-use App\Gate;
-use App\Room;
+use App\Reader;
+use App\Course;
 use App\Faculty;
 use App\Student;
+
+use App\UnknownLog;
 use App\Events\NewScannedLog;
+
+use App\Http\Middleware\ReaderVerification;
+use App\Http\Middleware\TagVerification;
+use App\Http\Middleware\InSchoolPremises;
+use App\Http\Middleware\HasClass;
+
 use App\Http\Controllers\Controller;
+
+use Carbon\Carbon;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class LogController extends Controller
 {
+
+    private $sf, $gr, $cc;
+
+    public function __construct()
+    {
+        $this->middleware([
+            // ReaderVerification::class,
+            // TagVerification::class,
+            // InSchoolPremises::class,
+            // HasClass::class,
+        ]);
+    }
+
     public function __invoke(Request $request)
     {
+        $this->sf = Student::findbyuid($request->i) ?? Faculty::findbyuid($request->i);
+        $this->gr = Reader::findbyname($request->f);
 
-        abort_unless(
-            Validator::make(
-                $request->all() ,
-                [
-                    'f' => 'required|string' ,
-                    'i' => 'required|string|numeric' ,
-                ]
-            )->passes() ,
-            403, 'Unknown'
-        );
+        switch($this->gr->type) {
+            case 'gate': return $this->sendlogevent($this->newlog());
+            case 'room': {
+                switch(get_class($this->sf)) {
+                    case Student::class: return $this->handlestudent();
+                    case Faculty::class: return $this->handlefaculty();
+                }
+            }
+        }
+    }
 
-        abort_unless(
-            $sf = Student::where(['uid' => $request->i])->first() ?? Faculty::where(['uid' => $request->i])->first() ,
-            403, 'Unknown Entity'
-        );
+    private function handlefaculty()
+    {
+        $this->cc = Course::findonsession($this->gr->name);
+        // abort_unless($this->cc && ($this->cc->forattendance() || $this->cc->facultyloggedontime()), 403, 'Attendance is now disabled!');
+        abort_unless($this->cc->faculty->uid == $this->sf->uid, 403, "You ain't this class' teacher!");
+        abort_unless($this->cc->facultylateststamp() != now()->seconds()->microseconds(), 409, 'Stamp for this minute exists.');
+        return $this->sendlogevent($this->cc->logs()->save($this->newlog('stamp', true)));
+    }
 
-        abort_unless(
-            $gr = Room::where(['name' => $request->f])->first() ?? Gate::where(['name' => $request->f])->first(),
-            403, 'Unknown Location'
-        );
+    private function handlefaculty_2()
+    {
+        $this->cc = Course::findonsession($this->gr->name);
+        abort_unless($this->cc && ($this->cc->forattendance() || $this->cc->facultyloggedontime()), 403, 'Attendance is now disabled!');
+        abort_unless($this->cc->faculty->uid == $this->sf->uid, 403, "You ain't this class' teacher!");
 
-        abort_unless(
-            ($gt = get_class($gr) == 'App\Gate') || ($cc = $gr->session()) && ($fr = today()->setTime(explode(':', $cc->time_from)[0], explode(':', $cc->time_from)[1])),
-            403, 'No Class Found'
-        );
+    }
 
-        abort_unless(
-            $gt || $cc->students->contains($sf),
-            403, 'Student Not Enrolled'
-        );
+    private function handlestudent()
+    {
+        $this->cc = Course::findforattendance($this->gr->name);
+        abort_unless($this->cc, 403, 'Attendance is now disabled!');
+        abort_unless($this->cc->students->contains($this->sf) && $this->deny(), 403, 'Student not enrolled!');
+        abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
+        return $this->sendlogevent($this->cc->logs()->save($this->newlog()));
+    }
 
-        abort_unless(
-            $gt || $cc->allowed($sf),
-            403, 'Not Allowed'
-        );
+    private function deny()
+    {
+        return $this->newlog('denied');
+    }
 
-        abort_unless(
-            $gt || $cc->nolog($sf),
-            403, 'Already Logged In'
-        );
+    private function newlog($remarks = null, $trimseconds = false)
+    {
+        if($remarks) {
+            $log = $this->sf->logs()->create(['remarks' => $remarks, 'date' => today()]);
+        } else {
+            switch($this->gr->type) {
+                case 'room': $rk = now()->diffInMinutes(Carbon::createFromTimeString($this->cc->time_from), false) > 1 ? 'late' : 'ok'; break;
+                case 'gate': $rk = $this->sf->entered() ? 'exit' : 'entry'; break;
+            }
+            $log = $this->sf->logs()->create(['remarks' => $rk, 'date' => today()]);
+        }
+        if($trimseconds) {
+            $time = now()->seconds()->microseconds();
+            $log->created_at = $time;
+            $log->updated_at = $time;
+            $log->save();
+        }
+        return $this->gr->logs()->save($log);
+    }
 
-        $rk = $gt ? ($sf->exited() ? 'entry' : 'exit') : ($fr->diffInMinutes(now()) > 15 ? 'late' : 'ok');
-        $nl = $gr->logs()->save($sf->logs()->create(['remarks' => $rk, 'date' => today()]));
-        $gt ?: $cc->logs()->save($nl);
-
+    private function sendlogevent(Log $log)
+    {
         event(
             new NewScannedLog(
-                $nl->load([
-                    'from_by:id,name',
+                $log->loadMissing([
+                    'reader:id,name',
                     'log_by:id,name,uid',
                     'course',
                 ])
             )
         );
-
+        return $log;
     }
+
 }

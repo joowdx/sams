@@ -16,12 +16,12 @@ class Event extends Model
     ];
 
     public static function noclass(Carbon $day = null) {
-        $day = $day ?? Carbon::now();
+        $day = $day ?? today();
         return (boolean) Event::where('remarks', '<>', 'info')->whereDate('start', '<=', $day)->whereDate('end', '>=', $day)->get()->first();
     }
 
     public static function nextworkingday(Carbon $day = null) {
-        $day = $day ?? Carbon::now();
+        $day = $day ?? today();
         do {
             $day->addDay();
         } while (Event::noclass($day));

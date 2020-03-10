@@ -7,13 +7,13 @@
 @endsection
 
 @section('content')
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">{{ $student->name }}</div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('students.update', $student->id) }}">
+                <form method="POST" action="{{ route('students.update', $student->id) }} " enctype="multipart/form-data">
                     @csrf
                     @method('patch')
                     @include('students.forms')

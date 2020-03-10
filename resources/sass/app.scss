@@ -14,11 +14,11 @@
 @import '~datatables.net-bs4/css/dataTables.bootstrap4.css';
 //DataTable Buttons
 @import '~datatables.net-buttons-bs4/css/buttons.bootstrap4.css';
-
+//iCheck
+@import '~icheck-2/skins/all.css';
 //Select2
 @import '~select2/dist/css/select2.css';
 @import '~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css';
-
 //Fullcalendar
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/bootstrap/main.css';
@@ -26,9 +26,14 @@
 @import '~@fullcalendar/timeline/main.css';
 // @import '~@fullcalendar/resource-timegrid/main.css';
 @import '~@fullcalendar/resource-timeline/main.css';
+@import '~Chart.js/dist/Chart.css';
 
 //Tippy
 @import '~tippy.js/dist/tippy.css';
+@import '~tippy.js/themes/light.css';
+@import '~tippy.js/themes/light-border.css';
+@import '~tippy.js/themes/translucent.css';
+@import '~tippy.js/themes/material.css';
 
 // Pace
 @import '~pace-js/themes/black/pace-theme-minimal.css';
@@ -318,11 +323,6 @@
     // white-space: nowrap; /*whether to display in one line or not*/
 }
 
-.card {
-    border-top: solid 5px;
-}
-
-
 ::-webkit-scrollbar {
     background-color: #1c1e1f;
     color: #c5c1b9;
@@ -357,3 +357,38 @@ html::-webkit-scrollbar-track {
 html::-webkit-scrollbar-track {
     background: linear-gradient(90deg,#201c29,#201c29 1px,#100e17 0,#100e17);
 }
+
+#add {
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px; /* Increase font size */
+  }
+  #add:hover {
+    background-color: #555; /* Add a dark-grey background on hover */
+  }
+
+  .box-icon  {
+    font-size: 70px;
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    top: 15px;
+    }
+    .box-icon:hover {
+    font-size: 90px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    transition: all .3s linear;
+    }

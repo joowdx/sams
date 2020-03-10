@@ -11,6 +11,7 @@ class FacultySeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Faculty::class)->states(['John Doe'])->create()->department()->associate(App\Department::first());
+        factory(App\Faculty::class)->states(['Max'])->create();
+        factory(App\Faculty::class)->states(['Min'])->create();
     }
 }

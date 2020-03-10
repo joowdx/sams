@@ -9,6 +9,7 @@ use App\Events\FetchHolidays;
 use App\Jobs\FetchHolidays as JobsFetchHolidays;
 use App\Jobs\RefreshMap;
 use App\Jobs\MarkAbsent;
+use App\Jobs\ClearUnknownTags;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -32,22 +33,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new RefreshMap(), 'refreshmap')->when(function() {
-            return true;
-            return ($minute = Carbon::now()->format('i')) == '00' || $minute == '30';
-        })->skip(function() {
-            return Carbon::now()->format('i') == 'Sunday';
-        })->everyMinute();
-
-        // $schedule->job(new JobsFetchHolidays())->when(function() {
-        //     return true;
-        //     for($x = date('Y') - 5, $y = []; $x < date('Y') + 5; $x++) { $y[] = $x; }
-        //     $z = array_unique(Event::all()->pluck('start')->map(function($date) {return $date->format('Y');})->all());
-        //     return array_diff($y, $z);
-        // })->everyMinute();
-
-        $schedule->job(new MarkAbsent)->everyMinute();
-
+        $schedule->job(new ClearUnknownTags)->withoutOverlapping()->everyMinute();
+        $schedule->job(new MarkAbsent)->withoutOverlapping()->everyThirtyMinutes()->runInBackGround();
+        $schedule->job(new RefreshMap)->withoutOverlapping()->everyThirtyMinutes();
+        $schedule->job(new JobsFetchHolidays)->yearly();
     }
 
     /**

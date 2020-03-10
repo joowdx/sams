@@ -11,7 +11,7 @@ class CourseStudentStatus extends Pivot
         $this->belongsTo(Student::class);
     }
 
-    public function course
+    public function course()
     {
         $this->belongsTo(Course::class);
     }

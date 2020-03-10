@@ -26,59 +26,74 @@
 
 @section('content')
 
+<div id="circularMenu" class="circular-menu">
+    <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
+        <i class="fa fa-bars" style="color:white"></i>
+    </a>
+    <menu class="items-wrapper">
+        <a href="{{ $faculty->id }}/edit" class="menu-item">
+            <i class="fa fa-edit"></i>
+        </a>
+        <a class="menu-item">
+            <form method="post" id="deleteform" action="{{ route('faculties.destroy', $faculty->id) }}">
+                @method('DELETE')
+                @csrf
+                <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
+            </form>
+        </a>
+    </menu>
+</div>
 
 <div class="row">
-    <div id="circularMenu" class="circular-menu">
-        <a class="floating-btn" onclick="document.getElementById('circularMenu').classList.toggle('active');">
-            <i class="fa fa-bars" style="color:white"></i>
-        </a>
-        <menu class="items-wrapper">
-            <a href="{{ $faculty->id }}/edit" class="menu-item">
-                <i class="fa fa-edit"></i>
-            </a>
-            <a class="menu-item">
-                <form method="post" id="deleteform" action="{{ route('faculties.destroy', $faculty->id) }}">
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
-                </form>
-            </a>
-        </menu>
-    </div>
-    <div class="col-md-2">
-        <div id="wrapper">
-            <div><i class="fa fa-user-circle" id="user" aria-hidden="true"></i></div>
-        </div>
-    </div>
-    <div class="col-md-10">
-        <small>{{ $faculty->uid }}</small>
-        <h1>{{ $faculty->name }}</h1>
-        <hr>
-        <ul class="nav info">
-            <li class="col-md-2 text-center">
-                <a href="{{ route('faculties.courses.index', $faculty->id) }}" class="list-group-item-action">
-                    <h1> {{ $courses->count() }} </h1>
-                    Current Courses
-                </a>
-            </li>
-            <li class="vl"></li>
-            <li class="col-md-2 text-center">
-                <h1> {{ $students->count() }} </h1>
-                Students
-            </li>
-        </ul>
-        <hr>
-    </div>
-</div>
-<div class="row mt-3">
 
+    <div class="col-md-12">
+        <ul class="nav info">
+
+            <li class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="">{{ $faculty->name }}</h3>
+                        <p class="card-text"><strong><i class="fa-fw fad fa-tag mr-1"></i> UID: </strong>{{ $faculty->uid ?? 'no uid set' }}</p>
+                        <p class="card-text"><strong><i class="fa-fw fad fa-tag mr-1"></i> Department: </strong>{{ $faculty->department->name ?? 'NaN' }}</p>
+                    </div>
+                </div>
+            </li>
+
+            <li class="col-md-4">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $courses->count() }}</h3>
+                        <p>Current Courses</p>
+                    </div>
+                    <div class="icon">
+                        <i class="box-icon fad fa-book-spells fa-fw"></i>
+                    </div>
+                    <a href="{{ route('faculties.courses.index', $faculty->id) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </li>
+
+            <li class="col-md-4">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ $students->count() }}</h3>
+                        <p>Students</p>
+                    </div>
+                    <div class="icon">
+                        <i class="box-icon fad fa-users-class fa-fw"></i>
+                    </div>
+                    <a class="small-box-footer" disabled>More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
 
     <div class="col-md-8">
-        <div class="card px-2">
+        <div class="card">
             <div class="card-header pb-1">
                 <h3 class="card-title">Students</h3>
             </div>
-            <div class="card-body px-2 py-4" style="display: block;">
+            <div class="card-body px-4 py-4" style="display: block;">
                 <table class="table table-borderless projects">
                     <thead>
                         <tr>
@@ -127,6 +142,18 @@
             <!-- /.card-body -->
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header pb-1">
+                <h3 class="card-title">Pattern/Frequency</h3>
+            </div>
+            <div class="card-body px-2 py-4" style="display: block;">
+                <canvas id="myChart" style="position: relative;" class="chartjs-render-monitor"></canvas>
+            </div>
+        </div>
+    </div>
+
     {{-- <div class="col-md-8">
         <ul class="nav">
             <li><h1 id="haha">Students</h1></li>
@@ -176,6 +203,91 @@
 
 @section('scripts')
 <script>
+    async function getData(){
+        const attreq    = await fetch('http://localhost:8000/api/records');
+        const attdata   = await attreq.json();
+        const filter    = await attdata.filter(data => data.faculty)
+        const clean     = await filter.map(data => ({
+            days: new Date(data.time).toLocaleString('en-us', { weekday: 'long' }),
+            facultyId: data.faculty.id,
+            remarks: data.remarks,
+        })).filter( e=> (e.facultyId == {{ $faculty->id }}))
 
+        return clean;
+    }
+
+    async function getChart(){
+
+        var data = await getData(),
+            grouped = function(array) {
+            var r = [];
+            array.forEach(function(a) {
+                if (!this[a.days]) {
+                    this[a.days] = { days: a.days, late: 0, absent: 0};
+                    r.push(this[a.days]);
+                }
+                this[a.days][a.remarks]++;
+            }, Object.create(null));
+
+            nd = [];
+            nd[0] = r.find(e => e.days == 'Monday')     || {days: 'Monday', late:0,absent:0}
+            nd[1] = r.find(e => e.days == 'Tuesday')    || {days: 'Tuesday', late:0,absent:0}
+            nd[2] = r.find(e => e.days == 'Wednesday')  || {days: 'Wednesday', late:0,absent:0}
+            nd[3] = r.find(e => e.days == 'Thursday')   || {days: 'Thursday', late:0,absent:0}
+            nd[4] = r.find(e => e.days == 'Friday')     || {days: 'Friday', late:0,absent:0}
+            nd[5] = r.find(e => e.days == 'Saturday')   || {days: 'Saturday', late:0,absent:0}
+
+            r = nd;
+            return r;
+            }(data);
+
+        var labels = grouped.map(function(e){
+            return e.days;
+        });
+
+        var late = grouped.map(function(e){
+            return e.late;
+        });
+
+        var absent = grouped.map(function(e){
+            return e.absent;
+        });
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Lates',
+                borderColor: '#ffae42',
+                fill: false,
+                data: late,
+                borderWidth: 1,
+                order: 1
+            }, {
+                label: 'Absences',
+                borderColor: '#d9534f',
+                fill: false,
+                data: absent,
+                borderWidth: 1,
+                order: 2
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+
+                }]
+            }
+        }
+    });
+
+    }
+    getChart();
 </script>
 @endsection

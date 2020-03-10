@@ -14,6 +14,12 @@
     .fc td, .fc-day-header {
         border-style: none !important;
     }
+    .fc-other-month .fc-day-number {
+        color: #0005;
+    }
+    .fc-sun.fc-other-month .fc-day-number, .fc-sat.fc-other-month .fc-day-number {
+        color: #dc323360;
+    }
 </style>
 @endsection
 
