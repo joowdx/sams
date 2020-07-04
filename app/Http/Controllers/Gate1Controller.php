@@ -16,7 +16,7 @@ class Gate1Controller extends Controller
     {
         return view('gates1.index')->with([
             'logs' => Log::with([
-                'from_by:id,name',
+                'reader:id,name',
                 'log_by:avatar,id,name,uid',
                 'course' ,
             ])->where('remarks', '<>', 'absent')->limit(1)->orderBy('created_at', 'desc')->get(),

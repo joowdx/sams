@@ -297,6 +297,93 @@
             attendance.refetchResources()
             attendance.refetchEvents()
         })
+
+        async function getData(){
+        const attreq    = await fetch('http://localhost:8000/api/records');
+        const attdata   = await attreq.json();
+        const filter    = await attdata.filter(data => data.student)
+        const clean     = await filter.map(data => ({
+            days: new Date(data.time).toLocaleString('en-us', { weekday: 'long' }),
+            studentid: data.student.id,
+            remarks: data.remarks,
+        })).filter( e=> (e.studentid == {{ $student->id }}))
+
+        return clean;
+    }
+
+    async function getChart(){
+
+        var data = await getData(),
+            grouped = function(array) {
+            var r = [];
+            array.forEach(function(a) {
+                if (!this[a.days]) {
+                    this[a.days] = { days: a.days, late: 0, absent: 0};
+                    r.push(this[a.days]);
+                }
+                this[a.days][a.remarks]++;
+            }, Object.create(null));
+
+            nd = [];
+            nd[0] = r.find(e => e.days == 'Monday')     || {days: 'Monday', late:0,absent:0}
+            nd[1] = r.find(e => e.days == 'Tuesday')    || {days: 'Tuesday', late:0,absent:0}
+            nd[2] = r.find(e => e.days == 'Wednesday')  || {days: 'Wednesday', late:0,absent:0}
+            nd[3] = r.find(e => e.days == 'Thursday')   || {days: 'Thursday', late:0,absent:0}
+            nd[4] = r.find(e => e.days == 'Friday')     || {days: 'Friday', late:0,absent:0}
+            nd[5] = r.find(e => e.days == 'Saturday')   || {days: 'Saturday', late:0,absent:0}
+
+            r = nd;
+            return r;
+            }(data);
+
+        var labels = grouped.map(function(e){
+            return e.days;
+        });
+
+        var late = grouped.map(function(e){
+            return e.late;
+        });
+
+        var absent = grouped.map(function(e){
+            return e.absent;
+        });
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Lates',
+                borderColor: '#ffae42',
+                fill: false,
+                data: late,
+                borderWidth: 1,
+                order: 1
+            }, {
+                label: 'Absences',
+                borderColor: '#d9534f',
+                fill: false,
+                data: absent,
+                borderWidth: 1,
+                order: 2
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+
+                }]
+            }
+        }
+    });
+
+    }
+    getChart();
     })
 </script>
 @endsection
