@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.standalone')
 
 @section('styles')
 <style>
@@ -68,7 +68,7 @@ div.remark h1
     } */
 #stu-img
 {
-    height: 420px;
+    height: 500px;
     width: 100%;
 }
 .student-card{
@@ -78,7 +78,7 @@ height: 100%;
 </style>
 @endsection
 
-@section('content')
+@section('security_content')
 <div class="row justify-content-md-center" style="background-color: #181a1b !important; padding: 10px; height:140px">
     <div class="col col-md-auto">
         <img class="img-fluid" src="{{ asset('/assets/img/umdc.png') }}" style="height: 120px;">

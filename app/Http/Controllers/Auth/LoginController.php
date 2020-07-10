@@ -33,6 +33,22 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user)
     {
-        return redirect($user->type == 'admin' ? 'dashboard' : 'courses');
+        if($user->type == 'admin')
+        {
+
+            return redirect('dashboard');
+
+        }elseif($user->type == 'security1')
+        {
+
+            return redirect('gate0');
+
+        }elseif($user->type == 'security2')
+        {
+
+            return redirect('gate1');
+
+        }
+        // return redirect($user->type == 'admin' ? 'dashboard' : 'courses');
     }
 }

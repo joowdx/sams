@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->enum('type',['admin','h.r.','faculty']);
+            $table->enum('type',['admin','h.r.','faculty','security1', 'security2']);
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->rememberToken();
             $table->timestamps();

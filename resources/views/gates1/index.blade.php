@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.standalone')
 
 @section('styles')
 <style>
@@ -68,7 +68,7 @@ div.remark h1
     } */
 #stu-img
 {
-    height: 420px;
+    height: 500px;
     width: 100%;
 }
 .student-card{
@@ -78,7 +78,7 @@ height: 100%;
 </style>
 @endsection
 
-@section('content')
+@section('security_content')
 <div class="row justify-content-md-center" style="background-color: #181a1b !important; padding: 10px; height:140px">
     <div class="col col-md-auto">
         <img class="img-fluid" src="{{ asset('/assets/img/umdc.png') }}" style="height: 120px;">
@@ -92,7 +92,7 @@ height: 100%;
 
 <div class="row">
 
-    <div class="col col-md-5" style=" padding:0;">
+    <div class="col col-md-5" style="padding:0;">
         <div class="card student-card">
             <img class="card-img-top" id="stu-img" src="storage/avatars/no-image.png" alt="Card image cap">
             <div class="card-body text-center inners" style="background-color: #3b3a30">
@@ -103,7 +103,7 @@ height: 100%;
     </div>
 
     <div class="col col-md-7">
-        <ul class="list basic_info mt-3" id="stu-list-entry" style="width: 100%;">
+        <ul class="list basic_info mt-3" id="stu-list-entry" style="width: 100%; height:100%">
             <li class="col-md-12 animated bounceInDown" id="li1">
                 <div class="small-box">
                     <div class="inner">
