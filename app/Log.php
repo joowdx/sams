@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $fillable = [
-        'remarks', 'date', 'process', 'info'
+        'remarks', 'date', 'process', 'info', 'created_at'
     ];
 
     protected $dates = [

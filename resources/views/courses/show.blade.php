@@ -260,7 +260,7 @@
         attendance.render()
         mark = (eventid, resourceid, remarks) => {
             (async () => {
-                const r = await fetch(`{{ route('attendance') }}`, {
+                const r = await fetch(`{{ url('api/attendance') }}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -272,7 +272,8 @@
                         id: eventid,
                         entityid: resourceid,
                         remarks: remarks,
-                        course: {{ $course->id }}
+                        course: {{ $course->id }},
+                        _token: '{{ csrf_token() }}',
                     })
                 })
             })();

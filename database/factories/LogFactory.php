@@ -33,11 +33,11 @@ function generate($faker, $subj, $for, $day) {
     return [
         'log_by_id' => $for->id,
         'log_by_type' => get_class($for),
-        'from_by_id' => $remark == 'absent' ? null : '1',
-        'from_by_type' => $remark == 'absent' ? null : 'App\Room',
+        'reader_id' => $remark == 'absent' ? null : $subj->room->id,
         'course_id' => $subj->id,
         'remarks' => $remark,
         'date' => $log,
+        'created_at' => $log,
     ];
 }
 

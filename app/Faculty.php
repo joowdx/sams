@@ -18,6 +18,12 @@ class Faculty extends Model
         return Faculty::where(['uid' => $uid])->first();
     }
 
+    public static function findteaching($query = false)
+    {
+        $period = AcademicPeriod::where('school_year', AcademicPeriod::currentschoolyear())->where('semester', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%".AcademicPeriod::currentsemester()."%")->get()->pluck('id');
+        return Course::with('faculty')->whereIn('academic_period_id', $period)->get()->pluck('faculty')->unique();
+    }
+
     public function department()
     {
         return $this->program->belongsTo(Department::class);

@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Course;
 use App\Events\MarkAbsent as MarkAbsentEvent;
 use App\Student;
+use App\Faculty;
 use Illuminate\Support\Facades\DB;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
@@ -65,30 +66,31 @@ class MarkAbsent implements ShouldQueue
                 if(
                     !$course->logs()->where([
                         'log_by_id' => $course->faculty->id,
-                        'log_by_type' => get_class($course->faculty),
+                        'log_by_type' => Faculty::class,
                     ])->whereDate('date', $day)->first()
                 ) {
-                    $logs[] = [
-                        'log_by_id' => $course->faculty->id,
-                        'log_by_type' => get_class($course->faculty),
-                        'course_id' => $course->id,
-                        'date' => $day,
-                        'remarks' => 'absent',
-                        'process' => 'auto',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
+                    // $logs[] = [
+                    //     'log_by_id' => $course->faculty->id,
+                    //     'log_by_type' => get_class($course->faculty),
+                    //     'course_id' => $course->id,
+                    //     'date' => $day,
+                    //     'remarks' => 'absent',
+                    //     'process' => 'auto',
+                    //     'created_at' => now(),
+                    //     'updated_at' => now(),
+                    // ];
+                    $course->parsefacultylogsbydate(Carbon::create($day));
                 }
                 foreach($course->students as $student) {
                     if(
                         !$course->logs()->where([
                             'log_by_id' => $student->id,
-                            'log_by_type' => get_class($student),
+                            'log_by_type' => Student::class,
                         ])->whereDate('date', $day)->first()
                     ) {
                         $logs[] = [
                             'log_by_id' => $student->id,
-                            'log_by_type' => get_class($student),
+                            'log_by_type' => Student::class,
                             'course_id' => $course->id,
                             'date' => $day,
                             'remarks' => 'absent',
@@ -98,6 +100,8 @@ class MarkAbsent implements ShouldQueue
                         ];
                     }
                 }
+
+                $course->updateinformation(Carbon::create($day));
                 $ended[] = [
                     'course_id' => $course->id,
                     'date' => $day,

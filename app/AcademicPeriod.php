@@ -21,6 +21,9 @@ class AcademicPeriod extends Model
     private static function setcurrent($get = null)
     {
         $current = AcademicPeriod::whereDate('start', '<=', today())->whereDate('end', '>=', today())->first();
+        if(!$current) {
+            return;
+        }
         AcademicPeriod::$currentschoolyear = $current->school_year;
         AcademicPeriod::$currentsemester = $current->semester;
         AcademicPeriod::$current = AcademicPeriod::where('school_year', AcademicPeriod::$currentschoolyear)->where('semester', AcademicPeriod::$currentsemester)->get();
@@ -49,7 +52,7 @@ class AcademicPeriod extends Model
 
     public static function period($schoolyear = null, $semester = null)
     {
-        return AcademicPeriod::$periods[$schoolyear.$semester] ?? AcademicPeriod::$periods[$schoolyear.$semester] = AcademicPeriod::where('school_year', $schoolyear)->where('semester', $semester)->get();
+        return AcademicPeriod::$periods[($schoolyear ?? AcademicPeriod::currentschoolyear()) . ($semester ?? AcademicPeriod::currentsemester())] ?? AcademicPeriod::$periods[($schoolyear ?? AcademicPeriod::currentschoolyear()) . ($semester ?? AcademicPeriod::currentsemester())] = AcademicPeriod::where('school_year', $schoolyear ?? AcademicPeriod::currentschoolyear())->where('semester', AcademicPeriod::currentsemester())->get();
     }
 
     public function courses()
@@ -84,7 +87,7 @@ class AcademicPeriod extends Model
 
     public function iscurrentperiod()
     {
-        return now()->between($this->start, $this->end);
+        return today()->between($this->start, $this->end);
     }
 
     public function name()

@@ -2,15 +2,10 @@
 
 namespace App\Console;
 
-use App\AcademicPeriod;
-use App\Course;
-use App\Event;
-use App\Events\FetchHolidays;
 use App\Jobs\FetchHolidays as JobsFetchHolidays;
 use App\Jobs\RefreshMap;
 use App\Jobs\MarkAbsent;
 use App\Jobs\ClearUnknownTags;
-use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -33,9 +28,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new ClearUnknownTags)->withoutOverlapping()->everyMinute();
-        $schedule->job(new MarkAbsent)->withoutOverlapping()->everyThirtyMinutes()->runInBackGround();
-        $schedule->job(new RefreshMap)->withoutOverlapping()->everyThirtyMinutes();
+        $schedule->job(new RefreshMap)->withoutOverlapping()->everyMinute()->runInBackGround();
+        $schedule->job(new MarkAbsent)->withoutOverlapping()->runInBackGround();
+        // $schedule->job(new MarkAbsent)->withoutOverlapping()->everyThirtyMinutes()->runInBackGround();
+        $schedule->job(new ClearUnknownTags)->withoutOverlapping()->everyMinute()->runInBackGround();
         $schedule->job(new JobsFetchHolidays)->yearly();
     }
 

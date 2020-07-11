@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function() {
     Route::permanentRedirect('/home', 'dashboard');
     Route::any('dashboard', 'DashboardController')->name('dashboard');
     Route::any('profile', 'ProfileController')->name('profile');
-    Route::any('statistics', 'StatsController')->name('statistics');
+    // Route::any('statistics', 'StatsController')->name('statistics');
     Route::any('attendance', 'AttendanceController')->name('attendance');
     Route::any('map', 'MapController@index')->name('map');
     Route::any('calendar', 'CalendarController')->name('calendar');

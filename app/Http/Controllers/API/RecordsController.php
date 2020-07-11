@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\Records as RecordsResource;
@@ -17,6 +18,6 @@ class RecordsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return RecordsResource::collection(Records::all());
+        return RecordsResource::collection(Records::whereIn('remarks', ['late', 'absent'])->where('log_by_type', Student::class)->get());
     }
 }

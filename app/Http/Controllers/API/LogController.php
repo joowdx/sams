@@ -41,7 +41,6 @@ class LogController extends Controller
     {
         $this->sf = Student::findbyuid($request->i) ?? Faculty::findbyuid($request->i);
         $this->gr = Reader::findbyname($request->f);
-
         switch($this->gr->type) {
             case 'gate': return $this->sendlogevent($this->newlog());
             case 'room': {
@@ -75,7 +74,7 @@ class LogController extends Controller
         $this->cc = Course::findforattendance($this->gr->name);
         abort_unless($this->cc, 403, 'Attendance is now disabled!');
         abort_unless($this->cc->students->contains($this->sf) && $this->deny(), 403, 'Student not enrolled!');
-        abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
+        // abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
         return $this->sendlogevent($this->cc->logs()->save($this->newlog()));
     }
 
@@ -99,7 +98,7 @@ class LogController extends Controller
             $time = now()->seconds()->microseconds();
             $log->created_at = $time;
             $log->updated_at = $time;
-            $log->save();
+            $log->save(['timestamps' => false]);
         }
         return $this->gr->logs()->save($log);
     }

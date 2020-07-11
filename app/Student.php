@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $with = [
-        // 'program',
-    ];
-
     protected $fillable = [
         'uid', 'schoolid', 'name', 'program_id', 'avatar'
     ];

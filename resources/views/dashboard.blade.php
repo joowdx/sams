@@ -31,183 +31,55 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-4">
-            <div class="card direct-chat direct-chat-primary" style="position: relative; left: 0px; top: 0px;">
+
+        <div class="col-md-6">
+            <div class="card">
                 <div class="card-header pb-1">
-                    <h3 class="card-title">Recent logs</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <!-- Conversations are loaded here -->
-                    <div class="direct-chat-messages">
-                        <!-- Message. Default to the left -->
-
-                        @foreach ($logs as $log)
-                        {{-- <div class="media text-muted pt-3">
-                            <img data-src="{{ asset('storage/umdc.png') }}" alt="" class="mr-2 rounded">
-                            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                                <span class="float-right badge badge-{{ $log->remarks=='ok'?'success':'danger' }}"> {{ $log->remarks }} </span>
-                                <strong class="d-block text-gray-dark">
-                                    {{ $log->log_by->uid }} ⁠— {{ $log->log_by->name }}
-                                </strong>
-                                <strong>{{ $log->from_by->name }}</strong> at {{ $log->created_at->format('H:i:s') }}
-                            </p>
-                        </div> --}}
-                        <div class="direct-chat-msg">
-                            <div class="direct-chat-infos clearfix">
-                                <span class="direct-chat-name float-left">
-                                    {{  $log->log_by->name }}
-                                    <small> {{ "@".@$log->from_by->name }}</small>
-                                </span>
-                                <span class="direct-chat-timestamp float-right">{{  $log->created_at ? $log->created_at->diffForHumans() : ''  }}</span>
-                            </div>
-                            <!-- /.direct-chat-infos -->
-                            {{-- <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt=""> --}}
-                            <!-- /.direct-chat-img -->
-                            {{-- <div class="direct-chat-text">
-                                @ {{ $log->from_by->name }}
-                            </div> --}}
-                            <!-- /.direct-chat-text -->
+                    <div class="row m-0 p-0">
+                        <div class="col d-flex m-0 p-0">
+                            <h3 class="card-title pt-2">Stats</h3>
                         </div>
-                        @endforeach
-                        {{-- <div class="direct-chat-msg">
-                            <div class="direct-chat-infos clearfix">
-                                <span class="direct-chat-name float-left">Alexander Pierce</span>
-                                <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+                        <div class="col d-flex flex-row-reverse m-0 p-0">
+                            <div class="col m-0 p-0 pl-2 ml-1">
+                                <select id="showby" class="selectpicker form-control" title="Show by" data-width="100%">
+                                    <option value="department"> Department </option>
+                                    <option value="program"> Program </option>
+                                </select>
                             </div>
-                            <!-- /.direct-chat-infos -->
-                            <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="">
-                            <!-- /.direct-chat-img -->
-                            <div class="direct-chat-text">
-                                Is this template really for free? That's unbelievable!
-                            </div>
-                            <!-- /.direct-chat-text -->
-                        </div> --}}
-                        <!-- /.direct-chat-msg -->
-
-                        <!-- Message to the right -->
-                        {{-- <div class="direct-chat-msg right">
-                            <div class="direct-chat-infos clearfix">
-                                <span class="direct-chat-name float-right">Sarah Bullock</span>
-                                <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                            </div>
-                            <!-- /.direct-chat-infos -->
-                            <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="">
-                            <!-- /.direct-chat-img -->
-                            <div class="direct-chat-text">
-                                You better believe it!
-                            </div>
-                            <!-- /.direct-chat-text -->
-                        </div> --}}
-                        <!-- /.direct-chat-msg -->
+                        </div>
                     </div>
-                    <!--/.direct-chat-messages-->
-
-                    <!-- Contacts are loaded here -->
-                    <div class="direct-chat-contacts">
-                        <ul class="contacts-list">
-                            <li>
-                                <a href="#">
-                                    {{-- <img class="contacts-list-img" src="dist/img/user1-128x128.jpg"> --}}
-
-                                    <div class="contacts-list-info">
-                                        <span class="contacts-list-name">
-                                            Count Dracula
-                                            <small class="contacts-list-date float-right">2/28/2015</small>
-                                        </span>
-                                        <span class="contacts-list-msg">How have you been? I was...</span>
-                                    </div>
-                                    <!-- /.contacts-list-info -->
-                                </a>
-                            </li>
-                            <!-- End Contact Item -->
-                            <li>
-                                <a href="#">
-                                    {{-- <img class="contacts-list-img" src="dist/img/user7-128x128.jpg"> --}}
-
-                                    <div class="contacts-list-info">
-                                        <span class="contacts-list-name">
-                                            Sarah Doe
-                                            <small class="contacts-list-date float-right">2/23/2015</small>
-                                        </span>
-                                        <span class="contacts-list-msg">I will be waiting for...</span>
-                                    </div>
-                                    <!-- /.contacts-list-info -->
-                                </a>
-                            </li>
-                            <!-- End Contact Item -->
-                            <li>
-                                <a href="#">
-                                    {{-- <img class="contacts-list-img" src="dist/img/user3-128x128.jpg"> --}}
-
-                                    <div class="contacts-list-info">
-                                        <span class="contacts-list-name">
-                                            Nadia Jolie
-                                            <small class="contacts-list-date float-right">2/20/2015</small>
-                                        </span>
-                                        <span class="contacts-list-msg">I'll call you back at...</span>
-                                    </div>
-                                    <!-- /.contacts-list-info -->
-                                </a>
-                            </li>
-                            <!-- End Contact Item -->
-                            <li>
-                                <a href="#">
-                                    {{-- <img class="contacts-list-img" src="dist/img/user5-128x128.jpg"> --}}
-
-                                    <div class="contacts-list-info">
-                                        <span class="contacts-list-name">
-                                            Nora S. Vans
-                                            <small class="contacts-list-date float-right">2/10/2015</small>
-                                        </span>
-                                        <span class="contacts-list-msg">Where is your new...</span>
-                                    </div>
-                                    <!-- /.contacts-list-info -->
-                                </a>
-                            </li>
-                            <!-- End Contact Item -->
-                            <li>
-                                <a href="#">
-                                    {{-- <img class="contacts-list-img" src="dist/img/user6-128x128.jpg"> --}}
-
-                                    <div class="contacts-list-info">
-                                        <span class="contacts-list-name">
-                                            John K.
-                                            <small class="contacts-list-date float-right">1/27/2015</small>
-                                        </span>
-                                        <span class="contacts-list-msg">Can I take a look at...</span>
-                                    </div>
-                                    <!-- /.contacts-list-info -->
-                                </a>
-                            </li>
-                            <!-- End Contact Item -->
-                            <li>
-                                <a href="#">
-                                    {{-- <img class="contacts-list-img" src="dist/img/user8-128x128.jpg"> --}}
-
-                                    <div class="contacts-list-info">
-                                        <span class="contacts-list-name">
-                                            Kenneth M.
-                                            <small class="contacts-list-date float-right">1/4/2015</small>
-                                        </span>
-                                        <span class="contacts-list-msg">Never mind I found...</span>
-                                    </div>
-                                    <!-- /.contacts-list-info -->
-                                </a>
-                            </li>
-                            <!-- End Contact Item -->
-                        </ul>
-                        <!-- /.contacts-list -->
-                    </div>
-                    <!-- /.direct-chat-pane -->
                 </div>
-                <!-- /.card-body -->
-                <!-- /.card-footer-->
+                <div class="card-body p-0">
+                    <div class="d-md-flex">
+                        <canvas id="stats" style="position: relative; height:400px; width:400px" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
-
-
-
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header pb-1">
+                    <div class="row m-0 p-0">
+                        <div class="col d-flex m-0 p-0">
+                            <h3 class="card-title pt-2">Population</h3>
+                        </div>
+                        <div class="col d-flex flex-row-reverse m-0 p-0">
+                            <div class="col m-0 p-0 pl-2 ml-1">
+                                <select id="showbypop" class="selectpicker form-control" title="Show by" data-width="100%">
+                                    <option value="department"> Department </option>
+                                    <option value="program"> Program </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="d-md-flex">
+                        <canvas id="population" style="position: relative; height:400px; width:400px" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="col-md-8">
             <div class="card">
@@ -302,6 +174,7 @@ async function getData() {
 
     const attReq    = await fetch('http://localhost:8000/api/records');
     const attData   = await attReq.json();
+    console.log(attData)
     const clean     = attData.map(data => ({
         days: moment(data.time).format('MMM YYYY'),
         remarks: data.remarks,
@@ -326,6 +199,62 @@ async function getData() {
 
 
 $(document).ready( async function(){
+    $('#showby').on('select2:select', async function (e) {
+        await fetch('{{ url('api/statistics') }}' + '?level=' + this.value).then(e => e.json()).then(async e => {
+            try { await window.statschart.destroy() } catch(_x) { }
+            window.statschart = new Chart($('#stats')[0], {
+                type: 'bar',
+                data: e,
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                offsetGridLines: false
+                            }
+                        }],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    precision: 0,
+                                    beginAtZero: true,
+                                },
+                            },
+                        ],
+                    }
+                }
+            })
+        })
+    })
+    $('#showby').trigger('select2:select')
+    $('#showbypop').on('select2:select', async function(e) {
+        await fetch('{{ url('api/population') }}' + '?level=' + this.value).then(e => e.json()).then(async e => {
+            try { await window.popchart.destroy() } catch(_x) { }
+            window.popchart = new Chart($('#population')[0], {
+                type: 'bar',
+                data: e,
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                offsetGridLines: false
+                            }
+                        }],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    precision: 0,
+                                    beginAtZero: true,
+                                },
+                            },
+                        ],
+                    }
+                }
+            })
+        })
+    })
+    $('#showbypop').trigger('select2:select')
 
     const data = await getData();
 
@@ -373,5 +302,5 @@ $(document).ready( async function(){
         }
     });
 })
-    </script>
-    @endsection
+</script>
+@endsection

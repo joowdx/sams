@@ -37,15 +37,15 @@ class Course extends Model
             });
     }
 
-    public static function findonsession($room)
+    public static function findonsession($room = null)
     {
-        return Course::currentcourses()
-            ->filter(function($course) use($room) {
-                return $course->room->name == $room;
-            })
-            ->first(function($course) {
+        $course = Course::currentcourses()
+            ->filter(function($course) {
                 return !$course->noclass() && $course->onsession();
             });
+        return $room ? $course->first(function($course) use($room) {
+            return $course->room->name == $room;
+        }) : $course;
     }
 
     public function room()
@@ -60,7 +60,7 @@ class Course extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class)->withPivot('status');
     }
 
     public function logs()
@@ -90,6 +90,7 @@ class Course extends Model
 
     public function forattendance()
     {
+        return true;
         return !$this->noclass() && now()->between(Carbon::createFromTimeString($this->time_from)->subMinutes(5), Carbon::createFromTimeString($this->time_from)->addMinutes(15));
     }
 
@@ -119,7 +120,7 @@ class Course extends Model
             ->where('log_by_id', $sf->id)
             ->where('log_by_type', get_class($sf))
             ->whereDate('date', $dt ?? today())
-            ->whereNot('remarks', 'denied')
+            ->where('remarks', '<>', 'denied')
             ->first();
     }
 
@@ -143,7 +144,7 @@ class Course extends Model
     {
         $day = $day ?? today();
         $week = ['Mon' => 0, 'Tue' => 1, 'Wed' => 2, 'Thu' => 3, 'Fri' => 4, 'Sat' => 5, 'Sun' => 6,];
-        return Event::noclass($day) || !($week[$this->day_from] <= ($d  = $week[$day->format('D')]) && $week[$this->day_to] >= $d) || $this->academic_period->ended() || !$this->academic_period->started();
+        return Event::noclass($day) || !($week[$this->day_from] <= ($d  = $week[$day->format('D')]) && $week[$this->day_to] >= $d) || !$day->between($this->academic_period->start, $this->academic_period->end);
     }
 
     public function nextmeeting(Carbon $day = null)
@@ -190,10 +191,10 @@ class Course extends Model
     public function parsefacultylogsbydate(Carbon $dt = null)
     {
         $dt = $dt ?: today();
-        if($l = $this->logs()->whereDate('date', $dt)->where(['remarks' => 'summary'])->first()) {
-            $l->delete();
-            unset($l);
+        if($this->noclass($dt)) {
+            return;
         }
+        $this->logs()->whereDate('date', $dt)->where(['log_by_type' => Faculty::class])->where('remarks', '<>', 'stamp')->delete();
         $logs = $this->logs
         ->filter(function($log) use($dt) {
             return $log->date == $dt && $log->remarks == 'stamp';
@@ -206,23 +207,56 @@ class Course extends Model
         });
         $info = $this->logs()->create([
             'date' => $dt,
-            'remarks' => $logs ? ($logs->first()->gt(Carbon::createFromTimeString($this->time_from)) ? 'late' : 'ok') : 'absent' ,
+            'remarks' => $logs->all() ? ($logs->first()->gte(Carbon::createFromTimeString($this->time_from)) ? 'late' : 'ok') : 'absent' ,
             'process' => 'auto',
-            'info' => $logs ? [
-                'first' => $logs->first()->format('H:i:s'),
-                'last' => $logs->last()->format('H:i:s'),
+            'info' => $logs->all() ? [
+                'first' => $logs->first()->format('H:i'),
+                'last' => $logs->last()->format('H:i'),
                 'minutes' => $logs->count(),
+                'time' => $this->gettimeblocks($logs),
+                'additionalremarks' => $logs->last()->lt(Carbon::createFromTimeString($this->time_to)->subMinutes(5)) ? 'early-out' : null,
             ] : null,
         ]);
-        $this->faculty->logs()->save($this->room->logs()->save($info));
-        return dd($info);
-        // $from = Carbon::createFromTimeString($this->time_from);
-        // $to = Carbon::createFromTimeString($this->time_to);
-        // $timeframe = collect([]);
-        // do {
-        //     $timeframe->push($from);
-        // } while($from->addMinute() <= $to);
-        // $log =
+        return $this->faculty->logs()->save($this->room->logs()->save($info));
+        $l = $this->logs()->where('remarks', 'stamp')->where('log_by_type', Faculty::class)->get();
+        return $l;
+    }
 
+    public function updateinformation(Carbon $day = null, $force = false)
+    {
+        $day = $day ?? today();
+        $exists = \DB::table('ended_classes')->where(['course_id' => $this->id])->whereDate('date', $day)->first();
+        if($exists == false || $force) {
+
+        }
+    }
+
+    private function gettimeblocks($logs)
+    {
+        $blocks = [];
+        $all = $logs->all();
+        $start = $logs->first();
+        if($logs->count() == 1) {
+            $blocks[] = $start->format('H:i');
+        }
+        for($x = 1; $x < $logs->count(); $x++) {
+            if($all[$x]->clone()->addMinute()->eq(@$all[@$x+1])) {
+                $end = @$all[@$x+1] ?? $start;
+            } else {
+                if($start->eq($end) || $end == null) {
+                    $blocks[] = $start->format('H:i');
+                } else {
+                    $blocks[] = $start->format('H:i') . ' – ' . $end->format('H:i');
+                }
+                $start = @$all[$x + 1];
+                $end = null;
+            }
+        }
+        return $blocks;
+    }
+
+    public function getdroprate()
+    {
+        return $this->units == 6 ? 9 : 3;
     }
 }

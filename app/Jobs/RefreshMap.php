@@ -34,13 +34,22 @@ class RefreshMap implements ShouldQueue
     {
         event(
             new RefreshMapEvent(
-                Course::whereIn('academic_period_id',
+                // Course::whereIn('academic_period_id',
+                //     AcademicPeriod::where(function($query) {
+                //         $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
+                //     })->get()->map(function($period) {
+                //         return $period->id;
+                //     })->all()
+                // )->with('room')->get()->toJson()
+                Course::with(['logs' => function($query) {
+                    $query->whereDate('date', today())->where(['log_by_type' => 'App\Faculty']);
+                }, 'logs.log_by', 'faculty'])->whereIn('academic_period_id',
                     AcademicPeriod::where(function($query) {
                         $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
                     })->get()->map(function($period) {
                         return $period->id;
                     })->all()
-                )->with('room')->get()->toJson()
+                )->whereTime('time_from', '<=', date('H:i'))->whereTime('time_to', '>', date('H:i'))->with('room')->get()
             )
         );
     }
