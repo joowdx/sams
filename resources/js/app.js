@@ -74,6 +74,17 @@ window.resourceTimelinePlugin = resourceTimelinePlugin
 window.moment = moment
 window.validate = validate
 
+
+import {
+    enable as enableDarkMode,
+    disable as disableDarkMode,
+    auto as followSystemColorScheme,
+} from 'darkreader';
+
+window.enableDarkMode = enableDarkMode
+window.disableDarkMode = disableDarkMode
+window.followSystemColorScheme = followSystemColorScheme
+
 $(document).ready(function(){
     $('table:not(.no-datatable)').DataTable({
         dom: '<"row d-print-none"<"col d-flex"l><"col d-flex flex-row-reverse"f>>tp',
@@ -95,6 +106,8 @@ $(document).ready(function(){
         radioClass: 'iradio_minimal-grey'
     })
     $('section.content').fadeIn('slow')
+
+    
 })
 
 
