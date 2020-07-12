@@ -21,7 +21,7 @@
                 "h.r."          =>  "Human Resouce",
                 "faculty"       =>  "Faculty",
                 ] as $type      => $user_label)
-                <option value="{{ $type }}">{{ $user_label }}</option>
+                <option value=" {{ old('type') ?? $type }}">{{ $user_label }}</option>
                 @endforeach
             </select>
             @error('type')

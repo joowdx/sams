@@ -37,3 +37,25 @@ $factory->state(User::class, 'admin', function($faker) {
         'password' => Hash::make('root'),
     ];
 });
+
+$factory->state(User::class, 'g1', function($faker) {
+    return [
+        'name' => 'guard1',
+        'username' => 'guard1',
+        'phone' => '+639'.$faker->randomNumber(9),
+        'email' => 'guard1@local.host',
+        'type' => 'security1',
+        'password' => Hash::make('root'),
+    ];
+});
+
+$factory->state(User::class, 'g2', function($faker) {
+    return [
+        'name' => 'guard2',
+        'username' => 'guard2',
+        'phone' => '+639'.$faker->randomNumber(9),
+        'email' => 'guard2@local.host',
+        'type' => 'security2',
+        'password' => Hash::make('root'),
+    ];
+});
