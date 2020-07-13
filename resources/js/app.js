@@ -43,7 +43,7 @@ import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.flash.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
-import 'icheck-2/icheck.js'
+import 'icheck-2/icheck.min.js'
 import 'chart.js/dist/Chart.js'
 
 import 'pace-js/pace.min.js'
@@ -101,13 +101,13 @@ $(document).ready(function(){
     $('select:not(.no-select2)').select2({
         theme: 'bootstrap4',
     })
-    $('input:not(no-icheck)').icheck({
-        checkboxClass: 'icheckbox_minimal-grey',
-        radioClass: 'iradio_minimal-grey'
-    })
+    // $('input:not(no-icheck)').icheck({
+    //     checkboxClass: 'icheckbox_minimal-grey',
+    //     radioClass: 'iradio_minimal-grey'
+    // })
     $('section.content').fadeIn('slow')
 
-    
+
 })
 
 

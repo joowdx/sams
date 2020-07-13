@@ -182,17 +182,52 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">New event</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            ...
+                <form id="newevent" method="post" action="{{ route('programs.store') }}">
+                    @csrf
+
+                    <div class="form-group row">
+                        <label for="date" class="col-md-4 col-form-label text-md-right">Start</label>
+
+                        <div class="col-md-6">
+                            <input id="date" type="text" class="form-control @error('date') is-invalid @enderror" name="start" required autocomplete="new-date" placeholder="Format: dd/mm/yyyy"  value="{{ old('date') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="date" class="col-md-4 col-form-label text-md-right">End</label>
+
+                        <div class="col-md-6">
+                            <input id="date" type="text" class="form-control @error('date') is-invalid @enderror" name="end" required autocomplete="new-date" placeholder="Format: dd/mm/yyyy"  value="{{ old('date') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
+
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="title" required autocomplete="new-name" placeholder="Ex. New year"  value="{{ old('name') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
+
+                        <div class="col-md-6">
+                            <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" required autocomplete="new-description" placeholder="Ex. New years celebration"  value="{{ old('description') }}">
+                        </div>
+                    </div>
+
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button form="newevent" type="submit" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -250,7 +285,21 @@
                 }).render()
             },
         })
+        $('#newevent').on('submit', function(e) {
+            $.ajax({
+                url: this.action,
+                memthod: this.method,
+                data: $(this).serialize(),
+                success: function(e) {
 
+                },
+                error: function(e) {
+
+                }
+            })
+            e.preventDefault();
+            console.log($(this).serialize())
+        })
     })
 
 </script>
