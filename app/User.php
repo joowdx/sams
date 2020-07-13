@@ -43,4 +43,9 @@ class User extends Authenticatable
         return $this->belongsTo(Faculty::class);
     }
 
+    public function Settings()
+    {
+        return $this->hasMany(Settings::class);
+    }
+
 }

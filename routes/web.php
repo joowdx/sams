@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function() {
     Route::any('attendance', 'AttendanceController')->name('attendance');
     Route::any('map', 'MapController@index')->name('map');
     Route::any('calendar', 'CalendarController')->name('calendar');
+    Route::resource('settings', 'SettingsController')->only(['index', 'store', 'update']);
     Route::resource('tags', 'TagController')->only(['index', 'store']);
     Route::resource('readers', 'ReaderController');
     Route::resource('academicperiods', 'AcademicPeriodController');

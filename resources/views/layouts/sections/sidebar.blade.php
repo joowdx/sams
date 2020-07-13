@@ -128,6 +128,12 @@
                         </a>
                     </li>
                 @endcan
+                <li class="nav-item">
+                    <a href="{{ route('settings.index') }}" class="nav-link {{ request()->is('settings*') ? 'active' : '' }}">
+                        <i class="nav-icon fad fa-cogs fa-fw"></i>
+                        <p> Settings </p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
