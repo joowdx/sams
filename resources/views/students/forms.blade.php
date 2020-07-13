@@ -44,7 +44,7 @@
                 <option value="{{ $program->id }}" {{ @$student->program->id == $program->id ? 'selected' : '' }}> {{  $program->shortname }} </option>
             @endforeach
         </select>
-            @error('avatar')
+            @error('program')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
