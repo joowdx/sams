@@ -36,16 +36,18 @@ class FetchHolidays implements ShouldQueue
         for($x = date('Y') - 5, $y = []; $x < date('Y') + 5; $x++) {
             $y[] = $x;
         }
-        $z = array_unique(Event::all()->pluck('from')->map(function($date) {
-            return $date->format('Y');
+        $z = array_unique(Event::all()->filter(function($event) {
+            return $event->remarks == 'national holiday';
+        })->pluck('from')->map(function($date) {
+            return $date ? $date->format('Y') : '';
         })->all());
         foreach(array_diff($y, $z) as $x) {
-            foreach(json_decode((shell_exec("curl 'https://calendarific.com/api/v2/holidays?&api_key=440cb0e39eb9a2883607a18c0dea5b7db597e2df&country=PH&year=".$x."&type=national'")))->response->holidays as $event) {
+            foreach(json_decode(trim(file_get_contents("https://calendarific.com/api/v2/holidays?&api_key=440cb0e39eb9a2883607a18c0dea5b7db597e2df&country=PH&year=".$x."&type=national")))->response->holidays as $event) {
                 Event::updateOrCreate([
                     'start' => $event->date->iso,
                     'end' => $event->date->iso,
-                ], [
                     'title' => $event->name ?? '',
+                ], [
                     'description' => $event->description,
                     'remarks' => 'national holiday',
                 ]);
