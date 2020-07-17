@@ -49,9 +49,9 @@
                     <b>{{ $faculty->name }}</b>
                 </td>
                 <td class="align-middle">
-                    <b>{{ $faculty->department->shortname }}</b>
+                    <b>{{ $faculty->program->department->shortname ?? '' }}</b>
                     <br>
-                    <small> {{ $faculty->department->name }} </small>
+                    <small> {{ $faculty->program->department->name ?? '' }} </small>
                 </td>
                 <td class="align-middle">
                     <small>

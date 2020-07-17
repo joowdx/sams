@@ -54,7 +54,7 @@
                     <div class="card-body">
                         <h3 class="">{{ $faculty->name }}</h3>
                         <p class="card-text"><strong><i class="fa-fw fad fa-tag mr-1"></i> UID: </strong>{{ $faculty->uid ?? 'no uid set' }}</p>
-                        <p class="card-text"><strong><i class="fa-fw fad fa-tag mr-1"></i> Department: </strong>{{ $faculty->department->name ?? 'NaN' }}</p>
+                        <p class="card-text"><strong><i class="fa-fw fad fa-tag mr-1"></i> Department: </strong>{{ $faculty->program->department->name ?? 'NaN' }}</p>
                     </div>
                 </div>
             </li>

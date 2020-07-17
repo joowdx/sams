@@ -161,7 +161,6 @@ class StudentController extends Controller
     {
         $this->authorize('students_data', User::class);
         $request->validate([
-            'id' => 'required|numeric|exists:students,id',
             'uid' => 'sometimes|string|unique:students,uid,'.$id,
             'schoolid' => 'sometimes|numeric|unique:students,schoolid,'.$id,
             'name' => 'required|string',
@@ -191,7 +190,7 @@ class StudentController extends Controller
     {
         $this->authorize('students_data', User::class);
         abort_unless(is_numeric($id), 404);
-        abort_unless($department = Student::find($id), 404);
+        abort_unless($student = Student::find($id), 404);
         $student->delete();
         return redirect('students');
     }

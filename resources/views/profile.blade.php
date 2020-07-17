@@ -43,16 +43,8 @@ span.tags
             <menu class="items-wrapper">
 
             <a href="users/{{Auth::user()->id}}/edit" class="menu-item">
-                    <i class="fa fa-edit"></i>
-                </a>
-
-                <a class="menu-item">
-                    <form method="post" id="deleteform" action="">
-                            @method('DELETE')
-                                @csrf
-                                <button class="btn" type="submit"><i class="fa fa-trash" style="color:white"></i></button>
-                    </form>
-                </a>
+                <i class="fa fa-edit"></i>
+            </a>
 
             </menu>
 

@@ -171,8 +171,8 @@ class ProgramController extends Controller
         $this->authorize('programs_data', User::class);
 
         abort_unless(is_numeric($id), 404);
-        abort_unless($department = Department::find($id), 404);
-        $department->delete();
-        return redirect(route('departments.index'));
+        abort_unless($program = Program::find($id), 404);
+        $program->delete();
+        return redirect(route('programs.index'));
     }
 }

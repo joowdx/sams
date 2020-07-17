@@ -35,7 +35,7 @@ class FacultyController extends Controller
         // $this->authorize('hr_view', User::class);
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
-            'faculties' => $faculties ?? Faculty::with(['courses', 'program', 'program.department'])->get(),
+            'faculties' => $faculties ?? Faculty::with(['courses', 'program'])->get(),
             'currentsemester' => Period::currentsemester(),
             'currentschoolyear' => Period::currentschoolyear(),
             'semesters' => Period::groupBy('semester')->get('semester')->pluck('semester'),
@@ -175,8 +175,10 @@ class FacultyController extends Controller
      * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Faculty $faculty)
+    public function destroy($id)
     {
+        abort_unless(is_numeric($id), 404);
+        abort_unless($faculty = Faculty::find($id), 404);
         $this->authorize('faculties_data', User::class);
 
         $this->authorize('delete', User::class);
@@ -184,6 +186,6 @@ class FacultyController extends Controller
 
         $faculty->delete();
 
-        return view('faculties.index', compact('faculty'));
+        return redirect('faculties');
     }
 }

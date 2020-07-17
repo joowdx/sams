@@ -51,10 +51,10 @@
                 </td>
                 <td>
                     <li class="list-inline-item">
-                        <b>{{ $program->department->shortname }}</b>
+                        <b>{{ $program->department->shortname ?? '' }}</b>
                         <br>
                         <small>
-                            {{ $program->department->name }}
+                            {{ $program->department->name ?? '' }}
                         </small>
                     </li>
                 </td>
