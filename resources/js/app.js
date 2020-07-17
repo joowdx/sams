@@ -101,13 +101,13 @@ $(document).ready(function(){
     $('select:not(.no-select2)').select2({
         theme: 'bootstrap4',
     })
-    $('input:not(no-icheck)').icheck({
-        checkboxClass: 'icheckbox_minimal-grey',
-        radioClass: 'iradio_minimal-grey'
-    })
+    // $('input:not(no-icheck)').icheck({
+    //     checkboxClass: 'icheckbox_minimal-grey',
+    //     radioClass: 'iradio_minimal-grey'
+    // })
     $('section.content').fadeIn('slow')
 
-    
+
 })
 
 

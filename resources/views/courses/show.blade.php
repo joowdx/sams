@@ -100,7 +100,7 @@
                 <strong><i class="fa-fw fad fa-info mr-1"></i> Other info </strong>
                 <ul class="list-group list-group-unbordered my-3">
                     <li class="list-group-item">
-                        <b>Faculty Absences</b> <a class="float-right">{{ $course->faculty->logs()->where(['course_id' => $course->id, 'remarks' => 'absent'])->count() }}</a>
+                        <b>Faculty Absences</b> <a class="float-right">{{ $course->faculty ? (@$course->faculty->logs()->where(['course_id' => $course->id, 'remarks' => 'absent'])->count()) : 0 }}</a>
                     </li>
                     <li class="list-group-item">
                         <b>Students</b> <a class="float-right">{{ $course->students->count() }}</a>

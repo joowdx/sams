@@ -63,6 +63,7 @@
                                 </td>
                                 <td>
                                     @php $period = $course->academic_period @endphp
+                                    @if ($period)
                                     <p class="m-0 p-0">
                                         @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
                                             <b>{{ $period->semester }}</b> <small> Sem </small>/
@@ -75,6 +76,7 @@
                                     <small>
                                         SY: {{ $period->school_year }}
                                     </small>
+                                    @endif
                                 </td>
                                 <td>
                                     {{ "$course->day_from - $course->day_to" }}
@@ -133,6 +135,7 @@
                                 </td>
                                 <td>
                                     @php $period = $course->academic_period @endphp
+                                    @if($period)
                                     <p class="m-0 p-0">
                                         @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
                                             <b>{{ $period->semester }}</b> <small> Sem </small>/
@@ -145,6 +148,7 @@
                                     <small>
                                         SY: {{ $period->school_year }}
                                     </small>
+                                    @endif
                                 </td>
                                 <td>
                                     {{ "$course->day_from - $course->day_to" }}

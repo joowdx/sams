@@ -110,6 +110,12 @@ class UserPolicy
             'admin',
         ]);
     }
+    public function academicperiods_data(User $user)
+    {
+        return in_array($user->type, [
+            'admin',
+        ])|| ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
+    }
     public function courses_data(User $user)
     {
         return in_array($user->type, [

@@ -46,7 +46,7 @@ class Student extends Model
         return @$this->logs()
             ->whereDate('date', today())
             ->whereIn('remarks', ['entry', 'exit'])
-            ->whereNotIn('reader_id', Reader::rooms())
+            ->whereNotIn('reader_id', Reader::rooms()->pluck('id'))
             ->latest()->first()->remarks == 'entry';
     }
 
@@ -55,7 +55,7 @@ class Student extends Model
         return @$this->logs()
             ->whereDate('date', today())
             ->whereIn('remarks', ['entry', 'exit'])
-            ->whereNotIn('reader_id', Reader::rooms())
+            ->whereNotIn('reader_id', Reader::rooms()->pluck('id'))
             ->latest()->first()->remarks != 'entry';
     }
 

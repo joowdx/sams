@@ -16,7 +16,7 @@ class Course extends Model
     ];
 
     protected $fillable = [
-        'code', 'title', 'description', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'room_id',
+        'code', 'title', 'description', 'day_from', 'day_to', 'time_from', 'time_to', 'units', 'faculty_id', 'room_id', 'academic_period_id'
     ];
 
     public static function currentcourses($schoolyear = null, $semester = null)

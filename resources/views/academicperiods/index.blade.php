@@ -36,7 +36,7 @@
                 </td>
                 <td>
                     <p class="m-0 p-0">
-                    @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
+                    @if($period->term != 'SEMESTER' && $period->semester != 'SUMMER')
                         <b>{{ $period->semester }}</b> <small> Sem </small>/
                         <b>{{ $period->term }} </b> <small> Term </small>
                     @else

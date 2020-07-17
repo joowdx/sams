@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\AcademicPeriod as Period;
+use App\AcademicPeriod;
 use Carbon\Carbon;
+use App\User;
 use Illuminate\Http\Request;
+
+use function GuzzleHttp\Promise\all;
 
 class AcademicPeriodController extends Controller
 {
@@ -28,7 +32,7 @@ class AcademicPeriodController extends Controller
      */
     public function create()
     {
-        //
+        return view('academicperiods.create');
     }
 
     /**
@@ -39,7 +43,25 @@ class AcademicPeriodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('academicperiods_data', User::class);
+
+        $request->validate([
+            'school_year' => '',
+            'semester' => 'required_if:type,info|string|in:1ST,2ND,SUMMER',
+            'term' => 'required_if:type,info|string|in:1ST,2ND,SEMESTER,SUMMER',
+            'start' => 'required|date',
+            'end' => 'required|date',
+        ]);
+
+        AcademicPeriod::create(array_merge([
+            'start' => Carbon::createFromFormat('d-m-Y', $request->start),
+            'end' => Carbon::createFromFormat('d-m-Y', $request->end),
+        ], $request->except(['start', 'end'])));
+
+        return redirect(route('academicperiods.index'));
+
+
+
     }
 
     /**
@@ -89,7 +111,7 @@ class AcademicPeriodController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AcademicPeriod $academicperiod)
+    public function update(Request $request, Period $academicperiod)
     {
         $request->validate([
             'school_year' => '',
@@ -114,8 +136,13 @@ class AcademicPeriodController extends Controller
      * @param  \App\AcademicPeriod  $academicPeriod
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AcademicPeriod $academicPeriod)
+    public function destroy($id)
     {
-        //
+        abort_unless(is_numeric($id), 404);
+        abort_unless($period = Period::find($id), 404);
+        $this->authorize('academicperiods_data', User::class);
+        $period->delete();
+
+        return redirect('academicperiods');
     }
 }

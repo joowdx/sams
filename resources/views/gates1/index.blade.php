@@ -62,10 +62,15 @@ div.remark h1
 .personal_text h1{
     font-weight: bold;
 }
-/* #stu-list > li:first-child {
+/* #stu-list-entry > li:first-child {
     position: absolute;
     visibility: hidden;
-    } */
+}
+
+#stu-list-exit > li:first-child {
+    position: absolute;
+    visibility: hidden;
+} */
 #stu-img
 {
     height: 500px;
@@ -90,21 +95,36 @@ height: 100%;
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="background-color: #666666">
 
-    <div class="col col-md-5" style="padding:0;">
+    <div class="col col-md-5" style=" padding:0;">
         <div class="card student-card">
             <img class="card-img-top" id="stu-img" src="storage/avatars/no-image.png" alt="Card image cap">
-            <div class="card-body text-center inners" style="background-color: #3b3a30">
+            <div class="card-body text-center inners" style="background-color: #666666">
                 <h1 class="font-weight-bold text-white" id="stu-name">Name:</h1>
-                <small class="text-white" id="stu-course"></small>
+                <small class="text-white" id="stu-course">/</small>
             </div>
         </div>
     </div>
 
     <div class="col col-md-7">
-        <ul class="list basic_info mt-3" id="stu-list-entry" style="width: 100%; height:100%">
+        <h1 class="text-white">ENTRY</h1>
+        <ul class="list basic_info mt-3" id="stu-list-entry" style="width: 100%;">
             <li class="col-md-12 animated bounceInDown" id="li1">
+                <div class="small-box">
+                    <div class="inner">
+                        <h3 id="nm2">/</h3>
+                    <p id="crs2">/</p>
+                    </div>
+                    <div class="icon">
+                        <img src="{{ asset('/assets/img/no-image.png') }}" alt="" class="stu-icon float-right">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <h1 class="text-white">EXIT</h1>
+        <ul class="list basic_info mt-3" id="stu-list-exit" style="width: 100%;">
+            <li class="col-md-12 animated bounceInDown" id="li2">
                 <div class="small-box">
                     <div class="inner">
                         <h3 id="nm2">/</h3>
@@ -198,9 +218,17 @@ height: 100%;
 
 
 <div class="row align-items-center justify-content-md-center" style="background-color: #181a1b !important;  padding: 10px; height:100px">
-    @foreach ($logs as $log)
-        <h1 class="text-white" id="">{{ Carbon\Carbon::parse($log->date)->format('d-m-Y') }}</h1>
-    @endforeach
+
+    <div class="col col-md-auto" style="">
+        <h1 class="text-white" style="font-size: 72px;">G2</h1>
+    </div>
+
+    <div class="col col-md-auto">
+        @foreach ($logs as $log)
+            <h1 class="text-white" id="">{{ Carbon\Carbon::parse($log->date)->format('d-m-Y') }}</h1>
+        @endforeach
+    </div>
+
 </div>
 @endsection
 
@@ -212,13 +240,31 @@ $(e => {
 
         $('#stu-img').attr('src',"storage/avatars/"+avatar);
         $("#stu-name").text(name);
-        $(".inners").addClass((remarks == 'entry') ? 'inners bg-success' : 'inners bg-warning');
+        $(".inners").removeClass().addClass((remarks == 'entry') ? 'card-body text-center inners bg-success' : 'card-body text-center inners bg-danger');
         $("#stu-course").text(( course == null) ? '/' : ''+course);
-        if(remarks == "entry"){
+
+
         queue.forEach(function(e){
-            $("#stu-list-entry").prepend(
+            if(e[3] == 'entry'){
+                $("#stu-list-entry").prepend(
+                    `<li class="col-md-12 animated bounceInDown">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3 id="nm2">`+e[0]+`</h3>
+                            <p id="crs2">Course: `+((e[1] == null) ? '/' : e[1])+`</p>
+                            </div>
+                            <div class="icon">
+                                <img src="storage/avatars/`+e[2]+`" alt="" class="stu-icon float-right">
+                            </div>
+                        </div>
+                    </li>`
+                ).children().length < 3 || $('#stu-list-entry').children().last().remove()
+                queue.pop()
+            }else if(e[3] == 'exit')
+            {
+                $("#stu-list-exit").prepend(
                 `<li class="col-md-12 animated bounceInDown">
-                    <div class="small-box bg-success">
+                    <div class="small-box bg-danger">
                         <div class="inner">
                             <h3 id="nm2">`+e[0]+`</h3>
                         <p id="crs2">Course: `+((e[1] == null) ? '/' : e[1])+`</p>
@@ -228,30 +274,12 @@ $(e => {
                         </div>
                     </div>
                 </li>`
-            ).children().length < 3 || $('#stu-list-entry').children().last().remove()
-            queue.pop()
-        })
-        queue.push([name,course,avatar]);
-        } else if (remarks == "exit") {
-            queue.forEach(function(e){
-            $("#stu-list-exit").prepend(
-                `<li class="col-md-12 animated bounceInDown">
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3 id="nm2">`+e[0]+`</h3>
-                        <p id="crs2">Course: `+((e[1] == null) ? '(uwu)' : e[1])+`, Status: ( ͡° ͜ʖ ͡°)</p>
-                        </div>
-                        <div class="icon">
-                            <img src="storage/avatars/`+e[2]+`" alt="" class="stu-icon float-right">
-                        </div>
-                    </div>
-                </li>`
-            ).children().length < 3 || $('#stu-list-exit').children().last().remove()
-            queue.pop()
-        })
-        queue.push([name,course,avatar]);
-        }
+                ).children().length < 3 || $('#stu-list-exit').children().last().remove()
+                queue.pop()
+            }
 
+        })
+        queue.push([name,course,avatar,remarks]);
     }
     Echo.private('logs').listen('NewScannedLog', e =>{
         ((e.log.reader.name == "G2") ? gate(e.log) : '')

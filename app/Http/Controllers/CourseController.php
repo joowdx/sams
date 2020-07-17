@@ -176,12 +176,12 @@ class CourseController extends Controller
 
         switch($request->type) {
             case 'info': {
-                $ap = Period::firstOrCreate([
-                    'semester' => $request->semester,
-                    'term' => $request->semester == 'SUMMER' ? 'SUMMER' : $request->term,
-                ]);
+                // $ap = Period::firstOrCreate([
+                //     'semester' => $request->semester,
+                //     'term' => $request->semester == 'SUMMER' ? 'SUMMER' : $request->term,
+                // ]);
                 $course->update($request->all());
-                $course->academic_period()->associate($ap);
+                // $course->academic_period()->associate($ap);
                 $course->save();
                 break;
             }
