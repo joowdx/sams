@@ -10,18 +10,5 @@
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('styles')
 </head>
-<body class="hold-transition {{ Auth::check() ? 'sidebar-mini layout-fixed layout-navbar-fixed' : 'layout-top-nav' }}">
-    <div id="app">
-        <div class="wrapper">
-                @include('layouts.sections.navbar')
-                @includeWhen(Auth::check(), 'layouts.sections.sidebar')
-            <div class="content-wrapper">
-                @include('layouts.sections.content')
-            </div>
-        </div>
-    </div>
-    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
-    <script> Pace.start() </script>
-    @yield('scripts')
-</body>
+@include('layouts.sections.body')
 </html>

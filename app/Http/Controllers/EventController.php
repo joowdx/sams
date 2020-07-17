@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -54,9 +56,21 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Event $event)
     {
-        //
+        return view('events.edit', [
+            'contentheader' => 'Edit',
+            'breadcrumbs' => [
+                [
+                    'text' => 'Calendar',
+                    'link' => route('calendar'),
+                ],
+                [
+                    'text' => 'Edit'
+                ]
+            ],
+            'event' => $event
+        ]);
     }
 
     /**
@@ -66,9 +80,22 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'start' => 'required|date_format:d/m/Y',
+            'end' => 'required|date_format:d/m/Y',
+        ]);
+        $event->update([
+            'start' => Carbon::createFromFormat('d/m/Y', $request->start),
+            'end' => Carbon::createFromFormat('d/m/Y', $request->end),
+            'title' => $request->title,
+            'description' => $request->description,
+            'remarks' => $request->remarks,
+        ]);
+        return redirect()->route('calendar');
     }
 
     /**

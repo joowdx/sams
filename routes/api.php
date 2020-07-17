@@ -30,7 +30,7 @@ Route::any('statistics', 'API\Statistics')->name('statistics');
 Route::any('population', 'API\Population')->name('population');
 Route::any('records', 'API\RecordsController')->name('records');
 Route::any('queryclasses', 'API\ClassesQueryController')->name('queryclasses');
-Route::any('events', 'API\EventController')->name('events');
+Route::resource('events', 'API\EventController');
 Route::any('attendance', 'API\AttendanceController')->name('api.attendance');
 Route::any('search', 'API\Search')->name('search');
 Route::any('newtag', 'API\TagController@newtag')->name('newtag');

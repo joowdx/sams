@@ -1,21 +1,21 @@
-<?php 
+<?php
 
 if(Auth::check()) {
     $settings = Auth::user()->settings;
 
-    $settingsdarkmode = $settings->first(function($settings) {
+    $settingsdarkmode = @$settings->first(function($settings) {
         return $settings->name == 'darkmode';
     })->value;
-    
+
     $settingssidebartoggle = @$settings->first(function($settings) {
         return $settings->name == 'toggle';
     })->value ?? 'sidebar-mini';
-    
+
     $settingssidebaronload = @$settings->first(function($settings) {
         return $settings->name == 'onload';
     })->value ?? '';
-    
-    
+
+
     if($settingsdarkmode == 'auto') {
         echo '<script>followSystemColorScheme()</script>';
     } elseif($settingsdarkmode == 'enable') {

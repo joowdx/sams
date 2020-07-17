@@ -52,8 +52,8 @@ Route::middleware(['auth'])->group(function() {
 
 Route::any('x/{id}', 'StudentXcontroller')->middleware('guest');
 Route::any('test', function() {
-    $f = App\Program::where(['department_id' => 1])->with(['faculties', 'faculties.courses', 'faculties.program', 'faculties.program.department'])->get()->pluck('faculties')[0];
-    return $f;
+    // $f = App\Program::where(['department_id' => 1])->with(['faculties', 'faculties.courses', 'faculties.program', 'faculties.program.department'])->get()->pluck('faculties')[0];
+    // return $f;
     // DB::table('logs')->truncate();
     // DB::table('ended_classes')->truncate();
     // $ended = [];

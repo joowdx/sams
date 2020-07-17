@@ -43,7 +43,7 @@ import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.flash.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
-import 'icheck-2/icheck.js'
+import 'icheck-2/icheck.min.js'
 import 'chart.js/dist/Chart.js'
 
 import 'pace-js/pace.min.js'

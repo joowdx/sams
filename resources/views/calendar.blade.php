@@ -2,6 +2,9 @@
 
 @section('styles')
 <style>
+    div.fc-content-skeleton {
+        cursor: pointer !important;
+    }
     .fc-sat, .fc-sun {
         color: #dc3233;
     }
@@ -33,7 +36,7 @@
     </div>
     <div class="col-lg-6">
         <div class="my-3 p-3 bg-white rounded box-shadow" id="logslist">
-            <h6 class="border-bottom border-gray pb-2 mb-0 bold">Ongoing</h6>
+            <h6 class="border-bottom border-gray pb-2 mb-0 bold"><b>Ongoing</b></h6>
             <div>
                 @forelse ($ongoing as $event)
                 <div class="media text-muted pt-3">
@@ -81,7 +84,7 @@
                 @endforelse
 
             </div>
-            <h6 class="border-bottom border-gray py-2 mb-0 bold">Upcoming</h6>
+            <h6 class="border-bottom border-gray py-2 mb-0 bold"><b>Upcoming</b></h6>
             <div>
                 @forelse ($upcoming as $event)
                 <div class="media text-muted pt-3">
@@ -128,9 +131,6 @@
                 </div>
                 @endforelse
             </div>
-            <small class="d-block text-right mt-3">
-                <a href="{{ route('events.index') }}">All events</a>
-            </small>
         </div>
         {{-- <h4 class="heading">
             Hello
@@ -179,20 +179,100 @@
 </div>
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document" id="modalnew">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">New event</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            ...
+                <form id="newevent" method="POST" action="{{ url('api/events') }}">
+                    @csrf
+
+                    <div class="form-group row">
+                        <label for="date" class="col-md-4 col-form-label text-md-right">Start</label>
+
+                        <div class="col-md-6">
+                            <input id="start" type="text" class="form-control @error('date') is-invalid @enderror" name="start" required autocomplete="new-date" placeholder="Format: dd/mm/yyyy"  value="{{ old('date') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="date" class="col-md-4 col-form-label text-md-right">End</label>
+
+                        <div class="col-md-6">
+                            <input id="end" type="text" class="form-control @error('date') is-invalid @enderror" name="end" required autocomplete="new-date" placeholder="Format: dd/mm/yyyy"  value="{{ old('date') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
+
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="title" required autocomplete="new-name" placeholder="Ex. New year"  value="{{ old('name') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
+
+                        <div class="col-md-6">
+                            <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" required autocomplete="new-description" placeholder="Ex. New years celebration"  value="{{ old('description') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="remarks" class="col-md-4 col-form-label text-md-right">Remarks</label>
+
+                        <div class="col-md-6">
+                            <select id="remarks" name="remarks" data-width="100%">
+                                <option value="national holiday"> National Holiday </option>
+                                <option value="local holiday"> Local Holiday </option>
+                                <option value="institutional event"> Institutional Event </option>
+                                <option value="class suspension"> Class Suspension </option>
+                                <option value="break"> Break </option>
+                                <option value="info"> Info </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button form="newevent" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" id="modalview">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventsviewtitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="eventsviewbody" class="modal-body">
+                <table class="no-datatable table table-borderless table-hover projects">
+                    <thead>
+                        <tr>
+                            <th width="35%"> Date </th>
+                            <th width="50%"> Event </th>
+                            {{-- <th width="10%"> Remarks </th> --}}
+                            <th width="15%"> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventstablebody">
+
+                    <tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
     </div>
@@ -203,7 +283,8 @@
 <script>
     $(e => {
         $.ajax({
-            url: '{{ url("api/events") }}',
+            url: '{{ url("api/events/0") }}',
+            // method: 'post',
             success: e => {
                 new Calendar(document.getElementById('calendar'), {
                     plugins: [ dayGridPlugin, interactionPlugin ],
@@ -224,7 +305,6 @@
                         e
                     ],
                     eventRender: e => {
-                        console.log(e)
                         tippy(e.el, {
                             appendTo: document.body,
                             content: () => {
@@ -246,11 +326,120 @@
                             }
                         })
                     },
-                    dateClick: e => alert(e.dateStr)
+                    dateClick: function(e) {
+                        ctrl(this, e)
+                    }
                 }).render()
             },
         })
+        $('#newevent').on('submit', function(e) {
+            $.ajax({
+                url: this.action,
+                method: this.method,
+                data: $(this).serialize(),
+                success: function(e) {
+                    swal.fire({
+                        title: 'Success?',
+                        text: "Please refresh!",
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, reload!'
+                    }).then((result) => {
+                        if (result.value) {
+                            location.reload()
+                        }
+                    })
+                },
+                error: function(x, s, e) {
+                    if(x.status == 400) {
+                        swal.fire(
+                            'Bad Request',
+                            "Please check your inputs!",
+                            'error',
+                        )
+                    } else if(x.status == 500) {
+                        swal.fire(
+                            'Server error',
+                            "Please contact your administrator!",
+                            'error',
+                        )
+                    }
+                }
+            })
+            e.preventDefault();
+        })
+        ctrl = (cal, f) => {
+            $('#eventstablebody').html('')
+            evt = cal.getEvents()
+            .filter(e => {
+                return moment(f.dateStr).isBetween(moment(e.start), moment(e.end).subtract(1, 'days'), null, '[]')
+            })
+            evt.forEach(e => {
+                date = $('<td class="align-middle"></td>').html(moment(e.start).isSame(moment(e.end).subtract(1, 'days')) ? moment(e.start).format('LL') : moment(e.start).format('LL') + '<br>' + moment(e.end).subtract(1, 'days').format('LL'))
+                event = $('<td class="align-middle"></td>').html(e.title).append(`<br><small>${e.extendedProps.description}</small>`).prepend($(`<small class="badge" style="background: ${clr(e.extendedProps.remarks)}!important">${e.extendedProps.remarks}</small><br>`))
+                // remarks = $('<td class="align-middle"></td>').html(e.extendedProps.remarks)
+                del = $('<td class="align-middle"></td>').html($('<button class="btn btn-transparent"></button>').html($('<span></span>').addClass('fa-fw fad fa-trash')).on('click', z => dlt(e))).append($('<button class="btn btn-transparent"></button>').html($('<span></span>').addClass('fa-fw fad fa-edit')).on('click', z => edt(e)))
+                $('#eventstablebody').append($('<tr></tr>').append(date).append(event).append(del));
+            })
+            if(evt.length) {
+                $('#eventsviewtitle').html('Events on ' + moment(f.dateStr).format('LL'))
+                $('#view').modal('show')
+            }
 
+
+
+            // .forEach(e => console.log(e));
+        }
+        edt = evt => {
+            location.href = (`events/${evt.extendedProps.eventid}/edit`)
+        }
+        window.dlt = evt => {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: 'api/events/' + evt.extendedProps.eventid,
+                        type: 'delete',
+                        success: function() {
+                            swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            ).then(e => {
+                                location.reload(true)
+                            })
+                        },
+                        error: function() {
+                            swal.fire(
+                                'Server error',
+                                "Please contact your administrator!",
+                                'error',
+                            )
+                        }
+                    })
+                }
+            })
+        }
+        clr = rmk => {
+            switch (rmk) {
+                case 'national holiday': return '#F44336';
+                case 'local holiday': return '#FFB74D';
+                case 'institutional event': return '#1976D2';
+                case 'class suspension': return '#9C27B0';
+                case 'break': return '#FFC107';
+                case 'info': return '#4DD0E1';
+                default: return '#0000';
+            }
+        }
     })
 
 </script>
