@@ -115,7 +115,7 @@
                                 @php $faculty = $faculty ?? null @endphp
                                 <option value=""> All </option>
                                 @foreach ($faculties as $ft)
-                                <option value="{{ $ft->id }}" @if(@$faculty->id == $ft->id) selected @endif> {{ $ft->name }}
+                                <option value="{{ @$ft->id }}" @if(@$faculty->id == @$ft->id) selected @endif> {{ @$ft->name }}
                                 </option>
                                 @endforeach
                             </select>

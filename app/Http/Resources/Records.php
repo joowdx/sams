@@ -26,6 +26,7 @@ class Records extends JsonResource
                 'title' => $this->course->title,
                 'description' => $this->course->description,
             ] : null,
+            'date' => $this->date,
             'from' => $this->from_by->name ?? null,
             'time' => $this->created_at->format('Y-m-d H:i:s'),
             'remarks' => $this->remarks,

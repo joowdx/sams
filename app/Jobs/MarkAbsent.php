@@ -64,6 +64,7 @@ class MarkAbsent implements ShouldQueue
                     continue;
                 }
                 if(
+                    $course->faculty &&
                     !$course->logs()->where([
                         'log_by_id' => $course->faculty->id,
                         'log_by_type' => Faculty::class,
