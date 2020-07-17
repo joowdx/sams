@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Event;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource as Events;
 use Illuminate\Http\Request;
@@ -30,18 +31,20 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'title' => 'required|string',
             'description' => 'required|string',
             'start' => 'required|date_format:d/m/Y',
             'end' => 'required|date_format:d/m/Y',
-        ])->fails();
-        switch($validator) {
-            case true: {
-                
-                break;
-            }
+        ]);
+        switch($validator->fails()) {
             case false: {
-                break;
+                return Event::create(array_merge([
+                    'start' => Carbon::createFromFormat('d/m/Y', $request->start),
+                    'end' => Carbon::createFromFormat('d/m/Y', $request->end),
+                ], $request->except(['_token', 'start', 'end'])));
+            }
+            case true: {
+                abort(400, $validator->errors());
             }
         }
     }
@@ -88,9 +91,9 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        //
+        $event->delete();
     }
 
 }

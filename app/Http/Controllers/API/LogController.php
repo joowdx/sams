@@ -30,10 +30,10 @@ class LogController extends Controller
     public function __construct()
     {
         $this->middleware([
-            // ReaderVerification::class,
-            // TagVerification::class,
-            // InSchoolPremises::class,
-            // HasClass::class,
+            ReaderVerification::class,
+            TagVerification::class,
+            InSchoolPremises::class,
+            HasClass::class,
         ]);
     }
 
@@ -74,7 +74,7 @@ class LogController extends Controller
         $this->cc = Course::findforattendance($this->gr->name);
         abort_unless($this->cc, 403, 'Attendance is now disabled!');
         abort_unless($this->cc->students->contains($this->sf) && $this->deny(), 403, 'Student not enrolled!');
-        // abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
+        abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
         return $this->sendlogevent($this->cc->logs()->save($this->newlog()));
     }
 
