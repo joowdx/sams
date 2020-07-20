@@ -36,7 +36,7 @@ class UpdateValidation extends FormRequest
             'phone'     => 'required|numeric|unique:users,phone,' . $this->user,
             'email'     => 'required|string|email|max:255|unique:users,email,' . $this->user,
             'password'  => 'sometimes|nullable|min:4|confirmed',
-            'faculty_id' => 'sometimes|nullable|exists:faculty|unique:users,faculty_id,' . $this->user
+            'faculty_id' => 'sometimes|nullable|exists:faculties,id|unique:users,faculty_id,' . $this->user
         ];
     }
 }

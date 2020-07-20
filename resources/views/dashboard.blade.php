@@ -176,7 +176,7 @@ async function getData() {
     const attData   = await attReq.json();
     console.log(attData)
     const clean     = attData.map(data => ({
-        days: moment(data.time).format('MMM YYYY'),
+        days: moment(data.date).format('MMM YYYY'),
         remarks: data.remarks,
     }))
 

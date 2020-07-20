@@ -15,14 +15,9 @@
         <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Office') }}</label>
         <div class="col-md-6">
             <select class="form-control @error('type') is-invalid @enderror custom-select type" id="type" name="type" required>
-                <option aria-placeholder="">---</option>
-                @foreach([
-                "admin"         =>  "Admin",
-                "h.r."          =>  "Human Resouce",
-                "faculty"       =>  "Faculty",
-                ] as $type      => $user_label)
-                <option value=" {{ old('type') ?? $type }}">{{ $user_label }}</option>
-                @endforeach
+                <option value="admin" @if(old('type') == 'admin' || $user->type == 'admin') selected @endif> Admin </option>
+                <option value="h.r." @if(old('type') == 'h.r' || $user->type == 'h.r.') selected @endif> Human Resource </option>
+                <option value="faculty" @if(old('type') == 'faculty' || $user->type == 'faculty') selected @endif> Faculty </option>
             </select>
             @error('type')
             <span class="invalid-feedback" role="alert">

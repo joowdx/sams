@@ -64,7 +64,7 @@
                             </small>
                             <br>
                             <small>
-                                {{ $course->academic_period->school_year }}
+                                {{ $course->academic_period->school_year ?? ''}}
                             </small>
                         </p>
                     </div>

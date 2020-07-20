@@ -85,6 +85,7 @@ height: 100%;
 
 @section('security_content')
 <div class="row justify-content-md-center" style="background-color: #181a1b !important; padding: 10px; height:140px">
+
     <div class="col col-md-auto">
         <img class="img-fluid" src="{{ asset('/assets/img/umdc.png') }}" style="height: 120px;">
     </div>
@@ -93,7 +94,16 @@ height: 100%;
         <h1 class="font-weight-bold text-white" style="font-size: 72px;">UM Digos College</h1>
         <small class="text-white" style="float: right;">3361 Jose Abad Santos St, Digos City, 8002 Davao del Sur</small>
     </div>
+
+
+    <div class="col col-md-auto">
+        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+            <span><i class="fas fa-scroll"></i></span>
+        </button>
+    </div>
+
 </div>
+
 
 <div class="row" style="background-color: #666666">
 
@@ -106,6 +116,39 @@ height: 100%;
             </div>
         </div>
     </div>
+
+
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Log</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12" style="width:100%; height: 500px; overflow: auto">
+                    <table class="table no-datatable" id="log">
+                    <thead>
+                        <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Remark</th>
+                        <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     <div class="col col-md-7">
         <h1 class="text-white">ENTRY</h1>
@@ -139,6 +182,7 @@ height: 100%;
     </div>
 
 </div>
+
         {{-- <img class="img-fluid" src="{{ asset('/assets/img/header1.png') }}" alt=""> --}}
 
 
@@ -236,13 +280,25 @@ height: 100%;
 <script>
 $(e => {
     var queue = [];
-    const gate = ({log_by : { name,avatar }, remarks, course}) => {
+    const gate = ({log_by : { name,avatar }, remarks, course, date}) => {
+
 
         $('#stu-img').attr('src',"storage/avatars/"+avatar);
         $("#stu-name").text(name);
         $(".inners").removeClass().addClass((remarks == 'entry') ? 'card-body text-center inners bg-success' : 'card-body text-center inners bg-danger');
         $("#stu-course").text(( course == null) ? '/' : ''+course);
 
+        queue.forEach(function(e){
+            console.log(e);
+        $('#log').prepend(
+            `<tbody>
+                <tr>
+                    <td>`+e[0]+`</td>
+                    <td>`+e[4]+`</td>
+                    <td>`+e[3]+`</td>
+                </tr>
+            </tbody>`
+        )});
 
         queue.forEach(function(e){
             if(e[3] == 'entry'){
@@ -260,7 +316,9 @@ $(e => {
                     </li>`
                 ).children().length < 3 || $('#stu-list-entry').children().last().remove()
                 queue.pop()
-            }else if(e[3] == 'exit')
+            }
+
+            else if(e[3] == 'exit')
             {
                 $("#stu-list-exit").prepend(
                 `<li class="col-md-12 animated bounceInDown">
@@ -279,7 +337,7 @@ $(e => {
             }
 
         })
-        queue.push([name,course,avatar,remarks]);
+        queue.push([name,course,avatar,remarks,date]);
     }
     Echo.private('logs').listen('NewScannedLog', e =>{
         ((e.log.reader.name == "G1") ? gate(e.log) : '')

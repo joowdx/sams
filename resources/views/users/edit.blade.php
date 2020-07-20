@@ -32,6 +32,24 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Faculty</label>
+
+                                <div class="col-md-6">
+                                    <select id="faculty_id" name="faculty_id" class="@error('faculty_id') @enderror" data-width="100%" data-live-search="true" data-placeholder="">
+                                        <option></option>
+                                        @foreach ($faculties as $faculty)
+                                            <option value="{{ $faculty->id }}" {{ old('faculty_id') == $faculty->id ? 'selected' : '' }}> {{ $faculty->name }} </option>
+                                        @endforeach
+                                    </select>
+                                    @error('faculty_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('New Password') }}</label>
 
                                 <div class="col-md-6 text-center">

@@ -343,7 +343,7 @@
         const attdata   = await attreq.json();
         const filter    = await attdata.filter(data => data.student)
         const clean     = await filter.map(data => ({
-            days: new Date(data.time).toLocaleString('en-us', { weekday: 'long' }),
+            days: new Date(data.date).toLocaleString('en-us', { weekday: 'long' }),
             studentid: data.student.id,
             remarks: data.remarks,
         })).filter( e=> (e.studentid == {{ $student->id }}))

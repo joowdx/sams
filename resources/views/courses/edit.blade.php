@@ -20,6 +20,24 @@
                         <input type="hidden" name="type" value="info">
 
                         <div class="form-group row">
+                            <label for="academic_period_id" class="col-md-4 col-form-label text-md-right">Academic Period</label>
+
+                            <div class="col-md-6">
+                                <select id="academic_period_id" name="academic_period_id" class="@error('academic_period_id') @enderror" data-width="100%" data-live-search="true" data-placeholder="">
+                                    <option></option>
+                                    @foreach ($periods as $period)
+                                        <option value="{{ $period->id }}" {{ old('academic_period_id') ?? $period->id }} selected> {{ $period->school_year }} / {{ $period->term}} / {{ $period->semester}} </option>
+                                    @endforeach
+                                </select>
+                                @error('academic_period_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="code" class="col-md-4 col-form-label text-md-right">Code</label>
 
                             <div class="col-md-6">
@@ -61,7 +79,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label for="semester" class="col-md-4 col-form-label text-md-right">Semester</label>
 
                             <div class="col-md-6">
@@ -95,7 +113,7 @@
                                 </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
 
                         <div class="form-group row">

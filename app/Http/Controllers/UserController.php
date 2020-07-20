@@ -6,6 +6,7 @@ use App\User;
 use App\Faculty;
 use App\Http\Requests\UpdateValidation;
 use App\Http\Requests\StoreValidation;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -130,12 +131,10 @@ class UserController extends Controller
     public function update(UpdateValidation $request, $id)
     {
         $this->authorize('users_data', User::class);
+        // $user = User::findOrFail($id);
         $user = User::findOrFail($id);
-        $user->type     =   $request->type;
-        $user->name     =   $request->name;
-        $user->username =   $request->username;
-        $user->phone    =   $request->phone;
-        $user->email    =   $request->email;
+        $user->update($request->except(['password', 'avatar']));
+
         if(!empty($request->input('password'))){
             $user->password =   Hash::make($request->password);
         }
@@ -147,7 +146,7 @@ class UserController extends Controller
             $user->update(['avatar' => $file]);
         }
 
-        $user->save();
+
 
         return view('users.show',compact('user'));
     }
