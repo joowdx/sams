@@ -59,7 +59,6 @@ class Statistics extends Controller
                     });
                 }
                 return new ChartStatistics($statistics);
-
             }
         }
 

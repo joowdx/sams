@@ -56,7 +56,7 @@ class LogController extends Controller
     {
         $this->cc = Course::findonsession($this->gr->name);
         abort_unless($this->cc && ($this->cc->forattendance() || $this->cc->facultyloggedontime()), 403, 'Attendance is now disabled!');
-        abort_unless($this->cc->faculty->uid == $this->sf->uid, 403, "You ain't this class' teacher!");
+        // abort_unless($this->cc->faculty->uid == $this->sf->uid, 403, "You ain't this class' teacher!");
         abort_unless($this->cc->facultylateststamp() != now()->seconds()->microseconds(), 409, 'Stamp for this minute exists.');
         return $this->sendlogevent($this->cc->logs()->save($this->newlog('stamp', true)));
     }
@@ -74,6 +74,7 @@ class LogController extends Controller
         $this->cc = Course::findforattendance($this->gr->name);
         abort_unless($this->cc, 403, 'Attendance is now disabled!');
         abort_unless($this->cc->students->contains($this->sf) && $this->deny(), 403, 'Student not enrolled!');
+        abort_unless($this->cc->find($this->sf)->pivot->status != 'dropped', 403, 'Student is dropped!');
         abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
         return $this->sendlogevent($this->cc->logs()->save($this->newlog()));
     }

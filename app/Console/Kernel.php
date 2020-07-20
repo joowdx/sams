@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new RefreshMap)->withoutOverlapping()->everyMinute()->runInBackGround();
         $schedule->job(new MarkAbsent)->withoutOverlapping()->runInBackGround();
         // $schedule->job(new MarkAbsent)->withoutOverlapping()->everyThirtyMinutes()->runInBackGround();
-        $schedule->job(new ClearUnknownTags)->withoutOverlapping()->everyMinute()->runInBackGround();
+        // $schedule->job(new ClearUnknownTags)->withoutOverlapping()->everyMinute()->runInBackGround();
         $schedule->job(new JobsFetchHolidays)->weeklyOn(1, '6:00')->withoutOverlapping()->runInBackground();
     }
 

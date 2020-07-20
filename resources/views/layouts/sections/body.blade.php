@@ -16,9 +16,11 @@ if(Auth::check()) {
     })->value ?? '';
 
 
-    if($settingsdarkmode == 'auto') {
+    if(Route::is('map')) { }
+
+    else if($settingsdarkmode == 'auto') {
         echo '<script>followSystemColorScheme()</script>';
-    } elseif($settingsdarkmode == 'enable') {
+    } else if($settingsdarkmode == 'enable') {
         echo '<script>enableDarkMode()</script>';
     }
 }

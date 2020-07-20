@@ -42,18 +42,18 @@ class FetchHolidays implements ShouldQueue
             return $date ? $date->format('Y') : '';
         })->all());
         foreach(array_diff($y, $z) as $x) {
-            foreach(json_decode(trim(file_get_contents("https://calendarific.com/api/v2/holidays?&api_key=440cb0e39eb9a2883607a18c0dea5b7db597e2df&country=PH&year=".$x."&type=national")))->response->holidays as $event) {
+            $query = json_decode(trim(file_get_contents("https://calendarific.com/api/v2/holidays?&api_key=440cb0e39eb9a2883607a18c0dea5b7db597e2df&country=PH&year=".$x."&type=national")));
+            foreach($query->response->holidays as $event) {
                 Event::updateOrCreate([
                     'start' => $event->date->iso,
                     'end' => $event->date->iso,
-                    'title' => $event->name ?? '',
+                    'title' => $event->name,
                 ], [
                     'description' => $event->description,
                     'remarks' => 'national holiday',
                 ]);
             };
         }
-        exec('touch /home/joowdx/hello.txt');
         event(new FetchHolidayEvent());
     }
 }

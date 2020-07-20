@@ -69,16 +69,6 @@ class MarkAbsent implements ShouldQueue
                         'log_by_type' => Faculty::class,
                     ])->whereDate('date', $day)->first()
                 ) {
-                    // $logs[] = [
-                    //     'log_by_id' => $course->faculty->id,
-                    //     'log_by_type' => get_class($course->faculty),
-                    //     'course_id' => $course->id,
-                    //     'date' => $day,
-                    //     'remarks' => 'absent',
-                    //     'process' => 'auto',
-                    //     'created_at' => now(),
-                    //     'updated_at' => now(),
-                    // ];
                     $course->parsefacultylogsbydate(Carbon::create($day));
                 }
                 foreach($course->students as $student) {
@@ -88,6 +78,18 @@ class MarkAbsent implements ShouldQueue
                             'log_by_type' => Student::class,
                         ])->whereDate('date', $day)->first()
                     ) {
+                        $scp = $course->students->find($student);
+                        if($scp->pivot->status == 'dropped') {
+                            continue;
+                        } else {
+                            $absences = $scp->logs()->where(['remarks' => 'absent', 'course_id' => $course->id])->count();
+                            if($absences >= $course->getdroprate()) {
+                                $scp->pivot->update(['status' => 'dropped']);
+                                continue;
+                            } else if($absences > ($course->getdroprate() * 0.75)) {
+                                $scp->pivot->update(['status' => 'warning']);
+                            }
+                        }
                         $logs[] = [
                             'log_by_id' => $student->id,
                             'log_by_type' => Student::class,

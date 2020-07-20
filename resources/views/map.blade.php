@@ -340,11 +340,11 @@
             clearmap()
             const tooltipinfo = e => {
                 const logs = e.logs.filter(e => e.log_by_type.includes('Faculty') && e.remarks != 'absent').sort((a, c) => moment(a.created_at).diff(moment(c.created_at)))
-                const time_start = logs ? moment(e.time_from, 'HH:mm') : null
-                const time_in = logs ? moment(logs[0].created_at) : 'N/A'
-                const time_last = logs ? moment(logs[logs.length - 1].created_at) : 'N/A'
-                const duration = logs ? logs.length : 'N/A'
-                const badge = logs ? `&nbsp<span class="badge badge-${time_start.isBefore(time_in) ? 'warning' : 'success'}"> ${time_start.isBefore(time_in) ? 'late' : 'ok'} </span>` : ''
+                const time_start = logs.length != 0 ? moment(e.time_from, 'HH:mm') : null
+                const time_in = logs.length != 0 ? moment(logs[0].created_at) : 'N/A'
+                const time_last = logs.length != 0 ? moment(logs[logs.length - 1].created_at) : 'N/A'
+                const duration = logs.length != 0 ? logs.length : 'N/A'
+                const badge = logs.length != 0 ? `&nbsp<span class="badge badge-${time_start.isBefore(time_in) ? 'warning' : 'success'}"> ${time_start.isBefore(time_in) ? 'late' : 'ok'} </span>` : ''
                 return `
                 <div class="card-body p-3"  style="width: 250px;">
                     <a class="nav-link p-0" href="readers/${e.room.id}"> <small> ${e.room.name} </small> </a>
@@ -361,10 +361,10 @@
                     <p class="direct-chat-name mb-0">${e.faculty.name}</p>
                     <div class="row">
                         <div class="col-6 pr-0">
-                            <small class="direct-chat-name"> Time in: ${time_in.format('HH:mm') + badge }</small>
+                            <small class="direct-chat-name"> Time in: ${time_in != 'N/A' ? (time_in.format('HH:mm') + badge) : time_in }</small>
                         </div>
                         <div class="col-6 pl-0">
-                            <small class="direct-chat-name"> Last check: ${time_last.format('HH:mm')}</small>
+                            <small class="direct-chat-name"> Last check: ${time_last != 'N/A' ? time_last.format('HH:mm') : time_last }</small>
                         </div>
                     </div>
                     <small class="direct-chat-name"> Duration: ${duration}</small>
@@ -387,13 +387,21 @@
                     interactive: true,
                     triggerTarget: [$code[0], $room[0], $name[0]],
                 })
-                tippies = tippies.concat(tippyi)
+                tippies[e.room.name] = tippyi
             })
         }
         Echo.private('map').listen('RefreshMap', e => refreshmap(JSON.parse(e.courses)))
         fetch('{{route("queryclasses")}}').then(e => e.json()).then(refreshmap)
         tippies = []
-    })
+        Echo.private('logs').listen('NewScannedLog', e =>{
+            if(!e.log.log_by_type.includes('Faculty')) {
+                return
+            }
+            let duration = tippies[e.log.reader.name].props.content.match(/Duration: \w+/g)[0].split(' ')[1]
+            let content = tippies[e.log.reader.name].props.content.replace(new RegExp("Last check: (([01]?[0-9]|2[0-3]):[0-5][0-9]|N/A)", "gm"), 'Last check: ' + moment(e.log.created_at).format('HH:mm')).replace(/Duration: (N\/A|\w+)/, 'Duration: ' + (parseInt(duration) + 1))
+            tippies[e.log.reader.name].setContent(content)
+        })
+})
     // $(function () {
     //     panZoomInstance = svgPanZoom('#paths', {
     //         zoomEnabled: true,

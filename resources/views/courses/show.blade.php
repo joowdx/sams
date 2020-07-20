@@ -11,6 +11,9 @@
     .tippy-content {
         padding-bottom: 0px !important;
     }
+    td.fc-widget-content {
+        cursor: pointer !important;
+    }
 </style>
 @endsection
 
@@ -194,7 +197,7 @@
             displayEventTime: false,
             slotDuration: { day: 1 },
             slotLabelFormat: [{ weekday: 'short', day: '2-digit' }],
-            resourceColumns: [{ labelText: 'Name', width: '70%' },{ labelText: 'A', field: 'absent', width: '10%' },{ labelText: 'L', field: 'late', width: '10%' },{ labelText: 'E', field: 'excuse', width: '10%' },],
+            resourceColumns: [{ labelText: 'Name', width: '70%' },{ labelText: 'L', field: 'late', width: '10%' },{ labelText: 'E', field: 'excuse', width: '10%' },{ labelText: 'A', field: 'absent', width: '10%' },{ labelText: 'D', field: 'dropped', width: '10%' },],
             resourceAreaWidth: '35%',
             events: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.logs)),
             resources: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.students)),
@@ -242,16 +245,28 @@
             dateClick: e => {
                 const id = e.resource.id.split('$').join('').split('-')[1]
                 if(moment(e.dateStr).isAfter(moment()) || !id) {
+                    swal.fire('Setting attendance not possible due to:', 'Future dates', 'error')
                     return
                 }
                 const check = async () => {
                     const response =  await fetch(`{{ route('queryclasses') }}`, {
                         method: 'POST',
                         headers: {'Accept': 'application/json','Content-Type': 'application/json'},
-                        body: JSON.stringify({id:id,date:moment().format('YYYY-MM-DD')}),
+                        body: JSON.stringify({id:id,date:moment(e.dateStr).format('YYYY-MM-DD')}),
                     }).then(e => e.json())
                     if(response) {
-                        return swal.fire('Not possible', 'Please check the course\'s schedule or the calendar', 'error')
+                        events = '';
+                        schedule = '';
+                        if(response.events) {
+                            events = '<b>Events: </b>'
+                            response.events.forEach(e => events += e + ',')
+                            events = events.slice(0, -1) + '<br>'
+                        }
+                        if(response.schedule) {
+                            schedule = '<b>Schedule: </b>';
+                            schedule += response.schedule;
+                        }
+                        return swal.fire('Setting attendance not possible due to:', events + schedule, 'error')
                     }
                 }
                 check()

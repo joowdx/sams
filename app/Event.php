@@ -15,12 +15,14 @@ class Event extends Model
         'start', 'end',
     ];
 
-    public static function noclass(Carbon $day = null) {
+    public static function noclass(Carbon $day = null)
+    {
         $day = $day ?? today();
         return (boolean) Event::where('remarks', '<>', 'info')->whereDate('start', '<=', $day)->whereDate('end', '>=', $day)->get()->first();
     }
 
-    public static function nextworkingday(Carbon $day = null) {
+    public static function nextworkingday(Carbon $day = null)
+    {
         $day = $day ?? today();
         do {
             $day->addDay();
@@ -29,12 +31,20 @@ class Event extends Model
     }
 
 
-    public static function upcoming($count = 5) {
+    public static function upcoming($count = 5)
+    {
         return Event::whereDate('start', '>=', today())->orderBy('start', 'asc')->take($count)->get();
     }
 
-    public static function ongoing() {
-        return Event::whereDate('start', '<=', today())->whereDate('end', '>=', today())->get();
+    public static function ongoing()
+    {
+        return Event::findbydate();
+    }
+
+    public static function findbydate(Carbon $date = null)
+    {
+        $date = $date ?? today();
+        return Event::whereDate('start', '<=', $date)->whereDate('end', '>=', $date)->get();
     }
 
 }

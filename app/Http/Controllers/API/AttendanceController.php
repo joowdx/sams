@@ -39,6 +39,19 @@ class AttendanceController extends Controller
                 abort_unless($cc = Course::find($request->course), 404, 'Not Found');
                 abort_unless($cc->logs->contains($log), 403, 'Not Allowed');
                 $log->update(['remarks' => $request->remarks, 'process' => 'overwritten']);
+                $student = $log->log_by;
+                $status = $cc->students->find($student)->pivot->status;
+                $absences = $log->log_by->logs()->where([
+                    'course_id' => $cc->id,
+                    'remarks' => 'absent',
+                ])->count();
+                if($absences >= $cc->getdroprate() && $status != 'dropped') {
+                    $cc->students->find($student)->pivot->update(['status' => 'dropped']);
+                } else if($absences < $cc->getdroprate() && $status == 'dropped') {
+                    $cc->students->find($student)->pivot->update(['status' => null]);
+                } else if($absences > ($cc->getdroprate() * 0.75) && $status != 'dropped') {
+                    $student->pivot->update(['status' => 'warning']);
+                }
                 return $log->loadMissing(['log_by', 'course']);
                 break;
             }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Event;
 use App\AcademicPeriod;
 use App\Course;
 use Carbon\Carbon;
@@ -29,7 +30,21 @@ class ClassesQueryController extends Controller
 
         switch ($validator && $request->id) {
             case true:
-                return response()->json(Course::find($request->id)->noclass(Carbon::create($request->date)));
+                $date = Carbon::create($request->date);
+                $course = Course::find($request->id);
+                $noclass = $course->noclass(Carbon::create($request->date));
+                $response = [];
+                if($noclass) {
+                    $week = ['Mon' => 0, 'Tue' => 1, 'Wed' => 2, 'Thu' => 3, 'Fri' => 4, 'Sat' => 5, 'Sun' => 6,];
+                    if(Event::noclass($date)) {
+                        $response['events'] = Event::findbydate($date)->pluck('title');
+                    }
+                    if(!($week[$course->day_from] <= ($d  = $week[$date->format('D')]) && $week[$course->day_to] >= $d)) {
+                        $response['schedule'] = "$course->day_from to $course->day_to; " . $date->format("D");
+                    }
+                    return $response;
+                }
+                return response()->json($noclass ? $response : $noclass);
             break;
             default:{
                 return Course::with(['logs' => function($query) {

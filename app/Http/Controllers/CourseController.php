@@ -186,7 +186,7 @@ class CourseController extends Controller
                 break;
             }
             case 'faculty': {
-                $course->update(['faculty_id', $request->faculty_id]);
+                $course->update(['faculty_id' => $request->faculty_id]);
                 break;
             }
             case 'students': {
