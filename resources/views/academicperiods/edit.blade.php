@@ -29,7 +29,7 @@
                         <label for="school_year" class="col-md-4 col-form-label text-md-right">School Year</label>
 
                         <div class="col-md-6">
-                            <input id="school_year" type="text" class="form-control @error('school_year') is-invalid @enderror" name="school_year" autocomplete="new-school_year" oninput="this.value=this.value.replace(/[^\d]/,'')" placeholder="SCHOOL YEAR" value="{{ old('school_year') ?? $period->school_year }}">
+                            <input id="school_year" type="text" class="form-control @error('school_year') is-invalid @enderror" name="school_year" autocomplete="new-school_year" oninput="this.value=this.value.replace(/[^\d|^-]/,'')" placeholder="SCHOOL YEAR" value="{{ old('school_year') ?? $period->school_year }}">
 
                             @error('school_year')
                             <span class="invalid-feedback" role="alert">

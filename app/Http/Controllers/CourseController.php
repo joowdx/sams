@@ -57,6 +57,7 @@ class CourseController extends Controller
             ],
             'faculties' => Faculty::all(),
             'students' => Student::all(),
+            'periods' => Period::all(),
             'rooms' => Reader::rooms(),
         ]);
     }
@@ -142,6 +143,7 @@ class CourseController extends Controller
             ],
             'students' => Student::all(),
             'faculties' => Faculty::all(),
+            'periods' => Period::all(),
             'rooms' => Reader::rooms(),
         ]);
     }
@@ -182,6 +184,7 @@ class CourseController extends Controller
                 // ]);
                 $course->update($request->all());
                 // $course->academic_period()->associate($ap);
+                // dd($course);
                 $course->save();
                 break;
             }
