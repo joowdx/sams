@@ -42,7 +42,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-12">
 
         <svg id="paths" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%"
             height="600px" viewBox="0 0 4005 2113">
@@ -402,26 +402,26 @@
             tippies[e.log.reader.name].setContent(content)
         })
 })
-    // $(function () {
-    //     panZoomInstance = svgPanZoom('#paths', {
-    //         zoomEnabled: true,
-    //         controlIconsEnabled: true,
-    //         fit: true,
-    //         center: true,
-    //         minZoom: 0.1
-    //     });
+    $(function () {
+        panZoomInstance = svgPanZoom('#paths', {
+            zoomEnabled: true,
+            controlIconsEnabled: true,
+            fit: true,
+            center: true,
+            minZoom: 0.1
+        });
 
-    //     // zoom out
-    //     // panZoomInstance.zoom(0.2)
+        // zoom out
+        // panZoomInstance.zoom(0.2)
 
-    //     $("#move").on("click", function () {
-    //         // Pan by any values from -80 to 80
-    //         panZoomInstance.panBy({
-    //             x: Math.round(Math.random() * 160 - 80),
-    //             y: Math.round(Math.random() * 160 - 80)
-    //         })
-    //     });
-    // })
+        $("#move").on("click", function () {
+            // Pan by any values from -80 to 80
+            panZoomInstance.panBy({
+                x: Math.round(Math.random() * 160 - 80),
+                y: Math.round(Math.random() * 160 - 80)
+            })
+        });
+    })
 
 </script>
 @endsection
