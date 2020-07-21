@@ -176,7 +176,7 @@ class CourseController extends Controller
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
             'students' => 'nullable|array',
             'students.*' => 'numeric|exists:students,id',
-            'academic_period_id' => 'required',
+            'academic_period_id' => 'required_if:type,info|numeric|exists:academi_periods,id',
         ]);
 
         switch($request->type) {
@@ -193,6 +193,7 @@ class CourseController extends Controller
             }
             case 'faculty': {
                 $course->update(['faculty_id' => $request->faculty_id]);
+                // $course->faculty()->associate($request->faculty_id);
                 break;
             }
             case 'students': {

@@ -61,7 +61,7 @@ class StudentController extends Controller
     {
         $this->authorize('students_data', User::class);
         $request->validate([
-            'uid' => 'sometimes|string|unique:students,uid',
+            'uid' => 'sometimes|nullable|string|unique:students,uid',
             'schoolid' => 'sometimes|numeric|unique:students,schoolid',
             'name' => 'required|string',
             'program_id' => 'sometimes|exists:programs,id',

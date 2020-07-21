@@ -47,7 +47,7 @@
                         </div>
                     </div>
 
-                    {{-- <div class="form-group row">
+                    <div class="form-group row">
                         <label for="department_id" class="col-md-4 col-form-label text-md-right">Department</label>
 
                         <div class="col-md-6">
@@ -58,7 +58,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div> --}}
+                    </div>
 
                     <div class="form-group row">
                         <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Program Head</label>

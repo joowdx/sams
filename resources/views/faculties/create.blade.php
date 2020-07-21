@@ -45,7 +45,7 @@
                             <label for="uid" class="col-md-4 col-form-label text-md-right">{{ __('UID') }}</label>
 
                             <div class="col-md-6">
-                                <input id="uid" type="text" class="form-control @error('uid') is-invalid @enderror" name="uid" required autocomplete="new-uid" oninput="this.value=this.value.replace(/[^\d]/,'')" name="uid">
+                                <input id="uid" type="text" class="form-control @error('uid') is-invalid @enderror" name="uid" autocomplete="new-uid" oninput="this.value=this.value.replace(/[^\d]/,'')" name="uid">
 
                                 @error('uid')
                                 <span class="invalid-feedback" role="alert">

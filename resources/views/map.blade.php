@@ -338,13 +338,18 @@
         }
         const refreshmap = e => {
             clearmap()
-            const tooltipinfo = e => {
+            const tooltipinfo = (e, r) => {
                 const logs = e.logs.filter(e => e.log_by_type.includes('Faculty') && e.remarks != 'absent').sort((a, c) => moment(a.created_at).diff(moment(c.created_at)))
                 const time_start = logs.length != 0 ? moment(e.time_from, 'HH:mm') : null
                 const time_in = logs.length != 0 ? moment(logs[0].created_at) : 'N/A'
                 const time_last = logs.length != 0 ? moment(logs[logs.length - 1].created_at) : 'N/A'
                 const duration = logs.length != 0 ? logs.length : 'N/A'
                 const badge = logs.length != 0 ? `&nbsp<span class="badge badge-${time_start.isBefore(time_in) ? 'warning' : 'success'}"> ${time_start.isBefore(time_in) ? 'late' : 'ok'} </span>` : ''
+                if(logs.length != 0 && time_start.isBefore(time_in)) {
+                    r.css('fill', '#ffde4a')
+                } else if(logs.length != 0 && time_start.isAfter(time_in)) {
+                    r.css('fill', '#38c172')
+                }
                 return `
                 <div class="card-body p-3"  style="width: 250px;">
                     <a class="nav-link p-0" href="readers/${e.room.id}"> <small> ${e.room.name} </small> </a>
@@ -381,7 +386,7 @@
                 $code.text(e.title).css('cursor', 'pointer').addClass('animated flash infinite')
                 const tippyi = tippy($code[0], {
                     appendTo: document.body,
-                    content: tooltipinfo(e),
+                    content: tooltipinfo(e, $room),
                     theme: 'transparency',
                     placement: 'left',
                     interactive: true,
@@ -397,9 +402,21 @@
             if(!e.log.log_by_type.includes('Faculty')) {
                 return
             }
-            let duration = tippies[e.log.reader.name].props.content.match(/Duration: \w+/g)[0].split(' ')[1]
-            let content = tippies[e.log.reader.name].props.content.replace(new RegExp("Last check: (([01]?[0-9]|2[0-3]):[0-5][0-9]|N/A)", "gm"), 'Last check: ' + moment(e.log.created_at).format('HH:mm')).replace(/Duration: (N\/A|\w+)/, 'Duration: ' + (Number.isInteger(parseInt(duration)) + 1))
-            tippies[e.log.reader.name].setContent(content)
+            if(tippies[e.log.reader.name]) {
+                const oldcontent = tippies[e.log.reader.name].props.content
+                let duration = oldcontent.match(/Duration: \w+/g)[0].split(' ')[1]
+                let content = oldcontent.replace(new RegExp("Last check: (([01]?[0-9]|2[0-3]):[0-5][0-9]|N/A)", "gm"), 'Last check: ' + moment(e.log.created_at).format('HH:mm')).replace(/Duration: (N\/A|\w+)/, 'Duration: ' + (Number.isInteger(parseInt(duration)) + 1))
+                // $room = $(`#${e.log.reader.name}`)
+                // if(!$room.css('fill') == '#ffde4a' && !$room.css('fill') == '#38c172') {
+                //     const logs = e.logs.filter(e => e.log_by_type.includes('Faculty') && e.remarks != 'absent').sort((a, c) => moment(a.created_at).diff(moment(c.created_at)))
+                //     if(logs.length != 0 && time_start.isBefore(time_in)) {
+                //         $room.css('fill', '#ffde4a')
+                //     } else if(logs.length != 0 && time_start.isAfter(time_in)) {
+                //         $room.css('fill', '#38c172')
+                //     }
+                // }
+                tippies[e.log.reader.name].setContent(content)
+            }
         })
 })
     $(function () {

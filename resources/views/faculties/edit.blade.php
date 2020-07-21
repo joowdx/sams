@@ -22,13 +22,25 @@
                             <label for="uid" class="col-md-4 col-form-label text-md-right">{{ __('UID') }}</label>
 
                             <div class="col-md-6">
-                                <input id="uid" type="text" class="form-control @error('uid') is-invalid @enderror" name="uid" required autocomplete="new-uid" oninput="this.value=this.value.replace(/[^\d]/,'')" name="uid" value="{{ $faculty->uid }}">
+                                <input id="uid" type="text" class="form-control @error('uid') is-invalid @enderror" name="uid" autocomplete="new-uid" oninput="this.value=this.value.replace(/[^\d]/,'')" name="uid" value="{{ $faculty->uid }}">
 
                                 @error('uid')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="program" class="col-md-4 col-form-label text-md-right">Program</label>
+
+                            <div class="col-md-6">
+                                <select id="program" name="program_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                    @foreach ($programs as $program)
+                                    <option value="{{ $program->id }}" {{ $program->faculty->id == $faculty->id ? 'selected' : '' }}> {{ $program->shortname }} </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

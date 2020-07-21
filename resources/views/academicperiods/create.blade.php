@@ -55,7 +55,7 @@
                             <select id="term" name="term" class="selectpicker form-control @error('term') is-invalid @enderror" title="TERM" data-width="100%">
                                 <option value="1ST" {{ old('semester') }}> 1ST </option>
                                 <option value="2ND" {{ old('semester') }}> 2ND </option>
-                                <option value="SUMMER" {{ old('semester') }}> SUMMER </option>
+                                <option value="SEMESTER" {{ old('semester') }}> SEMESTER </option>
                             </select>
 
                             @error('term')

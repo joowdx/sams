@@ -48,6 +48,18 @@
                     </div>
 
                     <div class="form-group row">
+                        <label for="department_id" class="col-md-4 col-form-label text-md-right">Department</label>
+
+                        <div class="col-md-6">
+                            <select id="department_id" name="department_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                @foreach ($departments as $department)
+                                <option value="{{ $department->id }}"  {{ @$program->department->id == $department->id ? 'selected' : '' }}> {{ $department->shortname }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Head</label>
 
                         <div class="col-md-6">
