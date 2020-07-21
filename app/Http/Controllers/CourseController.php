@@ -212,6 +212,9 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $this->authorize('courses_data', User::class);
+        $course->delete();
+
+        return redirect('courses');
     }
 }
