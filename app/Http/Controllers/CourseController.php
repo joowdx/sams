@@ -75,8 +75,8 @@ class CourseController extends Controller
             'code' => 'required|string|numeric|digits_between:0,7',
             'title' => 'required|string|max:10',
             'description' => 'required|string',
-            'semester' => 'required|string|in:1ST,2ND,SUMMER',
-            'term' => 'required|string|in:1ST,2ND,SEMESTER',
+            // 'semester' => 'required|string|in:1ST,2ND,SUMMER',
+            // 'term' => 'required|string|in:1ST,2ND,SEMESTER',
             'day_from' => 'required|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
             'day_to' => 'required|string|in:Mon,Tue,Wed,Thu,Fri,Sat,Sun',
             'time_from' => 'required|string',
@@ -84,6 +84,7 @@ class CourseController extends Controller
             'units' => 'required|string|numeric|digits:1',
             'room_id' => 'nullable|string|numeric|exists:readers,id',
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
+            'academic_period_id' => 'required',
         ]);
         Course::create($request->all());
         return redirect(route('courses.index'));
@@ -145,6 +146,7 @@ class CourseController extends Controller
             'faculties' => Faculty::all(),
             'periods' => Period::all(),
             'rooms' => Reader::rooms(),
+            'course' => $course
         ]);
     }
 
@@ -174,6 +176,7 @@ class CourseController extends Controller
             'faculty_id' => 'nullable|string|numeric|exists:faculties,id',
             'students' => 'nullable|array',
             'students.*' => 'numeric|exists:students,id',
+            'academic_period_id' => 'required',
         ]);
 
         switch($request->type) {
