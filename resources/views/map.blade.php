@@ -398,7 +398,7 @@
                 return
             }
             let duration = tippies[e.log.reader.name].props.content.match(/Duration: \w+/g)[0].split(' ')[1]
-            let content = tippies[e.log.reader.name].props.content.replace(new RegExp("Last check: (([01]?[0-9]|2[0-3]):[0-5][0-9]|N/A)", "gm"), 'Last check: ' + moment(e.log.created_at).format('HH:mm')).replace(/Duration: (N\/A|\w+)/, 'Duration: ' + (parseInt(duration) + 1))
+            let content = tippies[e.log.reader.name].props.content.replace(new RegExp("Last check: (([01]?[0-9]|2[0-3]):[0-5][0-9]|N/A)", "gm"), 'Last check: ' + moment(e.log.created_at).format('HH:mm')).replace(/Duration: (N\/A|\w+)/, 'Duration: ' + (Number.isInteger(parseInt(duration)) + 1))
             tippies[e.log.reader.name].setContent(content)
         })
 })

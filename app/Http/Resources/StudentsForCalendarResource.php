@@ -21,7 +21,7 @@ class StudentsForCalendarResource extends JsonResource
             'late' => $this->logs->filter(function($log) { return $log->remarks == 'late'; })->count() ?: "0",
             'excuse' => $this->logs->filter(function($log) { return $log->remarks == 'excuse'; })->count() ?: "0",
             'absent' => $this->logs->filter(function($log) { return $log->remarks == 'absent'; })->count() ?: "0",
-            'dropped' => $this->logs->first()->course->students->find($this->id)->pivot->status == 'dropped' ? "yes" : "no",
+            // 'dropped' => $this->logs->first()->course->students->find($this->id)->pivot->status == 'dropped' ? "yes" : "no",
         ];
     }
 }

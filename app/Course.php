@@ -194,7 +194,7 @@ class Course extends Model
         if($this->noclass($dt)) {
             return;
         }
-        $this->logs()->whereDate('date', $dt)->where(['log_by_type' => Faculty::class])->where('remarks', '<>', 'stamp')->delete();
+        $this->logs()->whereDate('date', '=', $dt)->where(['log_by_type' => Faculty::class])->where('remarks', '<>', 'stamp')->delete();
         $logs = $this->logs
         ->filter(function($log) use($dt) {
             return $log->date == $dt && $log->remarks == 'stamp';
@@ -234,16 +234,19 @@ class Course extends Model
     private function gettimeblocks($logs)
     {
         $blocks = [];
-        $all = $logs->all();
+        $all = array_values($logs->all());
         $start = $logs->first();
         if($logs->count() == 1) {
             $blocks[] = $start->format('H:i');
         }
+        $end = null;
         for($x = 1; $x < $logs->count(); $x++) {
-            if($all[$x]->clone()->addMinute()->eq(@$all[@$x+1])) {
+            if(@$all[$x]->clone()->addMinute()->eq(@$all[@$x+1])) {
                 $end = @$all[@$x+1] ?? $start;
             } else {
-                if($start->eq($end) || $end == null) {
+                if($start == $logs->first()) {
+                    $blocks[] = $start->format('H:i') . ' – ' . @$all[@$x]->format('H:i');
+                } else if($start->eq($end) || $end == null) {
                     $blocks[] = $start->format('H:i');
                 } else {
                     $blocks[] = $start->format('H:i') . ' – ' . $end->format('H:i');
