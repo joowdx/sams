@@ -157,7 +157,8 @@
                     </td>
                     <td class="align-middle">
                         <small> {{ $record->course->code }} </small> <br>
-                        <b>{{ $record->course->title }}</b>
+                        <b>{{ $record->course->title }}</b> <br>
+                        <small> {{ $record->course->time_from . ' - ' . $record->course->time_to }} </small>
                     </td>
                     <td class="align-middle">
                         @if($record->remarks != 'absent')
