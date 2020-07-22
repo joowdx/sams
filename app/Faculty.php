@@ -10,7 +10,7 @@ class Faculty extends Model
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $fillable = [
-        'uid', 'name',
+        'uid', 'name', 'program_id'
     ];
 
     public static function findbyuid($uid)

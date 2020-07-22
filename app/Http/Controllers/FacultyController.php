@@ -79,7 +79,7 @@ class FacultyController extends Controller
         $this->authorize('faculties_data', User::class);
 
         $request->validate([
-            'uid' => 'required|string',
+            'uid' => 'nullable|string',
             'name' => 'required|string',
         ]);
         Faculty::create($request->all());
@@ -134,6 +134,7 @@ class FacultyController extends Controller
                     'text' => 'Info'
                 ],
             ],
+            'programs' => Program::all()
         ]);
     }
 
@@ -150,7 +151,8 @@ class FacultyController extends Controller
 
         $request->validate([
             'type' => 'required|string|in:info,courses',
-            'uid' => 'required_if:type,info|string',
+            'uid' => 'nullable|string',
+            'program_id' => 'required|exists:programs,id',
             'name' => 'required_if:type,info|string',
             'courses' => 'required_if:type,courses|array',
             'courses.*' => 'numeric|exists:courses,id',

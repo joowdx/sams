@@ -67,6 +67,7 @@ class ProgramController extends Controller
         $request->validate([
             'name' => 'required|string|unique:programs,name',
             'shortname' => 'required|string|max:20|unique:programs,shortname',
+            'department_id' => 'required|string|numeric|exists:departments,id',
             'faculty_id' => 'sometimes|exists:faculties,id',
         ]);
         $program = Program::create($request->all());
@@ -137,6 +138,7 @@ class ProgramController extends Controller
                 ]
             ],
             'program' => $program,
+            'departments' => Department::all()
         ]);
     }
 
@@ -154,6 +156,7 @@ class ProgramController extends Controller
         $request->validate([
             'name' => 'required|string|unique:programs,name,'.$id,
             'shortname' => 'required|string|max:20|unique:programs,name,'.$id,
+            'department_id' => 'required|string|numeric|exists:departments,id',
             'faculty_id' => 'sometimes|exists:faculties,id',
         ]);
         Program::find($id)->update($request->all());

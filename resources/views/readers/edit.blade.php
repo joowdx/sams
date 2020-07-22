@@ -37,7 +37,7 @@
                         <label for="ip" class="col-md-4 col-form-label text-md-right">IP</label>
 
                         <div class="col-md-6">
-                            <input id="ip" type="text" class="form-control @error('ip') is-invalid @enderror" name="ip" required placeholder="IP"  value="{{ old('ip') ?? $reader->ip }}">
+                            <input id="ip" type="text" class="form-control @error('ip') is-invalid @enderror" name="ip" placeholder="IP"  value="{{ old('ip') ?? $reader->ip }}">
 
                             @error('ip')
                             <span class="invalid-feedback" role="alert">
