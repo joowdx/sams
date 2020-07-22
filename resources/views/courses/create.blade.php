@@ -27,7 +27,7 @@
                             <label for="academic_period_id" class="col-md-4 col-form-label text-md-right">Academic Period</label>
 
                             <div class="col-md-6">
-                                <select id="academic_period_id" name="academic_period_id" class="@error('academic_period_id') @enderror" data-width="100%" data-live-search="true" data-placeholder="">
+                                <select id="academic_period_id" name="academic_period_id" class="@error('academic_period_id') @enderror" data-width="100%" data-live-search="true" data-placeholder="" required>
                                     <option></option>
                                     @foreach ($periods as $period)
                                     <option value="{{ $period->id }}" {{ old('academic_period_id') == $period->id ? 'selected' : '' }}> {{ $period->school_year }} / {{ $period->term}} / {{ $period->semester}} </option>
