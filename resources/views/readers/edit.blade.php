@@ -8,6 +8,15 @@
 
 @section('content')
 <div class="row justify-content-center">
+    @can('admin_view', App\User::class)
+    <form method="post" id="" action="{{ route('readers.destroy', $reader->id) }}">
+        @csrf
+        @method('delete')
+        <div class="col-md-12">
+            <button class="btn btn-danger" id="add" type="submit"><span class="fa fa-trash"></span></button>
+        </div>
+    </form>
+    @endcan
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
