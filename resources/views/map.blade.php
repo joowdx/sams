@@ -347,7 +347,7 @@
                 const badge = logs.length != 0 ? `&nbsp<span class="badge badge-${time_start.isBefore(time_in) ? 'warning' : 'success'}"> ${time_start.isBefore(time_in) ? 'late' : 'ok'} </span>` : ''
                 if(logs.length != 0 && time_start.isBefore(time_in)) {
                     r.css('fill', '#ffde4a')
-                } else if(logs.length != 0 && time_start.isAfter(time_in)) {
+                } else if(logs.length != 0) {
                     r.css('fill', '#38c172')
                 }
                 return `
@@ -366,7 +366,7 @@
                     <p class="direct-chat-name mb-0">${e.faculty.name}</p>
                     <div class="row">
                         <div class="col-6 pr-0">
-                            <small class="direct-chat-name"> Time in: ${time_in != 'N/A' ? (time_in.format('HH:mm') + badge) : time_in }</small>
+                            <small class="direct-chat-name"> Time in: ${time_in != 'N/A' ? (time_in.format('HH:mm') + badge) : time_in } </small>
                         </div>
                         <div class="col-6 pl-0">
                             <small class="direct-chat-name"> Last check: ${time_last != 'N/A' ? time_last.format('HH:mm') : time_last }</small>
@@ -404,17 +404,27 @@
             }
             if(tippies[e.log.reader.name]) {
                 const oldcontent = tippies[e.log.reader.name].props.content
+                let timein = oldcontent.match(/Time in: \s*(\S+)/gm)[0]
                 let duration = oldcontent.match(/Duration: \w+/g)[0].split(' ')[1]
                 let content = oldcontent.replace(new RegExp("Last check: (([01]?[0-9]|2[0-3]):[0-5][0-9]|N/A)", "gm"), 'Last check: ' + moment(e.log.created_at).format('HH:mm')).replace(/Duration: (N\/A|\w+)/, 'Duration: ' + (Number.isInteger(parseInt(duration)) + 1))
-                // $room = $(`#${e.log.reader.name}`)
-                // if(!$room.css('fill') == '#ffde4a' && !$room.css('fill') == '#38c172') {
-                //     const logs = e.logs.filter(e => e.log_by_type.includes('Faculty') && e.remarks != 'absent').sort((a, c) => moment(a.created_at).diff(moment(c.created_at)))
-                //     if(logs.length != 0 && time_start.isBefore(time_in)) {
-                //         $room.css('fill', '#ffde4a')
-                //     } else if(logs.length != 0 && time_start.isAfter(time_in)) {
-                //         $room.css('fill', '#38c172')
-                //     }
+                // if(timein.includes('N/A')) {
+                //     content = content.replace(/Time in: \s*(\S+)/, 'Time in: ' + moment(e.log.created_at).format('HH:mm'))
                 // }
+                $room = $(`#${e.log.reader.name}`)
+                if($room.css('fill') == 'rgb(172, 160, 161)') {
+                    timestart = e.log.course.time_from.split(':')
+                    mts = moment().set({hour: timestart[0], minute: timestart[1]})
+                    mti = moment(e.log.created_at)
+                    if(mts.isBefore(mti)) {
+                        $room.css('fill', '#ffde4a')
+                        badge = `&nbsp<span class="badge badge-warning"> late </span>`
+                        content = content.replace(/Time in: \s*(\S+)/, 'Time in: ' + moment(e.log.created_at).format('HH:mm') + badge)
+                    } else if(mts.isAfter(mti)) {
+                        badge = `&nbsp<span class="badge badge-success"> ok </span>`
+                        content = content.replace(/Time in: \s*(\S+)/, 'Time in: ' + moment(e.log.created_at).format('HH:mm') + badge)
+                        $room.css('fill', '#38c172')
+                    }
+                }
                 tippies[e.log.reader.name].setContent(content)
             }
         })
