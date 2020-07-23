@@ -55,7 +55,7 @@ class ClassesQueryController extends Controller
                     })->get()->map(function($period) {
                         return $period->id;
                     })->all()
-                )->whereTime('time_from', '<=', date('H:i'))->whereTime('time_to', '>', date('H:i'))->with('room')->get();
+                )->whereTime('time_from', '<=', now()->addMinutes(5)->format('H:i'))->whereTime('time_to', '>', now()->addMinutes(5)->format('H:i'))->with('room')->get();
             }
         }
 

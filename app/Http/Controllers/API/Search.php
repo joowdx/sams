@@ -37,8 +37,8 @@ class Search extends Controller
                 )]);
             case 'f':
                 return  response()->json(['results' => SearchResource::collection(
-                    Faculty::where('name', 'ilike', "%$request->search%")
-                    ->orWhere('schoolid', 'ilike', "%$request->search%")
+                    Faculty::where('name', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$request->search%")
+                    ->orWhere('schoolid', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$request->search%")
                     ->take(12)
                     ->get()
                 )]);

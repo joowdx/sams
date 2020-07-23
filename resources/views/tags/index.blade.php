@@ -48,7 +48,7 @@
                     <div class="form-group row" style="display: none;">
                         <label for="entities" class="col-md-4 col-form-label text-md-right"></label>
                         <div class="col-md-6">
-                            <select id="entities" class="form-control @error('entities') is-invalid @enderror" name="email" name="id" data-width="100%" data-live-search="true">
+                            <select id="entities" class="form-control @error('entities') is-invalid @enderror" name="id" data-width="100%" data-live-search="true">
                                 <option></option>
                             </select>
                             @error('entities')
