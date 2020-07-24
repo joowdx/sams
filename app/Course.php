@@ -216,6 +216,7 @@ class Course extends Model
                 'time' => $this->gettimeblocks($logs),
                 'additionalremarks' => $logs->last()->lt(Carbon::createFromTimeString($this->time_to)->subMinutes(5)) ? 'early-out' : null,
             ] : null,
+            'created_at' => $logs->first() ?? now()
         ]);
         return $this->faculty->logs()->save($this->room->logs()->save($info));
         $l = $this->logs()->where('remarks', 'stamp')->where('log_by_type', Faculty::class)->get();
