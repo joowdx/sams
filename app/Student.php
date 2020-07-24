@@ -11,9 +11,18 @@ class Student extends Model
         'uid', 'schoolid', 'name', 'program_id', 'avatar'
     ];
 
+    protected $appends = [
+        'enrolled'
+    ];
+
     public static function findbyuid($uid)
     {
         return Student::where(['uid' => $uid])->first();
+    }
+
+    public function getEnrolledAttribute()
+    {
+        return $this->enrolled();
     }
 
     public function department()

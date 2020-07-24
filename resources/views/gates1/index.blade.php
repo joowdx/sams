@@ -279,16 +279,15 @@ height: 100%;
 <script>
 $(e => {
     var queue = [];
-    const gate = ({log_by : { name,avatar }, remarks, course, date}) => {
+    const gate = ({log_by : { name,avatar }, remarks, course, date, enrolled}) => {
 
 
         $('#stu-img').attr('src',"storage/avatars/"+avatar);
-        $("#stu-name").text(name);
+        $("#stu-name").text(name).append($('<small></small>').append($('<span></span>').addClass('badge float-right badge-' + (enrolled ? 'success' : 'warning')).html(enrolled ? 'enrolled' : 'not enrolled')))
         $(".inners").removeClass().addClass((remarks == 'entry') ? 'card-body text-center inners bg-success' : 'card-body text-center inners bg-danger');
         $("#stu-course").text(( course == null) ? '/' : ''+course);
 
         queue.forEach(function(e){
-            console.log(e);
         $('#log').prepend(
             `<tbody>
                 <tr>
@@ -305,7 +304,9 @@ $(e => {
                     `<li class="col-md-12 animated bounceInDown">
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3 id="nm2">`+e[0]+`</h3>
+                                <h3 id="nm2">`+e[0]+`
+                                    <small><span class="float-right badge badge-${ e[5] ? 'success' : 'warning'}"> ${ e[5] ? 'enrolled' : 'not enrolled'} </span> </small>
+                                </h3>
                             <p id="crs2">Course: `+((e[1] == null) ? '/' : e[1])+`</p>
                             </div>
                             <div class="icon">
@@ -323,7 +324,9 @@ $(e => {
                 `<li class="col-md-12 animated bounceInDown">
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3 id="nm2">`+e[0]+`</h3>
+                            <h3 id="nm2">`+e[0]+`
+                                <small><span class="float-right badge badge-${ e[5] ? 'success' : 'warning'}"> ${ e[5] ? 'enrolled' : 'not enrolled'} </span> </small>
+                            </h3>
                         <p id="crs2">Course: `+((e[1] == null) ? '/' : e[1])+`</p>
                         </div>
                         <div class="icon">
