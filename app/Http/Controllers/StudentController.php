@@ -210,4 +210,9 @@ class StudentController extends Controller
         $student->delete();
         return redirect('students');
     }
+
+    public function authenticate()
+    {
+        return view('auth.studentlogin');
+    }
 }

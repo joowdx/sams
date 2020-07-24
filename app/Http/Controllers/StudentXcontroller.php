@@ -10,8 +10,12 @@ class StudentXcontroller extends Controller
 {
     public function __invoke($id)
     {
-        abort_unless(is_numeric($id), 404);
-        abort_unless($student = Student::where(['schoolid' => $id])->first(), 404);
+        if(!is_numeric($id)) {
+            return redirect('studentauth')->with('error', 'Non Numeric ID');
+        }
+        if(!($student = Student::where(['schoolid' => $id])->first())) {
+            return redirect('studentauth')->with('error', 'Non Existent ID');
+        }
         return view('xstudent', [
             'student' => $student->load(['courses', 'courses.faculty']),
             'currentschoolyear' => Period::currentschoolyear(),

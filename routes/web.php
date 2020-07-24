@@ -49,8 +49,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('gate1', 'GateController@gate1');
     Route::get('gate2', 'GateController@gate2');
 });
-
-Route::any('x/{id}', 'StudentXcontroller')->middleware('guest');
+Route::get('studentauth', 'StudentController@authenticate')->name('studentauth');
+Route::any('x/{id}', 'StudentXcontroller')->name('xst')->middleware('guest');
 Route::any('test', function() {
     $courses = Course::whereIn('academic_period_id', Period::period($request->schoolyear, $request->semester))->get();
 
