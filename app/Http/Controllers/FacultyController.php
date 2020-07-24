@@ -32,7 +32,7 @@ class FacultyController extends Controller
         //     }
         // }
         // return $faculties;
-        // $this->authorize('hr_view', User::class);
+        $this->authorize('faculties_view', User::class);
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
             'faculties' => $faculties ?? Faculty::with(['courses', 'program'])->get(),

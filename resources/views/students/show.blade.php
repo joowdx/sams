@@ -72,6 +72,31 @@
                     <li class="list-group-item">
                         <b>Average Login Time</b><a id="resultAvg" class="float-right">
                         </a>
+
+                        @foreach ($student->enrolledcourses() as $course)
+                            @switch($count = $student->logs()->where('course_id', $course->id)->count())
+                            @case(0)
+                                0
+                                @break
+                            @default
+                            {{-- {{ round(($student->logs()->where('remarks', 'absent')->where('course_id', $course->id)->count() /
+                            $student->logs()->where('course_id', $course->id)->count()) * 100, 2) }}{{"%"}} --}}
+                            @php
+                            $t = $course->logs()
+                                ->where('log_by_type', '<>', App\Faculty::class)
+                                ->whereIn('remarks', ['ok', 'late'])
+                                ->where('process', 'default')
+                                ->get()
+                                ->map(function($log) {
+                                    $time = explode(':', $log->created_at->format('H:i'));
+                                    $in = explode(':', $log->course->time_from);
+                                    return today()->setTime($time[0], $time[1])->diffInMinutes(today()->setTime($in[0], $in[1]), false);
+                                })->avg();
+                            @endphp
+                                {{ $t }}
+                            @endswitch
+                        @endforeach
+
                     </li>
                 </ul>
 
@@ -339,13 +364,14 @@
 
 
     async function getData(){
-        const attreq    = await fetch('http://localhost:8000/api/records');
+        const attreq    = await fetch('{{ url('api/records') }}');
         const attdata   = await attreq.json();
         const filter    = await attdata.filter(data => data.student)
         const clean     = await filter.map(data => ({
             days: new Date(data.date).toLocaleString('en-us', { weekday: 'long' }),
             studentid: data.student.id,
             remarks: data.remarks,
+            created_at: data.created_at
         })).filter( e=> (e.studentid == {{ $student->id }}))
 
         return clean;
@@ -387,6 +413,7 @@
         var absent = grouped.map(function(e){
             return e.absent;
         });
+
 
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {

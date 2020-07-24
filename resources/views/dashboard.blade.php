@@ -172,7 +172,7 @@
 
 async function getData() {
 
-    const attReq    = await fetch('http://localhost:8000/api/records');
+    const attReq    = await fetch('{{ url('api/records') }}');
     const attData   = await attReq.json();
     console.log(attData)
     const clean     = attData.map(data => ({

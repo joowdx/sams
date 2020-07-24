@@ -185,7 +185,7 @@
                                 <select id="room" name="room_id" class="selectpicker form-control @error('room') is-invalid @enderror" data-placeholder="ROOM" data-width="100%">
                                     <option></option>
                                     @foreach ($rooms as $room)
-                                        <option value="{{ $room->id }}" {{ (old('room_id') ?? $course->room->id)  == $room->id ? 'selected' : '' }}> {{ $room->name }} </option>
+                                        <option value="{{ @$room->id }}" {{ (old('room_id') ?? @$course->room->id)  == @$room->id ? 'selected' : '' }}> {{ $room->name }} </option>
                                     @endforeach
                                 </select>
 

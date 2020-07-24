@@ -7,6 +7,8 @@ use App\Faculty;
 use App\Department;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProgramController extends Controller
 {
@@ -19,13 +21,23 @@ class ProgramController extends Controller
     {
         $this->authorize('programs_data', User::class);
 
+        $user = Auth::user();
+        if($user->type == 'faculty') {
+            $programs = Program::all()->filter(function($program) use($user) {
+                return @$program->faculty->id == @$user->faculty->id;
+            });
+        }
+        else {
+            $programs = Program::all();
+        }
+
         return view('programs.index', [
             'contentheader' => 'Programs',
-            'programs' => Program::with([
+            'programs' => $programs->load([
                 'faculty',
                 'students',
                 'students.courses',
-            ])->get(),
+            ]),
         ]);
     }
 

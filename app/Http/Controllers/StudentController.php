@@ -8,7 +8,10 @@ use App\Student;
 use App\Department;
 use App\AcademicPeriod as Period;
 use App\Program;
+use App\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class StudentController extends Controller
 {
@@ -36,6 +39,18 @@ class StudentController extends Controller
     public function create()
     {
         $this->authorize('students_data', User::class);
+        $user = Auth::user();
+        if($user->type == 'faculty') {
+            $programs = Program::all()->filter(function($program) use($user) {
+                if(@$user->faculty->isdepartmenthead()) {
+                    return @$program->department->name == @$user->faculty->department->shortname;
+                }
+                return @$program->shortname == @$user->faculty->program->shortname;
+            });
+        }
+        else {
+            $programs = Program::all();
+        }
         return view('students.create', [
             'contentheader' => 'Create',
             'breadcrumbs' => [
@@ -47,7 +62,7 @@ class StudentController extends Controller
                     'text' => 'Create'
                 ]
             ],
-            'programs' => Program::all(),
+            'programs' => $programs,
         ]);
     }
 
@@ -114,6 +129,7 @@ class StudentController extends Controller
             'currentschoolyear' => Period::currentschoolyear(),
             'semesters' => Period::groupBy('semester')->get('semester')->pluck('semester'),
             'schoolyears' => Period::groupBy('school_year')->orderBy('school_year', 'desc')->get('school_year')->pluck('school_year'),
+            'logs' => Log::all()
         ]);
     }
 
@@ -193,5 +209,10 @@ class StudentController extends Controller
         abort_unless($student = Student::find($id), 404);
         $student->delete();
         return redirect('students');
+    }
+
+    public function authenticate()
+    {
+        return view('auth.studentlogin');
     }
 }

@@ -81,7 +81,7 @@
                                 <td>
                                     {{ "$course->day_from - $course->day_to" }}
                                     <small>
-                                        ({{ $course->room->name }})
+                                        ({{ $course->room ? @$course->room->name : '' }})
                                     </small>
                                     <br>
                                     <small> {{ "$course->time_from - $course->time_to" }} </small>
@@ -153,7 +153,7 @@
                                 <td>
                                     {{ "$course->day_from - $course->day_to" }}
                                     <small>
-                                        ({{ $course->room->name }})
+                                        ({{ $course->room ? @$course->room->name : '' }})
                                     </small>
                                     <br>
                                     <small> {{ "$course->time_from - $course->time_to" }} </small>

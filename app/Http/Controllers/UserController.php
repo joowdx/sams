@@ -38,8 +38,9 @@ class UserController extends Controller
     {
         $this->authorize('users_data', User::class);
         $user = new User();
-        return view('users.create', compact('user'),[
+        return view('users.create',[
             'faculties' => Faculty::all(),
+            'user' => $user
         ]);
     }
 
