@@ -13,5 +13,6 @@ class ProgramSeeder extends Seeder
     {
         factory(App\Program::class)->states(['BSIT'])->create();
         factory(App\Program::class)->states(['BSCpE'])->create();
+        factory(App\Program::class, 6)->create();
     }
 }

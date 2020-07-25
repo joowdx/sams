@@ -3,15 +3,16 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Faculty;
+use App\Program;
 use Faker\Generator as Faker;
 
 $factory->define(Faculty::class, function (Faker $faker) {
     return [
-        'uid' => $faker->randomNumber(5, true).$faker->randomNumber(6, true),
-        'schoolid' => '91023',
+        'uid' => substr(strtoupper(str_replace('#', '', $faker->hexcolor().$faker->hexcolor())), 0, 8),
+        'schoolid' => $faker->randomNumber(5, true),
         'name' => $faker->name(),
-        'description' => 'i love bacons',
-        'program_id' => 1,
+        'description' => $faker->words(20, true),
+        'program_id' => $faker->randomElement(Program::all()->pluck('id')),
     ];
 });
 

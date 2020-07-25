@@ -12,5 +12,6 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         factory(App\Department::class)->states(['DTP'])->create();
+        factory(App\Department::class, 3)->create();
     }
 }

@@ -64,13 +64,13 @@
 
 @section('content')
 <div class="active tab-pane" id="attendance">
-    <div class="card d-print-none">
+    <div class="card d-print-none collapsed-card">
         <div class="card-header border-transparent pb-0">
             <h3 class="card-title">Actions</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
+                    <i class="fas fa-plus"></i>
                 </button>
             </div>
         </div>

@@ -8,6 +8,7 @@ use App\Course;
 use App\Program;
 use App\Student;
 use App\AcademicPeriod as Period;
+use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,8 +23,6 @@ class FacultyController extends Controller
     {
 
         // return Auth::user()->faculty;
-        // $faculties = null;
-        // $user = Auth::user();
         // if($user->faculty && $user->type != 'admin') {
         //     if($user->faculty->isdepartmenthead()) {
         //         $faculties = @Program::where(['department_id' => $user->faculty->department->id])->with(['faculties', 'faculties.courses', 'faculties.program', 'faculties.program.department'])->get()->pluck('faculties')[0];
@@ -33,6 +32,16 @@ class FacultyController extends Controller
         // }
         // return $faculties;
         $this->authorize('faculties_view', User::class);
+
+        $user = Auth::user();
+        if($user->type == 'faculty') {
+            if($user->faculty->isdepartmenthead()) {
+                $faculties = Faculty::whereIn('program_id', $user->faculty->program->department->programs->pluck('id'))->get();
+            } elseif ($user->faculty->isprogramhead()) {
+                $faculties = Faculty::where('program_id', $user->faculty->program->id)->get();
+                // dd($faculties->toArray());
+            }
+        }
         return view('faculties.index')->with([
             'contentheader' => 'Faculties',
             'faculties' => $faculties ?? Faculty::with(['courses', 'program'])->get(),
@@ -53,6 +62,14 @@ class FacultyController extends Controller
 
         $this->authorize('faculties_data', User::class);
 
+        $user = Auth::user();
+        if($user->type == 'faculty') {
+            if($user->faculty->isdepartmenthead()) {
+                $programs = Program::whereIn('id', $user->faculty->program->department->programs->pluck('id'))->get();
+            }elseif ($user->faculty->isprogramhead()) {
+                $programs = Program::where('id', $user->faculty->program->id)->get();
+            }
+        }
         return view('faculties.create')->with([
             'contentheader' => 'New faculty',
             'breadcrumbs' => [
@@ -64,7 +81,7 @@ class FacultyController extends Controller
                     'text' => 'Create'
                 ]
             ],
-            'programs' => Program::all(),
+            'programs' => $programs ?? Program::all(),
         ]);
     }
 
@@ -96,6 +113,7 @@ class FacultyController extends Controller
     {
 
 
+
         return view('faculties.show', compact('faculty'))->with([
             'contentheader' => 'Faculty',
             'courses'   => $faculty->ongoingcourses(),
@@ -121,7 +139,14 @@ class FacultyController extends Controller
     public function edit(Faculty $faculty)
     {
         $this->authorize('faculties_data', User::class);
-
+        $user = Auth::user();
+        if($user->type == 'faculty') {
+            if($user->faculty->isdepartmenthead()) {
+                $programs = Program::whereIn('id', $user->faculty->program->department->programs->pluck('id'))->get();
+            }elseif ($user->faculty->isprogramhead()) {
+                $programs = Program::where('id', $user->faculty->program->id)->get();
+            }
+        }
         return view('faculties.edit', compact('faculty'))->with([
             'contentheader' => $faculty->name,
             'courses' => Course::all(),
@@ -134,7 +159,7 @@ class FacultyController extends Controller
                     'text' => 'Info'
                 ],
             ],
-            'programs' => Program::all()
+            'programs' => $program ?? Program::all()
         ]);
     }
 

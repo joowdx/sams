@@ -38,7 +38,7 @@
                             <div class="col-md-6">
                                 <select id="program" name="program_id" class="selectpicker" data-width="100%" data-live-search="true">
                                     @foreach ($programs as $program)
-                                    <option value="{{ $program->id }}" {{ $program->faculty->id == $faculty->id ? 'selected' : '' }}> {{ $program->shortname }} </option>
+                                    <option value="{{ $program->id }}" {{ @$program->faculty->id == $faculty->id ? 'selected' : '' }}> {{ $program->shortname }} </option>
                                     @endforeach
                                 </select>
                             </div>

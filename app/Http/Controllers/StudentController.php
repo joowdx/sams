@@ -24,9 +24,17 @@ class StudentController extends Controller
     {
         // $this->authorize('faculty_view', User::class);
 
+        $user = Auth::user();
+        if($user->type == 'faculty') {
+            if($user->faculty->isdepartmenthead()) {
+                $faculties = Student::whereIn('program_id', $user->faculty->program->department->programs->pluck('id'))->get();
+            } elseif ($user->faculty->isprogramhead()) {
+                $faculties = Student::where('program_id', $user->faculty->program->id)->get();
+            }
+        }
         return view('students.index', [
             'contentheader' => 'Students',
-            'students' => Student::all(),
+            'students' => $faculties ?? Student::all(),
         ]);
     }
 

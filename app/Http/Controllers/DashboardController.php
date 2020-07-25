@@ -14,6 +14,7 @@ class DashboardController extends Controller
 
     public function __invoke()
     {
+        $this->authorize('dashview', App\User::class);
         return view('dashboard')->with([
             'contentheader' => 'Dashboard',
             'logs' => Log::with([

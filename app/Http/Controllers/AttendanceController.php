@@ -8,6 +8,7 @@ use App\Course;
 use App\AcademicPeriod as Period;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class AttendanceController extends Controller
@@ -20,6 +21,7 @@ class AttendanceController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $this->authorize('attendance_view', Auth::user());
         abort_unless($request->isMethod('get'), 404, 'Not Found!');
         $content = [
             'contentheader' => 'Attendance',

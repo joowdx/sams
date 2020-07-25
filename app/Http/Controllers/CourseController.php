@@ -30,18 +30,20 @@ class CourseController extends Controller
         //     $courses = $user->faculty->courses();
         // }
         $user = Auth::user();
+        $courses = Course::with(['faculty'])->get();
+        $ccourses = Course::currentcourses();
         if($user->type == 'faculty') {
-            $courses = Course::currentcourses()->filter(function($course) use($user) {
-                return @$course->faculty->id == @$user->faculty->id;
+            $courses = $courses->filter(function($course) use($user) {
+                return $user->faculty->courses->contains($course->id);
             });
-        }
-        else {
-            $courses = Course::currentcourses();
+            $ccourses = $ccourses->filter(function($course) use($user) {
+                return $user->faculty->courses->contains($course->id);
+            });
         }
         return view('courses.index', [
             'contentheader' => 'Courses',
-            'courses' => $courses ?? Course::with(['faculty'])->get(),
-            'current' => $courses,
+            'courses' => $courses,
+            'current' => $ccourses,
         ]);
     }
 

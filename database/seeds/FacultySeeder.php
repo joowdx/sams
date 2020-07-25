@@ -13,5 +13,6 @@ class FacultySeeder extends Seeder
     {
         factory(App\Faculty::class)->states(['Max'])->create();
         factory(App\Faculty::class)->states(['Min'])->create();
+        factory(App\Faculty::class, 5)->create();
     }
 }

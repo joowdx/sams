@@ -6,6 +6,7 @@ use App\Log;
 use App\Course;
 use App\Faculty;
 use App\Student;
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

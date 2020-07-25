@@ -17,5 +17,6 @@ class CourseSeeder extends Seeder
         $it112l = factory(App\Course::class)->states(['IT112L'])->create();
         $it112l->academic_period()->associate(App\AcademicPeriod::first())->save();
         $it112l->students()->sync(App\Student::all());
+        factory(App\Course::class, 12)->create();
     }
 }

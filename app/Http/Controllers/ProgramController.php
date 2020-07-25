@@ -23,11 +23,12 @@ class ProgramController extends Controller
 
         $user = Auth::user();
         if($user->type == 'faculty') {
-            $programs = Program::all()->filter(function($program) use($user) {
-                return @$program->faculty->id == @$user->faculty->id;
-            });
-        }
-        else {
+            if($user->faculty->isdepartmenthead()) {
+                $programs = Program::whereIn('id', $user->faculty->program->department->programs->pluck('id'))->get();
+            } elseif ($user->faculty->isprogramhead()) {
+                $programs = Program::where('id', $user->faculty->program->id)->get();
+            }
+        } else {
             $programs = Program::all();
         }
 
