@@ -29,10 +29,19 @@ class CourseController extends Controller
         // if($user->faculty && $user->type != 'admin') {
         //     $courses = $user->faculty->courses();
         // }
+        $user = Auth::user();
+        if($user->type == 'faculty') {
+            $courses = Course::currentcourses()->filter(function($course) use($user) {
+                return @$course->faculty->id == @$user->faculty->id;
+            });
+        }
+        else {
+            $courses = Course::currentcourses();
+        }
         return view('courses.index', [
             'contentheader' => 'Courses',
             'courses' => $courses ?? Course::with(['faculty'])->get(),
-            'current' => Course::currentcourses(),
+            'current' => $courses,
         ]);
     }
 

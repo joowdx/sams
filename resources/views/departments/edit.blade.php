@@ -52,6 +52,7 @@
 
                         <div class="col-md-6">
                             <select id="faculty_id" name="faculty_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                <option></option>
                                 @foreach ($department->faculties as $faculty)
                                     <option value="{{ $faculty->id }}"}> {{ $faculty->name }} </option>
                                 @endforeach

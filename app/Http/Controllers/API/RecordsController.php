@@ -18,6 +18,6 @@ class RecordsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return RecordsResource::collection(Records::whereIn('remarks', ['late', 'absent'])->where('log_by_type', Student::class)->get());
+        return RecordsResource::collection(Records::whereIn('remarks', ['late', 'absent'])->get());
     }
 }

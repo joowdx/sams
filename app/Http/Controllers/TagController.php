@@ -41,7 +41,11 @@ class TagController extends Controller
 
         abort_unless($validator->passes(), 400);
 
-        $sf = Student::find($request->id) ?? Faculty::find($request->id);
+        if($request->type == 'f') {
+            $sf = Faculty::find($request->id);
+        } else {
+            $sf = Student::find($request->id);
+        }
 
         abort_unless($sf, 404);
 

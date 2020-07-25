@@ -37,8 +37,8 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('users_data', User::class);
-        $user = new User();
-        return view('users.create', compact('user'),[
+        // $user = new User();
+        return view('users.create',[
             'faculties' => Faculty::all(),
         ]);
     }

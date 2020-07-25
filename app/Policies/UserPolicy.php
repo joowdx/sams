@@ -69,11 +69,11 @@ class UserPolicy
     //SIDE VIEWS
     public function programs_view(User $user)
     {
+        // dd($user->faculty->isdepartmenthead());
         return in_array($user->type, [
-            'admin',
-            'depthead',
-            'd.o.'
+            'admin'
         ]) || ($user->faculty && $user->faculty->isdepartmenthead());
+
     }
 
     public function courses_view(User $user)
@@ -89,7 +89,6 @@ class UserPolicy
     {
         return in_array($user->type, [
             'admin',
-            'faculty',
             'd.o.',
             'h.r.'
         ]) || ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
@@ -126,6 +125,7 @@ class UserPolicy
     {
         return in_array($user->type, [
             'admin',
+            'h.r.'
         ])|| ($user->faculty && $user->faculty->isdepartmenthead()) || ($user->faculty && $user->faculty->isdepartmenthead());
     }
     public function students_data(User $user)
@@ -136,6 +136,7 @@ class UserPolicy
     }
     public function programs_data(User $user)
     {
+        // dd($user);
         return in_array($user->type, [
             'admin',
         ])|| ($user->faculty && $user->faculty->isdepartmenthead());

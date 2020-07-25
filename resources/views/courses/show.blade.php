@@ -74,7 +74,7 @@
                             {{ "$course->day_from - $course->day_to" }}
                             <br>
                             <small>
-                                {{ "$course->time_from - $course->time_to" }}
+                                {{ "@$course->time_from - $course->time_to" }}
                             </small>
                             <br>
                             <small>

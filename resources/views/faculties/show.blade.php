@@ -204,7 +204,7 @@
 @section('scripts')
 <script>
     async function getData(){
-        const attreq    = await fetch('http://localhost:8000/api/records');
+        const attreq    = await fetch('{{ url('api/records') }}');
         const attdata   = await attreq.json();
         const filter    = await attdata.filter(data => data.faculty)
         const clean     = await filter.map(data => ({
