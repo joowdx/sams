@@ -11,8 +11,34 @@
                 {{-- <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> --}}
                 <i class="fad fa-user-secret fa-fw fa-2x" style="color: #ecf0f1"></i>
             </div>
-            <div class="info">
-                <a href="/profile" class="d-block">{{ Auth::user()->name }}</a>
+            <div class="info col-9">
+                <a href="/profile" class="d-block">
+                    {{ ($user = Auth::user())->name }}
+                    @if($user->type == 'faculty' && $user->faculty)
+                        @php
+                            if($user->faculty->isdepartmenthead()) {
+                                $l = 'dept head';
+                                $c = 'danger';
+                            } elseif ($user->faculty->isprogramhead()) {
+                                $l = 'prog head';
+                                $c = 'warning';
+                            } else {
+                                $c = 'success';
+                            }
+                        @endphp
+                        <small class="float-right">
+                            <span class="badge badge-{{ $c }}"> {{ $l ?? $user->type }} </span>
+                        </small>
+                    @elseif($user->type == 'h.r.')
+                        <small class="float-right">
+                            <span class="badge badge-primary"> h.r. </span>
+                        </small>
+                    @elseif($user->type == 'admin')
+                        <small class="float-right">
+                            <span class="badge badge-dark"> admin </span>
+                        </small>
+                    @endif
+                </a>
             </div>
         </div>
         <nav class="mt-2">

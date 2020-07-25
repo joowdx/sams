@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Log;
+use App\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,7 +15,7 @@ class DashboardController extends Controller
 
     public function __invoke()
     {
-        $this->authorize('dashview', App\User::class);
+        $this->authorize('dashview', User::class);
         return view('dashboard')->with([
             'contentheader' => 'Dashboard',
             'logs' => Log::with([
