@@ -86,19 +86,19 @@
                         <b> Free </b>
                     </div>
                 </div>
-                
+
                 <div class="col-3 p-1 m-0 text-light animated flash infinite slow">
                     <div class="py-2 px-3 m-0" style="background: #38c172;">
                         <b> Ok </b>
                     </div>
                 </div>
-        
+
                 <div class="col-3 p-1 m-0 text-light animated flash infinite slow">
                     <div class="py-2 px-3 m-0" style="background: #ffde4a;">
                         <b> Late </b>
                     </div>
                 </div>
-                
+
                 <div class="col-3 p-1 m-0 text-light animated flash infinite slow">
                     <div class="py-2 px-3 m-0" style="background: #aca0a1;">
                         <b> No Faculty </b>
@@ -350,7 +350,7 @@
     <div class="col-md-2 p-0">
         <div>
             <h5 class="pl-3 pt-2 text-light"> <b> Faculties </b> </h5>
-            <div id="departments" class=""> 
+            <div id="departments" class="">
             </div>
         </div>
         <div class="">
@@ -361,7 +361,7 @@
                     <b>Checked in</b>
                 </div>
                 <div class="col-6 p-0">
-                    <p class="m-0 p-0 float-right"> 
+                    <p class="m-0 p-0 float-right">
                         <span id="checkedin"> </span>
                     </p>
                 </div>
@@ -372,7 +372,7 @@
                     <b>In Campus</b>
                 </div>
                 <div class="col-6 p-0">
-                    <p class="m-0 p-0 float-right"> 
+                    <p class="m-0 p-0 float-right">
                         <span id="inpremises"> </span>
                     </p>
                 </div>
@@ -382,10 +382,10 @@
             <h5 class="pt-2"> <b> Recent </b> </h5>
             <table id="trecent" class="no-datatable table table-borderless projects m-0" style="border-collapse:collapse!important;table-layout:fixed!important;">
                 <tbody id="recent">
-                    
+
                 </tbody>
             </table>
-            
+
         </div>
     </div>
 </div>
@@ -411,7 +411,7 @@
                                     <b>${e.shortname}</b>
                                 </div>
                                 <div class="col-8 p-0">
-                                    <p class="m-0 p-0 float-right"> 
+                                    <p class="m-0 p-0 float-right">
                                         <span id="${e.shortname}-n"> 0 </span> /
                                         <span id="${e.shortname}-t"> 0 </span>
                                     </p>
@@ -433,7 +433,7 @@
                     </td>
                     <td class="align-middle p-0 pb-2 text-truncate" style="width:30%!important;line-height:normal">
                         ${badge} <br>
-                        ${moment(time).format('HH:mm:ss')} 
+                        ${moment(time).format('HH:mm:ss')}
                     </td>
                 </tr>
             `)
@@ -447,8 +447,8 @@
             $('svg .cls-1').removeAttr('style').removeClass('animated flash infinite')
             tippies.forEach(e => e.destroy())
             tippies.length = 0
-            inpremises = new Set(e.inpremises.map(e => e.id))
-            checkedin = new Set(e.checkedin.map(e => e.id))
+            inpremises = new Set(e.inpremises ? e.inpremises.map(e => e.id) : [])
+            checkedin = new Set(e.checkedin ? e.checkedin.map(e => e.id) : [])
             $('#checkedin').html(checkedin.size)
             $('#inpremises').html(inpremises.size)
             const tooltipinfo = (e, r) => {

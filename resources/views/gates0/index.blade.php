@@ -268,9 +268,9 @@ height: 100%;
     </div>
 
     <div class="col col-md-auto">
-        @foreach ($logs as $log)
+        {{-- @foreach ($logs as $log)
             <h1 class="text-white" id="">{{ Carbon\Carbon::parse($log->date)->format('d-m-Y') }}</h1>
-        @endforeach
+        @endforeach --}}
     </div>
 
 </div>
