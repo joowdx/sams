@@ -12,7 +12,7 @@ class Course extends Model
     private $parsedfacultylogs;
 
     protected $with = [
-        'room', 'academic_period'
+        'room', 'academic_period', 'logs', 'faculty'
     ];
 
     protected $fillable = [
@@ -35,6 +35,19 @@ class Course extends Model
             ->first(function($course) {
                 return $course->forattendance();
             });
+    }
+
+    public static function getclasses()
+    {
+        return Course::with(['logs' => function($query) {
+            $query->whereDate('date', today());
+        }, 'logs.log_by', 'faculty', 'faculty.program', 'faculty.program.department'])->whereIn('academic_period_id',
+            AcademicPeriod::where(function($query) {
+                $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
+            })->get()->map(function($period) {
+                return $period->id;
+            })->all()
+        )->whereTime('time_from', '<=', now()->addMinutes(5)->format('H:i'))->whereTime('time_to', '>', now()->addMinutes(5)->format('H:i'))->with('room')->get();
     }
 
     public static function findonsession($room = null)

@@ -11,7 +11,8 @@ class AcademicPeriodSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\AcademicPeriod::class)->states(['2SEMESTER'])->create();
-        factory(App\AcademicPeriod::class)->states(['1SEMESTER'])->create();
+        factory(App\AcademicPeriod::class)->states('SEMESTER')->create();
+        factory(App\AcademicPeriod::class)->states('1TERM')->create();
+        factory(App\AcademicPeriod::class)->states('2TERM')->create();
     }
 }

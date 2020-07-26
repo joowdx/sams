@@ -28,7 +28,7 @@
                 <th> <i class="fad fa-hashtag"></i> </th>
                 <th> ID </th>
                 <th> Name </th>
-                <th> Department </th>
+                <th> Program/Department </th>
                 <th> Modified </th>
             </tr>
         </thead>
@@ -49,7 +49,7 @@
                     <b>{{ $faculty->name }}</b>
                 </td>
                 <td class="align-middle">
-                    <b>{{ $faculty->program->department->shortname ?? '' }}</b>
+                    <b>{{ $faculty->program->shortname ?? '' }}</b>
                     <br>
                     <small> {{ $faculty->program->department->name ?? '' }} </small>
                 </td>

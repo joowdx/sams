@@ -38,6 +38,9 @@
                                     Period
                                 </th>
                                 <th>
+                                    Faculty
+                                </th>
+                                <th>
                                     Schedule
                                 </th>
                             </tr>
@@ -62,10 +65,9 @@
                                     </li>
                                 </td>
                                 <td>
-                                    @php $period = $course->academic_period @endphp
-                                    @if ($period)
+                                    @if ($period = $course->academic_period)
                                     <p class="m-0 p-0">
-                                        @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
+                                        @if($period->term != 'SEMESTER' && $period->semester != 'SUMMER')
                                             <b>{{ $period->semester }}</b> <small> Sem </small>/
                                             <b>{{ $period->term }} </b> <small> Term </small>
                                         @else
@@ -77,6 +79,10 @@
                                         SY: {{ $period->school_year }}
                                     </small>
                                     @endif
+                                </td>
+                                <td>
+                                    <strong>{{ @$course->faculty->name }}</strong> <br>
+                                    <small> {{ @$course->faculty->program->shortname  }} ( {{ @$course->faculty->program->department->shortname }} ) </small>
                                 </td>
                                 <td>
                                     {{ "$course->day_from - $course->day_to" }}
@@ -100,16 +106,19 @@
                                 <th>
                                     <i class="fad fa-hashtag"></i>
                                 </th>
-                                <th style="width: 20%">
+                                <th>
                                     Code
                                 </th>
-                                <th style="width: 30%">
+                                <th>
                                     Course
                                 </th>
-                                <th style="width: 30%">
+                                <th>
                                     Period
                                 </th>
-                                <th style="width: 30%">
+                                <th>
+                                    Faculty
+                                </th>
+                                <th>
                                     Schedule
                                 </th>
                             </tr>
@@ -134,10 +143,9 @@
                                     </li>
                                 </td>
                                 <td>
-                                    @php $period = $course->academic_period @endphp
-                                    @if($period)
+                                    @if($period = $course->academic_period)
                                     <p class="m-0 p-0">
-                                        @if($period->term != 'SEMESTER' && $this->semester != 'SUMMER')
+                                        @if($period->term != 'SEMESTER' && $period->semester != 'SUMMER')
                                             <b>{{ $period->semester }}</b> <small> Sem </small>/
                                             <b>{{ $period->term }} </b> <small> Term </small>
                                         @else
@@ -149,6 +157,10 @@
                                         SY: {{ $period->school_year }}
                                     </small>
                                     @endif
+                                </td>
+                                <td>
+                                    <strong>{{ @$course->faculty->name }}</strong> <br>
+                                    <small> {{ @$course->faculty->program->shortname  }} ( {{ @$course->faculty->program->department->shortname }} ) </small>
                                 </td>
                                 <td>
                                     {{ "$course->day_from - $course->day_to" }}

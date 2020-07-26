@@ -9,7 +9,7 @@ class Department extends Model
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     public $fillable = [
-        'name', 'shortname', 'faculty_id'
+        'name', 'shortname', 'faculty_id', 'hexcolor'
     ];
 
     public function faculty()

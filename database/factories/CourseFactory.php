@@ -23,37 +23,92 @@ $factory->define(Course::class, function (Faker $faker) {
         'time_to' => $time[array_search($from, $time) + 1],
         'units' => $unit,
         'academic_period_id' => $faker->randomElement(Period::all()->pluck('id')),
-        'room_id' => $faker->randomElement(App\Reader::all()->pluck('id')),
+        'room_id' => $faker->randomElement(App\Reader::rooms()->pluck('id')),
         'faculty_id' => $faker->randomElement(App\Faculty::all()->pluck('id'))
     ];
 });
 
-$factory->state(Course::class, 'IT111L', function(Faker $faker) {
+$factory->state(Course::class, 'CCE-101', function(Faker $faker) {
     return [
-        'code' => 1000,
-        'title' => 'IT111L',
-        'description' => 'Basic Computer Operations',
+        'code' => '0905',
+        'title' => 'CCE-101',
         'day_from' => 'Mon',
-        'day_to' => 'Fri',
-        'time_from' => '15:30',
-        'time_to' => '17:30',
-        'units' => 6,
-        'room_id' => 3,
-        'faculty_id' => 1,
+        'day_to' => 'Sun',
+        'time_from' => '08:00',
+        'time_to' => '10:00',
+        'room_id' => '3'
     ];
 });
 
-$factory->state(Course::class, 'IT112L', function(Faker $faker) {
+$factory->state(Course::class, 'CCE-102', function(Faker $faker) {
     return [
-        'code' => 1001,
-        'title' => 'IT112L',
-        'description' => 'Basic Programming',
+        'code' => '0906',
+        'title' => 'CCE-102',
         'day_from' => 'Mon',
-        'day_to' => 'Fri',
-        'time_from' => '13:30',
-        'time_to' => '15:30',
-        'units' => 6,
-        'room_id' => 4,
-        'faculty_id' => 1,
+        'day_to' => 'Sun',
+        'time_from' => '08:00',
+        'time_to' => '10:00',
+        'room_id' => '4'
+    ];
+});
+
+$factory->state(Course::class, 'CCE-104', function(Faker $faker) {
+    return [
+        'code' => '0866',
+        'title' => 'CCE-104',
+        'day_from' => 'Mon',
+        'day_to' => 'Sun',
+        'time_from' => '08:00',
+        'time_to' => '10:00',
+        'room_id' => '5'
+    ];
+});
+
+$factory->state(Course::class, 'CCE-105', function(Faker $faker) {
+    return [
+        'code' => '0867',
+        'title' => 'CCE-105',
+        'day_from' => 'Mon',
+        'day_to' => 'Sun',
+        'time_from' => '10:00',
+        'time_to' => '12:00',
+        'room_id' => '3'
+    ];
+});
+
+$factory->state(Course::class, 'EE-433', function(Faker $faker) {
+    return [
+        'code' => '0832',
+        'title' => 'EE-433',
+        'day_from' => 'Mon',
+        'day_to' => 'Sun',
+        'time_from' => '10:00',
+        'time_to' => '12:00',
+        'room_id' => '4'
+    ];
+});
+
+
+$factory->state(Course::class, 'IT-3', function(Faker $faker) {
+    return [
+        'code' => '0868',
+        'title' => 'IT-3',
+        'day_from' => 'Mon',
+        'day_to' => 'Sun',
+        'time_from' => '10:00',
+        'time_to' => '12:00',
+        'room_id' => '5'
+    ];
+});
+
+$factory->state(Course::class, 'IT-5', function(Faker $faker) {
+    return [
+        'code' => '0874',
+        'title' => 'IT-5',
+        'day_from' => 'Mon',
+        'day_to' => 'Sun',
+        'time_from' => '12:30',
+        'time_to' => '14:30',
+        'room_id' => '4'
     ];
 });

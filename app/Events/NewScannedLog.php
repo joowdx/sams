@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
 
 class NewScannedLog implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets;
 
     public $log;
     /**
@@ -34,5 +34,18 @@ class NewScannedLog implements ShouldBroadcast
     public function broadcastOn()
     {
         return new PrivateChannel('logs');
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return [
+            'log' => $this->log,
+            'department' => @$this->log->log_by->program->department->shortname
+        ];
     }
 }

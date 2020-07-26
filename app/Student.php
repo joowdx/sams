@@ -15,6 +15,33 @@ class Student extends Model
         'enrolled'
     ];
 
+    public static function inpremises()
+    {
+        return Student::with(['logs' => function($q) {
+            $q->whereDate('date', today());
+            $q->whereIn('remarks', ['entry', 'exit']);
+            $q->latest();
+            $q->first();
+        }])->whereHas('logs', function($q) {
+            $q->whereDate('date', today());
+            $q->whereIn('remarks', ['entry', 'exit']);
+        })->get()->filter(function($faculty) {
+            return $faculty->logs->first()->remarks == 'entry';
+        });
+    }
+
+    public static function checkedin()
+    {
+        return Student::with(['logs' => function($q) {
+            $q->whereDate('date', today());
+            $q->whereIn('remarks', ['entry', 'exit']);
+            $q->first();
+        }])->whereHas('logs', function($q) {
+            $q->whereDate('date', today());
+            $q->whereIn('remarks', ['entry', 'exit']);
+        })->get();
+    }
+
     public static function findbyuid($uid)
     {
         return Student::where(['uid' => $uid])->first();

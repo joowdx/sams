@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\OngoingClasses;
+use App\Student;
 use Illuminate\Support\Facades\Validator;
 
 class ClassesQueryController extends Controller
@@ -47,15 +48,11 @@ class ClassesQueryController extends Controller
                 return response()->json($noclass ? $response : $noclass);
             break;
             default:{
-                return Course::with(['logs' => function($query) {
-                    $query->whereDate('date', today())->where(['log_by_type' => 'App\Faculty']);
-                }, 'logs.log_by', 'faculty'])->whereIn('academic_period_id',
-                    AcademicPeriod::where(function($query) {
-                        $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
-                    })->get()->map(function($period) {
-                        return $period->id;
-                    })->all()
-                )->whereTime('time_from', '<=', now()->addMinutes(5)->format('H:i'))->whereTime('time_to', '>', now()->addMinutes(5)->format('H:i'))->with('room')->get();
+                return [
+                    'courses' => Course::getclasses(), 
+                    'inpremises' => Student::inpremises(),
+                    'checkedin' => Student::checkedin(),
+                ];
             }
         }
 

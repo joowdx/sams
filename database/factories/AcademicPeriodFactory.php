@@ -45,22 +45,32 @@ $factory->define(AcademicPeriod::class, function (Faker $faker) {
 });
 
 
-$factory->state(AcademicPeriod::class, '1SEMESTER', function(Faker $faker) {
+$factory->state(AcademicPeriod::class, 'SEMESTER', function(Faker $faker) {
     return [
-        'school_year'  => '2019-2020',
+        'school_year'  => '2020-2021',
         'semester' => '1ST',
         'term' => 'SEMESTER',
-        'start' => Carbon::createFromFormat('d-m-y', '01-06-19'),
-        'end' => Carbon::createFromFormat('d-m-y', '31-10-19'),
+        'start' => Carbon::createFromFormat('d-m-y', '20-07-20'),
+        'end' => Carbon::createFromFormat('d-m-y', '19-12-20'),
     ];
 });
 
-$factory->state(AcademicPeriod::class, '2SEMESTER', function(Faker $faker) {
+$factory->state(AcademicPeriod::class, '1TERM', function(Faker $faker) {
     return [
-        'school_year'  => '2019-2020',
-        'semester' => '2ND',
-        'term' => 'SEMESTER',
-        'start' => Carbon::createFromFormat('d-m-y', '01-11-19'),
-        'end' => Carbon::createFromFormat('d-m-y', '31-03-20'),
+        'school_year'  => '2020-2021',
+        'semester' => '1ST',
+        'term' => '1ST',
+        'start' => Carbon::createFromFormat('d-m-y', '20-07-20'),
+        'end' => Carbon::createFromFormat('d-m-y', '12-09-20'),
+    ];
+});
+
+$factory->state(AcademicPeriod::class, '2TERM', function(Faker $faker) {
+    return [
+        'school_year'  => '2020-2021',
+        'semester' => '1ST',
+        'term' => '2ND',
+        'start' => Carbon::createFromFormat('d-m-y', '14-09-20'),
+        'end' => Carbon::createFromFormat('d-m-y', '19-12-20'),
     ];
 });

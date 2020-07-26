@@ -16,22 +16,50 @@ $factory->define(Faculty::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Faculty::class, 'Max', function($faker) {
+$factory->state(Faculty::class, 'P', function($faker) {
     return [
-        'uid' => 10000,
-        'schoolid' => '91023',
-        'name' => 'Maximus',
-        'description' => 'i love optimists',
+        'name' => 'Eduard Pulvera',
+        'description' => '',
         'program_id' => 1,
     ];
 });
 
-$factory->state(Faculty::class, 'Min', function($faker) {
+$factory->state(Faculty::class, 'D', function($faker) {
     return [
-        'uid' => 10001,
-        'schoolid' => '91024',
-        'name' => 'Minimus',
-        'description' => 'i love pessimists',
-        'program_id' => 2,
+        'name' => 'Cyvil Dave Dasargo',
+        'description' => '',
+        'program_id' => 1,
+    ];
+});
+
+$factory->state(Faculty::class, 'J', function($faker) {
+    return [
+        'name' => 'Joane May Delima',
+        'description' => '',
+        'program_id' => 1,
+    ];
+});
+
+$factory->state(Faculty::class, 'N', function($faker) {
+    return [
+        'name' => 'Nesle Tagalog',
+        'description' => '',
+        'program_id' => 1,
+    ];
+});
+
+$factory->state(Faculty::class, 'R', function($faker) {
+    return [
+        'name' => 'Raven Manulat',
+        'description' => '',
+        'program_id' => 1,
+    ];
+});
+
+$factory->state(Faculty::class, 'F', function($faker) {
+    return [
+        'name' => 'Rheyan Fritz Gonzales',
+        'description' => '',
+        'program_id' => 1,
     ];
 });

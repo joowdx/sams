@@ -44,7 +44,7 @@ class LogController extends Controller
         $this->middleware([
             ReaderVerification::class,
             TagVerification::class,
-            InSchoolPremises::class,
+            // InSchoolPremises::class,
             HasClass::class,
         ]);
     }
@@ -69,22 +69,14 @@ class LogController extends Controller
         $this->cc = Course::findonsession($this->gr->name);
         abort_unless($this->cc && ($this->cc->forattendance() || $this->cc->facultyloggedontime()), 403, 'Attendance is now disabled!');
         abort_unless(request()->t == '1', 403);
-        // abort_unless($this->cc->faculty->uid == $this->sf->uid, 403, "You ain't this class' teacher!");
-        abort_unless($this->cc->facultylateststamp() != now()->seconds()->microseconds(), 409, 'Stamp for this minute exists.');
-        return $this->sendlogevent($this->cc->logs()->save($this->newlog('stamp', true)));
-    }
-
-    private function handlefaculty_2()
-    {
-        $this->cc = Course::findonsession($this->gr->name);
-        abort_unless($this->cc && ($this->cc->forattendance() || $this->cc->facultyloggedontime()), 403, 'Attendance is now disabled!');
         abort_unless($this->cc->faculty->uid == $this->sf->uid, 403, "You ain't this class' teacher!");
-
+        // abort_unless($this->cc->facultylateststamp() != now()->seconds()->microseconds(), 409, 'Stamp for this minute exists.');
+        return $this->sendlogevent($this->cc->logs()->save($this->newlog('stamp', true)));
     }
 
     private function handlestudent()
     {
-        $this->cc = Course::findforattendance($this->gr->name);
+        $this->cc = Course::findonsession($this->gr->name);
         abort_unless($this->cc, 403, 'Attendance is now disabled!');
         abort_unless(request()->t == '0', 403);
         abort_unless($this->cc->students->contains($this->sf) && $this->deny(), 403, 'Student not enrolled!');
@@ -124,7 +116,6 @@ class LogController extends Controller
             new NewScannedLog(
                 $log->loadMissing([
                     'reader:id,name',
-                    'log_by:id,name,uid',
                     'course',
                 ])
             )

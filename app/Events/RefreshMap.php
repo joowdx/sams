@@ -10,13 +10,13 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
 class RefreshMap implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets;
 
     public $courses;
+    public $students;
 
     /**
      * The name of the queue the job should be sent to.
@@ -30,9 +30,10 @@ class RefreshMap implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($courses)
+    public function __construct($courses, $students)
     {
         $this->courses = $courses;
+        $this->students = $students;
     }
 
     /**
@@ -43,5 +44,18 @@ class RefreshMap implements ShouldBroadcast
     public function broadcastOn()
     {
         return new PrivateChannel('map');
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return [
+            'courses' => $this->courses,
+            'students' => $this->students,
+        ];
     }
 }

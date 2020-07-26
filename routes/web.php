@@ -13,7 +13,9 @@
 */
 
 use App\Course;
+use App\Faculty;
 use App\Log;
+use App\Student;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
@@ -52,13 +54,24 @@ Route::middleware(['auth'])->group(function() {
 Route::get('studentauth', 'StudentController@authenticate')->name('studentauth');
 Route::any('x/{id}', 'StudentXcontroller')->name('xst')->middleware('guest');
 Route::any('test', function() {
-    $courses = Course::whereIn('academic_period_id', Period::period($request->schoolyear, $request->semester))->get();
+    return Faculty::with(['logs' => function($q) {
+        $q->whereDate('date', today());
+        $q->whereIn('remarks', ['entry', 'exit']);
+        $q->latest();
+        $q->first();
+    }])->whereHas('logs', function($q) {
+        $q->whereDate('date', today());
+        $q->whereIn('remarks', ['entry', 'exit']);
+    })->get()->filter(function($faculty) {
+        return $faculty->logs->first()->remarks == 'entry';
+    });
+    // $courses = Course::whereIn('academic_period_id', Period::period($request->schoolyear, $request->semester))->get();
 
-        $students = Student::whereIn('id', $courses->flatMap(function($course) {
-            return $course->students;
-        })->pluck('id')->unique())->with(['courses' => function($query) use($courses) {
-            $query->whereIn('id', $courses->pluck('id'));
-        }])->get();
+    //     $students = Student::whereIn('id', $courses->flatMap(function($course) {
+    //         return $course->students;
+    //     })->pluck('id')->unique())->with(['courses' => function($query) use($courses) {
+    //         $query->whereIn('id', $courses->pluck('id'));
+    //     }])->get();
     // $f = App\Program::where(['department_id' => 1])->with(['faculties', 'faculties.courses', 'faculties.program', 'faculties.program.department'])->get()->pluck('faculties')[0];
     // return $f;
     // DB::table('logs')->truncate();

@@ -137,7 +137,7 @@
         <table class="table table-sm table-borderless table-striped projects">
             <thead>
                 <tr>
-                    <th> <i class="fad fa-hashtag"></i> </th>
+                    <th> # </th>
                     <th> Faculty </th>
                     <th> Course </th>
                     <th> Attendance </th>
