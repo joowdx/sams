@@ -71,8 +71,8 @@
                                             <b>{{ $period->semester }}</b> <small> Sem </small>/
                                             <b>{{ $period->term }} </b> <small> Term </small>
                                         @else
-                                            <b>{{ $period->semester }}</b>
-                                            @if($period->semester != 'SUMMER') <small> Sem </small> @endif
+                                            <b>{{ @$period->semester }}</b>
+                                            @if(@$period->semester != 'SUMMER') <small> Sem </small> @endif
                                         @endif
                                     </p>
                                     <small>

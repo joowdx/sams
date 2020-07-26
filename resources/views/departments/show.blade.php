@@ -61,9 +61,9 @@
                     <li class="list-group-item">
                         <b>Students</b> <a class="float-right">{{ $department->students->count() }}</a>
                     </li>
-                    <li class="list-group-item">
-                        {{-- <b>Courses</b> <a class="float-right">{{ $department->courses->count() }}</a> --}}
-                    </li>
+                    {{-- <li class="list-group-item">
+                        <b>Courses</b> <a class="float-right">{{ $department->courses->count() }}</a>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -105,12 +105,12 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="align-middle">
-                                            <b>{{ $program->shortname }}</b> <br>
-                                            <small> {{ $program->name }} </small>
+                                            <b>{{ @$program->shortname }}</b> <br>
+                                            <small> {{ @$program->name }} </small>
                                         </td>
                                         <td class="align-middle">
-                                            <b>{{ $program->faculty->name }}</b> <br>
-                                            <small> {{ $program->faculty->description }} </small>
+                                            <b>{{ @$program->faculty->name }}</b> <br>
+                                            <small> {{ @$program->faculty->description }} </small>
                                         </td>
                                         <td class="align-middle">
                                             <b>{{ $program->students->count() }}</b>

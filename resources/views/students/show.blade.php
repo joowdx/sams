@@ -93,7 +93,9 @@
                                     return today()->setTime($time[0], $time[1])->diffInMinutes(today()->setTime($in[0], $in[1]), false);
                                 })->avg();
                             @endphp
-                                {{ $t }}
+                            <p class="float-right">
+                                {{ $t }}mins
+                            </p>
                             @endswitch
                         @endforeach
 

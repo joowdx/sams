@@ -18,6 +18,7 @@ use App\Log;
 use App\Student;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\DB;
 
 Auth::routes(['register' => false]);
 Route::middleware(['auth'])->group(function() {

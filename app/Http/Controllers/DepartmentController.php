@@ -56,6 +56,7 @@ class DepartmentController extends Controller
             'name' => 'required|string|unique:departments,name',
             'shortname' => 'required|string|max:20|unique:departments,shortname',
             'faculty_id' => 'sometimes|exists:faculties,id',
+            'hexcolor' => 'required|max:6|min:6|regex:/[0-9a-fA-F]{6}/'
         ]);
         Department::create($request->all());
         return redirect(route('departments.index'));
@@ -130,6 +131,7 @@ class DepartmentController extends Controller
             'name' => 'required|string|unique:departments,name,'.$id,
             'shortname' => 'required|string|max:20|unique:departments,name,'.$id,
             'faculty_id' => 'sometimes|exists:faculties,id',
+            'hexcolor' => 'required|max:6|min:6|regex:/[0-9a-fA-F]{6}/'
         ]);
         $department->update($request->all());
         return redirect(route('departments.show', $id));

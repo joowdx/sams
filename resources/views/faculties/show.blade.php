@@ -81,7 +81,7 @@
                     <div class="icon">
                         <i class="box-icon fad fa-users-class fa-fw"></i>
                     </div>
-                    <a class="small-box-footer" disabled>More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a class="small-box-footer" disabled>/</a>
                 </div>
             </li>
 

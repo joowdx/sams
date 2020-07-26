@@ -8,7 +8,6 @@
 
 @section('content')
 <div class="row justify-content-center pt-5">
-
     <div class="col-md-9">
         <div class="card px-2">
             <div class="card-header pb-1">
@@ -31,7 +30,7 @@
                                 Schedule
                             </th>
                             <th style="width: 30%">
-                                Abenteeism Rate
+                                Absenteeism Rate
                             </th>
                             <th style="width: 8%" class="text-center">
                                 Students
@@ -79,7 +78,7 @@
                                     @break
                                 @default
                                 {{ round(($faculty->logs()->where('remarks', 'absent')->where('course_id', $course->id)->count() /
-                                $faculty->logs()->where('course_id', $course->id)->count()) * 100, 2) }}
+                                $faculty->logs()->where('course_id', $course->id)->count()) * 100, 2) }}%
                                 @endswitch
                             </td>
                             <td class="align-middle project-state">

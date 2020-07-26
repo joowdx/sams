@@ -176,8 +176,8 @@ class FacultyController extends Controller
 
         $request->validate([
             'type' => 'required|string|in:info,courses',
-            'uid' => 'nullable|string',
-            'program_id' => 'required|exists:programs,id',
+            'uid' => 'nullable|string'  ,
+            'program_id' => 'required_if:type,info|exists:programs,id',
             'name' => 'required_if:type,info|string',
             'courses' => 'required_if:type,courses|array',
             'courses.*' => 'numeric|exists:courses,id',

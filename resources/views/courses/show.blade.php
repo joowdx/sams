@@ -47,7 +47,7 @@
 </div>
 <div class="row">
     <div class="col-lg-3">
-        <div class="card card-outline">
+        {{-- <div class="card card-outline">
             <div class="card-body box-profile">
                 <h3 class="profile-username">
                     {{ $course->description }}
@@ -57,14 +57,14 @@
                     <div class="col text-center">
                         <strong><i class="fa-fw fad fa-calendar-week mr-1"></i> <br> Period </strong>
                         <p class="text-muted">
-                            {{ strtolower($course->academic_period->semester) }} Semester
+                            {{ strtolower(@$course->academic_period->semester) }} Semester
                             <br>
                             <small>
-                                ({{ ($term = $course->academic_period->term) == 'SEMESTER' ? 'Sem' : (strtolower($term). 'Term') }})
+                                ({{ (@$term = @$course->academic_period->term) == 'SEMESTER' ? 'Sem' : (strtolower(@$term). 'Term') }})
                             </small>
                             <br>
                             <small>
-                                {{ $course->academic_period->school_year ?? ''}}
+                                {{ @$course->academic_period->school_year ?? ''}}
                             </small>
                         </p>
                     </div>
@@ -97,7 +97,34 @@
                 </div>
                 <hr>
             </div>
+        </div> --}}
+
+        <div class="card">
+            <div class="card-body">
+                <strong class=""> {{ $course->title }} <p class="float-right">  {{ "$course->time_from - $course->time_to" }}</p> </strong>
+                <ul class="list-group list-group-unbordered my-3">
+                    <li class="list-group-item">
+                        <b>Faculty</b> <a class="float-right">{{ @$course->faculty->name ?? 'no faculty set' }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Period</b> <a class="float-right">{{ strtolower(@$course->academic_period->semester) }} Semester / {{ (@$term = @$course->academic_period->term) == 'SEMESTER' ? 'Sem' : (strtolower(@$term). 'Term') }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Schedule</b> <a class="float-right">{{ "$course->day_from - $course->day_to" }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Units</b> <a class="float-right">{{$course->units}}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Room</b> <a class="float-right">  {{ @$course->room->name ?? 'no room set' }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>School Year</b> <a class="float-right"> {{ @$course->academic_period->school_year ?? ''}} </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
         <div class="card">
             <div class="card-body">
                 <strong><i class="fa-fw fad fa-info mr-1"></i> Other info </strong>

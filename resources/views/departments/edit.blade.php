@@ -48,6 +48,20 @@
                     </div>
 
                     <div class="form-group row">
+                        <label for="hexcolor" class="col-md-4 col-form-label text-md-right">Department Color</label>
+
+                        <div class="col-md-6">
+                            <input id="hexcolor" type="text" class="form-control @error('hexcolor') is-invalid @enderror" name="hexcolor" required onkeyup="this.value = this.value.toUpperCase();" autocomplete="new-hexcolor" placeholder="Input Hex"  value="{{ old('hexcolor') }}">
+
+                            @error('hexcolor')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="faculty_id" class="col-md-4 col-form-label text-md-right">Head</label>
 
                         <div class="col-md-6">
