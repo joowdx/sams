@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->job(new RefreshMap)->withoutOverlapping()->everyMinute()->runInBackGround();
+        $schedule->job(new RefreshMap)->withoutOverlapping()->everyMinute()->runInBackGround();
         $schedule->job(new MarkAbsent)->withoutOverlapping()->runInBackGround();
         // $schedule->job(new MarkAbsent)->withoutOverlapping()->everyThirtyMinutes()->runInBackGround();
         // $schedule->job(new ClearUnknownTags)->withoutOverlapping()->everyMinute()->runInBackGround();

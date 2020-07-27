@@ -41,7 +41,7 @@ class Course extends Model
     {
         return Course::with(['logs' => function($query) {
             $query->whereDate('date', today());
-        }, 'logs.log_by', 'faculty', 'faculty.program', 'faculty.program.department'])->whereIn('academic_period_id',
+        }, 'students', 'logs.log_by', 'faculty', 'faculty.program', 'faculty.program.department'])->whereIn('academic_period_id',
             AcademicPeriod::where(function($query) {
                 $query->whereDate('start', '<=', date('Y-m-d'))->whereDate('end', '>=', date('Y-m-d'));
             })->get()->map(function($period) {

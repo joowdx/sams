@@ -34,6 +34,6 @@ class RefreshMap implements ShouldQueue
      */
     public function handle()
     {
-        event(new RefreshMapEvent(Course::getclasses(), Student::inpremises()));
+        event(new RefreshMapEvent(Course::getclasses(), Student::inpremises(), Student::checkedin()));
     }
 }

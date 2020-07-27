@@ -16,7 +16,8 @@ class RefreshMap implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets;
 
     public $courses;
-    public $students;
+    public $inpremises;
+    public $checkedin;
 
     /**
      * The name of the queue the job should be sent to.
@@ -30,10 +31,11 @@ class RefreshMap implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($courses, $students)
+    public function __construct($courses, $inpremises, $checkedin)
     {
         $this->courses = $courses;
-        $this->students = $students;
+        $this->inpremises = $inpremises;
+        $this->checkedin = $checkedin;
     }
 
     /**
@@ -55,7 +57,8 @@ class RefreshMap implements ShouldBroadcast
     {
         return [
             'courses' => $this->courses,
-            'students' => $this->students,
+            'inpremises' => $this->inpremises,
+            'checkedin' => $this->checkedin,
         ];
     }
 }

@@ -83,25 +83,40 @@
             <div class="row">
                 <div class="col-3 p-1 m-0">
                     <div class="py-2 px-3 m-0" style="background: #fff; border: 1px solid black;">
-                        <b> Free </b>
+                        <b> Vacant </b>
                     </div>
                 </div>
 
-                <div class="col-3 p-1 m-0 text-light animated flash infinite slow">
-                    <div class="py-2 px-3 m-0" style="background: #38c172;">
-                        <b> Ok </b>
+                <div class="col-3 p-1 m-0 text-dark">
+                    <div class="py-2 px-3 m-0 animated flash infinite slow" style="background: #38c172; border: 1px solid transparent;" >
+                        <b class="animated flash infinite"> &nbsp </b>
+                    </div>
+                    <div class="py-2 px-3 m-0 animated flash infinite position-absolute" style="top: 0.3em!important;">
+                        <b class="animated flash infinite"> Ok </b>
                     </div>
                 </div>
 
-                <div class="col-3 p-1 m-0 text-light animated flash infinite slow">
-                    <div class="py-2 px-3 m-0" style="background: #ffde4a;">
-                        <b> Late </b>
+                <div class="col-3 p-1 m-0 text-dark">
+                    <div class="py-2 px-3 m-0 animated flash infinite slow" style="background: #ffde4a; border: 1px solid transparent;">
+                        <b class="animated flash infinite"> &nbsp </b>
                     </div>
+                    <div class="py-2 px-3 m-0 animated flash infinite position-absolute" style="top: 0.3em!important;">
+                        <b class="animated flash infinite"> Late </b>
+                    </div>
+                    {{-- <div class="py-2 px-0 m-0 position-absolute w-100 pr-1" style="background: #0000; border: 1px solid black; top: 0.3em!important;">
+                        <b> &nbsp </b>
+                        <div class="py-2 px-3 m-0 position-absolute w-100" style="background: #0000; border: 1px solid red; top: 0.3em!important;">
+                            <b class="animated flash infinite"> &nbsp </b>
+                        </div>
+                    </div> --}}
                 </div>
 
-                <div class="col-3 p-1 m-0 text-light animated flash infinite slow">
-                    <div class="py-2 px-3 m-0" style="background: #aca0a1;">
-                        <b> No Faculty </b>
+                <div class="col-3 p-1 m-0 text-dark">
+                    <div class="py-2 px-3 m-0 animated flash infinite slow" style="background: #aca0a1; border: 1px solid transparent;">
+                        <b class="animated flash infinite"> &nbsp </b>
+                    </div>
+                    <div class="py-2 px-3 m-0 animated flash infinite position-absolute" style="top: 0.3em!important;">
+                        <b class="animated flash infinite"> No Faculty </b>
                     </div>
                 </div>
             </div>
@@ -369,7 +384,7 @@
 
             <div class="row alert m-0 py-1 px-3 text-light" role="alert" style="border-radius: 0!important;background: #088;">
                 <div class="col-6 p-0">
-                    <b>In Campus</b>
+                    <b>In Premises</b>
                 </div>
                 <div class="col-6 p-0">
                     <p class="m-0 p-0 float-right">
@@ -385,7 +400,6 @@
 
                 </tbody>
             </table>
-
         </div>
     </div>
 </div>
@@ -431,9 +445,9 @@
                         <kbd class="m-0 p-0 px-1"> ${room} </kbd>
                         <br> ${title}
                     </td>
-                    <td class="align-middle p-0 pb-2 text-truncate" style="width:30%!important;line-height:normal">
+                    <td class="align-middle p-0 pb-2 text-truncate text-right" style="width:30%!important;line-height:normal">
                         ${badge} <br>
-                        ${moment(time).format('HH:mm:ss')}
+                        ${moment(time).format('HH:mm')}
                     </td>
                 </tr>
             `)
@@ -447,8 +461,8 @@
             $('svg .cls-1').removeAttr('style').removeClass('animated flash infinite')
             tippies.forEach(e => e.destroy())
             tippies.length = 0
-            inpremises = new Set(e.inpremises ? e.inpremises.map(e => e.id) : [])
-            checkedin = new Set(e.checkedin ? e.checkedin.map(e => e.id) : [])
+            inpremises = new Set(e.inpremises.map(e => e.id))
+            checkedin = new Set(e.checkedin.map(e => e.id))
             $('#checkedin').html(checkedin.size)
             $('#inpremises').html(inpremises.size)
             const tooltipinfo = (e, r) => {
@@ -492,10 +506,10 @@
                     <p class="direct-chat-name mb-0">Students</p>
                     <div class="row">
                         <div class="col-6 pr-0">
-                            <small class="direct-chat-name"> Present: ${e.logs.filter(e => e.log_by_type.includes('Student')).length} </small>
+                            <small class="direct-chat-name"> Present: ${e.logs.filter(e => e.log_by_type.includes('Student') && (e.remarks == 'late' || e.remarks == 'ok')).length} </small>
                         </div>
                         <div class="col-6 pl-0">
-                            <small class="direct-chat-name"> Count: 0 </small>
+                            <small class="direct-chat-name"> Count: ${e.students.length} </small>
                         </div>
                     </div>
                 </div>
@@ -524,22 +538,31 @@
             }
         }
         fetch('{{route("queryclasses")}}').then(e => e.json()).then(refreshmap)
-        Echo.private('map').listen('RefreshMap', e => refreshmap(e.courses))
-        Echo.private('logs').listen('NewScannedLog', e =>{
+        Echo.private('map').listen('RefreshMap', e => refreshmap(e))
+        Echo.private('logs').listen('NewScannedLog', e => {
             if(e.log.log_by_type.includes('Student')) {
                 switch(e.log.remarks) {
-                    case 'entry': {
+                    case 'entry':
                         checkedin.add(e.log.log_by.id)
                         inpremises.add(e.log.log_by.id)
                         $('#checkedin').html(checkedin.size)
                         $('#inpremises').html(inpremises.size)
                         break;
-                    }
-                    case 'exit': {
+                    case 'exit':
                         inpremises.delete(e.log.log_by.id)
                         $('#inpremises').html(inpremises.size)
                         break;
-                    }
+                    case 'late':
+                    case 'ok':
+
+                        break;
+                }
+                if(tippies[e.log.reader.name]) {
+                    const $room = $(`#${e.log.reader.name}`)
+                    const oldcontent = tippies[e.log.reader.name].props.content
+                    let present = oldcontent.match(/Present: \s*(\S+)/gm)[0]
+                    let content = oldcontent.replace(/Present: \s*(\S+)/, 'Present: ' + (parseInt(present.split(' ')[1]) + 1))
+                    tippies[e.log.reader.name].setContent(content)
                 }
                 return
             }
