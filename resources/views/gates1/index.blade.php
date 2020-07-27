@@ -92,8 +92,9 @@ height: 100%;
 
     <div class="col col-md-auto">
         <h1 class="font-weight-bold text-white" style="font-size: 72px;">UM Digos College</h1>
-        <small class="text-white" style="float: right;">3361 Jose Abad Santos St, Digos City, 8002 Davao del Sur</small>
+        <small class="text-white" style="float: right;">Roxas Extension, Digos City, 8002 Davao del Sur</small>
     </div>
+
 
     <div class="col col-md-auto">
         <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
@@ -111,7 +112,8 @@ height: 100%;
             <img class="card-img-top" id="stu-img" src="storage/avatars/no-image.png" alt="Card image cap">
             <div class="card-body text-center inners" style="background-color: #666666">
                 <h1 class="font-weight-bold text-white" id="stu-name">Name:</h1>
-                <small class="text-white" id="stu-course">/</small>
+                <h3 class="text-white" id="stu-course">/</h3>
+                <h3 class="text-white" id="stu-remark">/</h3>
             </div>
         </div>
     </div>
@@ -267,9 +269,9 @@ height: 100%;
     </div>
 
     <div class="col col-md-auto">
-        @foreach ($logs as $log)
+        {{-- @foreach ($logs as $log)
             <h1 class="text-white" id="">{{ Carbon\Carbon::parse($log->date)->format('d-m-Y') }}</h1>
-        @endforeach
+        @endforeach --}}
     </div>
 
 </div>
@@ -279,13 +281,19 @@ height: 100%;
 <script>
 $(e => {
     var queue = [];
-    const gate = ({log_by : { name,avatar }, remarks, course, date, enrolled}) => {
 
+    const gate = ({log_by : { name, avatar, enrolled, program },log_by_type, remarks, date}) => {
 
         $('#stu-img').attr('src',"storage/avatars/"+avatar);
-        $("#stu-name").text(name).append($('<small></small>').append($('<span></span>').addClass('badge float-right badge-' + (enrolled ? 'success' : 'warning')).html(enrolled ? 'enrolled' : 'not enrolled')))
+        $("#stu-name").text(name);
         $(".inners").removeClass().addClass((remarks == 'entry') ? 'card-body text-center inners bg-success' : 'card-body text-center inners bg-danger');
-        $("#stu-course").text(( course == null) ? '/' : ''+course);
+        $("#stu-course").text(( program.shortname == null) ? '/' : ''+program.shortname);
+        if(log_by_type.includes('Student')){
+        $("#stu-remark").text('').append($('<span></span>').removeClass().addClass('badge badge-' + (enrolled ? 'primary' : 'warning')).html(enrolled ? 'enrolled' : 'not enrolled'));
+        }else{
+        $("#stu-remark").text('Faculty');
+        }
+
 
         queue.forEach(function(e){
         $('#log').prepend(
@@ -304,10 +312,8 @@ $(e => {
                     `<li class="col-md-12 animated bounceInDown">
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3 id="nm2">`+e[0]+`
-                                    <small><span class="float-right badge badge-${ e[5] ? 'success' : 'warning'}"> ${ e[5] ? 'enrolled' : 'not enrolled'} </span> </small>
-                                </h3>
-                            <p id="crs2">Course: `+((e[1] == null) ? '/' : e[1])+`</p>
+                                <h3 id="nm2">` + e[0] + `</h3>
+                            <p id="crs2">Program: `+((e[1] == null) ? '/' : e[1])+`</p>
                             </div>
                             <div class="icon">
                                 <img src="storage/avatars/`+e[2]+`" alt="" class="stu-icon float-right">
@@ -324,10 +330,8 @@ $(e => {
                 `<li class="col-md-12 animated bounceInDown">
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3 id="nm2">`+e[0]+`
-                                <small><span class="float-right badge badge-${ e[5] ? 'success' : 'warning'}"> ${ e[5] ? 'enrolled' : 'not enrolled'} </span> </small>
-                            </h3>
-                        <p id="crs2">Course: `+((e[1] == null) ? '/' : e[1])+`</p>
+                            <h3 id="nm2">`+e[0]+`</h3>
+                        <p id="crs2">Program: `+((e[1] == null) ? '/' : e[1])+`</p>
                         </div>
                         <div class="icon">
                             <img src="storage/avatars/`+e[2]+`" alt="" class="stu-icon float-right">
@@ -339,9 +343,10 @@ $(e => {
             }
 
         })
-        queue.push([name,course,avatar,remarks,date]);
+        queue.push([name,program.shortname,avatar,remarks,date,enrolled]);
     }
     Echo.private('logs').listen('NewScannedLog', e =>{
+        console.log(e);
         ((e.log.reader.name == "G2") ? gate(e.log) : '')
     })
 })
