@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
 
 class NewScannedLog implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $log;
     /**

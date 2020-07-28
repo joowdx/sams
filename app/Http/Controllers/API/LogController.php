@@ -114,7 +114,7 @@ class LogController extends Controller
     {
         event(
             new NewScannedLog(
-                $log->loadMissing([
+                Log::find($log->id)->loadMissing([
                     'reader:id,name',
                     'course',
                 ])

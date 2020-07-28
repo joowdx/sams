@@ -456,6 +456,7 @@
             }
         }
         const refreshmap = async e => {
+            console.log(e)
             await fetch('{{url("api/departments")}}').then(e => e.json()).then(setdepartments)
             $('#class_codes text').removeAttr('style').removeClass('animated flash infinite slow').text('')
             $('svg .cls-1').removeAttr('style').removeClass('animated flash infinite')
@@ -509,7 +510,7 @@
                             <small class="direct-chat-name"> Present: ${e.logs.filter(e => e.log_by_type.includes('Student') && (e.remarks == 'late' || e.remarks == 'ok')).length} </small>
                         </div>
                         <div class="col-6 pl-0">
-                            <small class="direct-chat-name"> Count: ${e.students.length} </small>
+                            <small class="direct-chat-name"> Count: ${e.students_count} </small>
                         </div>
                     </div>
                 </div>
@@ -540,6 +541,7 @@
         fetch('{{route("queryclasses")}}').then(e => e.json()).then(refreshmap)
         Echo.private('map').listen('RefreshMap', e => refreshmap(e))
         Echo.private('logs').listen('NewScannedLog', e => {
+            console.log(e)
             if(e.log.log_by_type.includes('Student')) {
                 switch(e.log.remarks) {
                     case 'entry':
@@ -554,15 +556,14 @@
                         break;
                     case 'late':
                     case 'ok':
-
+                        if(tippies[e.log.reader.name]) {
+                            const $room = $(`#${e.log.reader.name}`)
+                            const oldcontent = tippies[e.log.reader.name].props.content
+                            let present = oldcontent.match(/Present: \s*(\S+)/gm)[0]
+                            let content = oldcontent.replace(/Present: \s*(\S+)/, 'Present: ' + (parseInt(present.split(' ')[1]) + 1))
+                            tippies[e.log.reader.name].setContent(content)
+                        }
                         break;
-                }
-                if(tippies[e.log.reader.name]) {
-                    const $room = $(`#${e.log.reader.name}`)
-                    const oldcontent = tippies[e.log.reader.name].props.content
-                    let present = oldcontent.match(/Present: \s*(\S+)/gm)[0]
-                    let content = oldcontent.replace(/Present: \s*(\S+)/, 'Present: ' + (parseInt(present.split(' ')[1]) + 1))
-                    tippies[e.log.reader.name].setContent(content)
                 }
                 return
             }

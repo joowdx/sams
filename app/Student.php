@@ -21,7 +21,6 @@ class Student extends Model
             $q->whereDate('date', today());
             $q->whereIn('remarks', ['entry', 'exit']);
             $q->latest();
-            $q->first();
         }])->whereHas('logs', function($q) {
             $q->whereDate('date', today());
             $q->whereIn('remarks', ['entry', 'exit']);
@@ -35,7 +34,6 @@ class Student extends Model
         return Student::with(['logs' => function($q) {
             $q->whereDate('date', today());
             $q->whereIn('remarks', ['entry', 'exit']);
-            $q->first();
         }])->whereHas('logs', function($q) {
             $q->whereDate('date', today());
             $q->whereIn('remarks', ['entry', 'exit']);
