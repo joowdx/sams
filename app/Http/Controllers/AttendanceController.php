@@ -40,6 +40,7 @@ class AttendanceController extends Controller
         if($validator->passes()) {
             $period = Period::where('school_year', $request->schoolyear)->where('semester', env('DB_CONNECTION') == 'pgsql' ? 'ilike' : 'like', "%$request->semester%")->get()->pluck('id');
             $courses = Course::whereIn('academic_period_id', $period)->get();
+            // dd($courses->toArray());
             $logs = Log::whereIn('course_id', $courses->pluck('id'));
             $logs->where('log_by_type', Faculty::class);
             $logs->whereIn('remarks', [ 'ok', 'late', 'excuse', 'absent', 'leave']);
@@ -48,14 +49,14 @@ class AttendanceController extends Controller
                 $logs->where('log_by_id', $request->faculty);
                 $content['faculty'] = @$logs->first()->log_by;
             } else {
-                $logs->whereIn('log_by_id', $courses->pluck('faculty'));
+                $logs->whereIn('log_by_id', $courses->unique('faculty_id')->pluck('faculty_id'));
             }
+            // dd($logs->get()->toArray());
             $content['records'] = $logs->get();
             $content['schoolyear'] = $request->schoolyear;
             $content['semester'] = $request->semester;
             $content['date'] = $request->date;
         }
-        // dd($content);
         return view('attendance', $content);
     }
 }

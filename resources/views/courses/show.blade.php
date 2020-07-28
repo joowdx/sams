@@ -43,62 +43,8 @@
 
 </div>
 @endcan
-<div class="col-12">
-</div>
 <div class="row">
     <div class="col-lg-3">
-        {{-- <div class="card card-outline">
-            <div class="card-body box-profile">
-                <h3 class="profile-username">
-                    {{ $course->description }}
-                </h3>
-                <hr>
-                <div class="row">
-                    <div class="col text-center">
-                        <strong><i class="fa-fw fad fa-calendar-week mr-1"></i> <br> Period </strong>
-                        <p class="text-muted">
-                            {{ strtolower(@$course->academic_period->semester) }} Semester
-                            <br>
-                            <small>
-                                ({{ (@$term = @$course->academic_period->term) == 'SEMESTER' ? 'Sem' : (strtolower(@$term). 'Term') }})
-                            </small>
-                            <br>
-                            <small>
-                                {{ @$course->academic_period->school_year ?? ''}}
-                            </small>
-                        </p>
-                    </div>
-                    <div class="col text-center">
-                        <strong><i class="fa-fw fad fa-calendar-alt mr-1"></i> <br> Schedule </strong>
-                        <p class="text-muted">
-                            {{ "$course->day_from - $course->day_to" }}
-                            <br>
-                            <small>
-                                {{ "@$course->time_from - $course->time_to" }}
-                            </small>
-                            <br>
-                            <small>
-                                {{ @$course->room->name ?? 'no room set' }}
-                            </small>
-                        </p>
-                    </div>
-                    <div class="col text-center">
-                        <strong><i class="fa-fw fad fa-user-crown mr-1"></i> <br> Faculty </strong>
-                        <p class="text-muted mb-0">
-                            {{ @$course->faculty->name ?? 'no faculty set' }}
-                        </p>
-                    </div>
-                    <div class="col text-center">
-                        <strong><i class="fa-fw fad fa-weight-hanging mr-1"></i> <br> Units </strong>
-                        <p class="text-muted">
-                            {{ $course->units }}
-                        </p>
-                    </div>
-                </div>
-                <hr>
-            </div>
-        </div> --}}
-
         <div class="card">
             <div class="card-body">
                 <strong class=""> {{ $course->title }} <p class="float-right">  {{ "$course->time_from - $course->time_to" }}</p> </strong>
@@ -144,7 +90,6 @@
             <div class="card-header p-2">
                 <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" href="#weekly" data-toggle="tab">Weekly</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#all" data-toggle="tab">All</a></li>
                 </ul>
             </div>
             <div class="card-body">
@@ -152,54 +97,6 @@
                     <div class="active tab-pane" id="weekly">
                         <div class="p-2" style="display: block;">
                             <div id="calendar">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="all">
-                        <div class="p-2" style="display: block;">
-                            <div class="wrapper">
-                                <div class="scrollable-table">
-                                    <table class="table-header-rotated no-datatable">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                @while ($day = $course->nextmeeting($day ?? $course->firstmeeting()->subDay()))
-                                                @if($day->gt(today()))
-                                                @break
-                                                @endif
-                                                <th class="rotate-45"><div><span class="mb-2">{{ $day->format('D y-m-d') }}</span></div></th>
-                                                @endwhile
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($course->students as $student)
-                                            <tr>
-                                                <td class="headcol"> {{ $student->name }} </td>
-                                                @foreach ($student->logsto($course->id) as $log)
-                                                <td>
-                                                    @switch($log->remarks ?? '')
-                                                    @case('ok')
-                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-check-circle" style="color : #4CAF50"></i>
-                                                    @break
-                                                    @case('late')
-                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-dot-circle" style="color: #F57F17"></i>
-                                                    @break
-                                                    @case('absent')
-                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-times-circle" style="color: #f44336"></i>
-                                                    @break
-                                                    @case('excuse')
-                                                    <i id="{{ get_class($student)."-$".$student->id."-$".$log->id }}" class="fa-fw fad fa-circle" style="color: #03A9F4"></i>
-                                                    @break
-                                                    @default
-                                                    -
-                                                    @endswitch
-                                                </td>
-                                                @endforeach
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>

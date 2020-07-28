@@ -18,11 +18,10 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             ProgramSeeder::class,
             FacultySeeder::class,
-            CourseSeeder::class,
             StudentSeeder::class,
+            CourseSeeder::class,
             ReaderSeeder::class,
-            // EventSeeder::class,
-            // LogSeeder::class,
+            LogSeeder::class,
         ]);
     }
 }

@@ -55,17 +55,23 @@ Route::middleware(['auth'])->group(function() {
 Route::get('studentauth', 'StudentController@authenticate')->name('studentauth');
 Route::any('x/{id}', 'StudentXcontroller')->name('xst')->middleware('guest');
 Route::any('test', function() {
-    return Faculty::with(['logs' => function($q) {
-        $q->whereDate('date', today());
-        $q->whereIn('remarks', ['entry', 'exit']);
-        $q->latest();
-        $q->first();
-    }])->whereHas('logs', function($q) {
-        $q->whereDate('date', today());
-        $q->whereIn('remarks', ['entry', 'exit']);
-    })->get()->filter(function($faculty) {
-        return $faculty->logs->first()->remarks == 'entry';
-    });
+    DB::table('logs')->truncate();
+    DB::table('ended_classes')->truncate();
+    $day = today()->subDays(1);
+    $course = Course::find(2);
+    $range = collect(range(-5, 54));
+    for($i = mt_rand(0, 50); $i > 0; $i--) {
+        factory(Log::class)->create([
+            'log_by_type' => Faculty::class,
+            'log_by_id' => $course->faculty->id,
+            'course_id' => $course->id,
+            'reader_id' => $course->room->id,
+            'date' => $day,
+            'created_at' => $day->copy()->setTimeFrom($course->time_from)->addMinutes($range->pull(mt_rand(0, $range->count()))),
+            'remarks' => 'stamp'
+        ]);
+    }
+    return dd($course->faculty->logs->toArray());
     // $courses = Course::whereIn('academic_period_id', Period::period($request->schoolyear, $request->semester))->get();
 
     //     $students = Student::whereIn('id', $courses->flatMap(function($course) {

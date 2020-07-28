@@ -103,8 +103,7 @@ class Course extends Model
 
     public function forattendance()
     {
-        return true;
-        return !$this->noclass() && now()->between(Carbon::createFromTimeString($this->time_from)->subMinutes(5), Carbon::createFromTimeString($this->time_from)->addMinutes(15));
+        return !$this->noclass() && now()->between(Carbon::createFromTimeString($this->time_from)->subMinutes(5), Carbon::createFromTimeString($this->time_to)->subMinutes(5));
     }
 
     public function facultyloggedontime(Carbon $dt = null)
@@ -203,31 +202,33 @@ class Course extends Model
 
     public function parsefacultylogsbydate(Carbon $dt = null)
     {
-        $dt = $dt ?: today();
+        $dt = $dt ?? today();
         if($this->noclass($dt)) {
             return;
         }
-        $this->logs()->whereDate('date', '=', $dt)->where(['log_by_type' => Faculty::class])->where('remarks', '<>', 'stamp')->delete();
+        $this->logs()->whereDate('date', $dt)->where(['log_by_type' => Faculty::class])->where('remarks', '<>', 'stamp')->delete();
         $logs = $this->logs
         ->filter(function($log) use($dt) {
-            return $log->date == $dt && $log->remarks == 'stamp';
+            return $log->date->eq($dt) && $log->remarks == 'stamp';
         })
         ->map(function($log) {
             return $log->created_at;
         })
+        ->unique()
         ->sort(function($e, $f){
             return $e->gt($f);
         });
+        // dd(today()->gte(now()), $logs->first()->gt(Carbon::createFromTimeString($this->time_from)), $logs->first()->format('H:i'), $this->time_from);
         $info = $this->logs()->create([
             'date' => $dt,
-            'remarks' => $logs->all() ? ($logs->first()->gte(Carbon::createFromTimeString($this->time_from)) ? 'late' : 'ok') : 'absent' ,
+            'remarks' => $logs->all() ? ($logs->first()->gte($dt->copy()->setTimeFrom($this->time_from)) ? 'late' : 'ok') : 'absent' ,
             'process' => 'auto',
             'info' => $logs->all() ? [
                 'first' => $logs->first()->format('H:i'),
                 'last' => $logs->last()->format('H:i'),
                 'minutes' => $logs->count(),
                 'time' => $this->gettimeblocks($logs),
-                'additionalremarks' => $logs->last()->lt(Carbon::createFromTimeString($this->time_to)->subMinutes(5)) ? 'early-out' : null,
+                'additionalremarks' => $logs->last()->lt($dt->copy()->setTimeFrom($this->time_to)->subMinutes(15)) ? 'early-out' : null,
             ] : null,
             'created_at' => $logs->first() ?? now()
         ]);

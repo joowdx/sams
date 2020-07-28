@@ -81,7 +81,7 @@ class MarkAbsent implements ShouldQueue
                     ) {
                         $scp = $course->students->find($student);
                         if($scp->pivot->status == 'dropped') {
-                            continue;
+                            // continue;
                         } else {
                             $absences = $scp->logs()->where(['remarks' => 'absent', 'course_id' => $course->id])->count();
                             if($absences >= $course->getdroprate()) {

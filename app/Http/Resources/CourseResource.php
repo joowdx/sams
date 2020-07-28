@@ -25,7 +25,7 @@ class CourseResource extends JsonResource
                 'schoolid' => $this->faculty->schoolid ?? '',
                 'name' => $this->faculty->name ?? '',
             ],
-            'students' => StudentsForCalendarResource::collection($this->students),
+            'students' => StudentsForCalendarResource::collection($this->students->sortBy('name')),
             'logs' => LogsForCalendarResource::collection($this->logs),
         ];
     }

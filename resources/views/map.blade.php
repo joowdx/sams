@@ -92,7 +92,7 @@
                         <b class="animated flash infinite"> &nbsp </b>
                     </div>
                     <div class="py-2 px-3 m-0 animated flash infinite position-absolute" style="top: 0.3em!important;">
-                        <b class="animated flash infinite"> Ok </b>
+                        <b class="animated flash infinite"> On time </b>
                     </div>
                 </div>
 
@@ -471,7 +471,7 @@
                 const time_in = logs.length != 0 ? moment(logs[0].created_at) : 'N/A'
                 const time_last = logs.length != 0 ? moment(logs[logs.length - 1].created_at) : 'N/A'
                 const duration = logs.length != 0 ? logs.length : 'N/A'
-                const badge = logs.length != 0 ? ` <span class="badge badge-${time_start.isBefore(time_in) ? 'warning' : 'success'}"> ${time_start.isBefore(time_in) ? 'late' : 'ok'} </span>` : ''
+                const badge = logs.length != 0 ? ` <span class="badge badge-${time_start.isBefore(time_in) ? 'warning' : 'success'}"> ${time_start.isBefore(time_in) ? 'late' : 'on time'} </span>` : ''
                 if(logs.length != 0 && time_start.isBefore(time_in)) {
                     departments[e.faculty.program.department.shortname]['present'].push(e.faculty)
                     r.css('fill', '#ffde4a')

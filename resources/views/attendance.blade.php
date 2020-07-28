@@ -182,19 +182,20 @@
                                     <td class="py-0"> <small> <b> DURATION </b> </small> </td>
                                     <td class="py-0"> <b>:</b> </td>
                                     <td class="py-0">
-                                        <small> {{ $record->info['minutes'] }} </small>
+                                        <small> {{ $record->info['minutes'] }} min </small>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         @endif
                     </td>
-                    @if(@count(@$record->info['time']) > 2)
-                    @php
-                    foreach ($record->info['time'] as $time) {
-                        @$timeblock.=$time."<br>";
-                    }
-                    @endphp
+                    @if(@count(@$record->info['time']) > 3)
+                        @php
+                            @$timeblock = null;
+                            foreach ($record->info['time'] as $time) {
+                                @$timeblock.=$time."<br>";
+                            }
+                        @endphp
                     @endif
                     <td class="align-middle @if(@count(@$record->info['time']) > 2) tippy @endif" data-tippy-content="{!! @$timeblock !!}">
                         @if($record->remarks != 'absent')
@@ -206,7 +207,7 @@
                                 <br>
                                 @endif
                             @endforeach
-                            @if(@count(@$record->info['time']) > 2)
+                            @if(@count(@$record->info['time']) > 3)
                             …
                             @endif
                         </small>
@@ -222,14 +223,14 @@
                                 case 'absent': $color = '#F44336'; break;
                                 case 'leave': $color = '#E91E63'; break;
                             }
-                            $earlyout = @$record->remarks['additionalremarks']
+                            $earlyout = @$record->info['additionalremarks']['additionalremarks'];
                         @endphp
                         @if($record->remarks == 'ok' && !$earlyout)
-                            <span class="badge" style="background: #4CAF50"> ok </span>
+                            <span class="badge" style="background: #4CAF50"> on time </span>
                         @elseif($record->remarks == 'absent')
                             <span class="badge" style="background: #F44336"> absent </span>
                         @else
-                            <span class="badge" style="background: {{ $color }}"> {{ $record->remarks }} </span>
+                            <span class="badge" style="background: {{ $color }}"> {{ $record->remarks != 'ok' ? $record->remarks : 'on time' }} </span>
                             @if($earlyout)
                                 <span class="badge" style="background: #F57F17"> early-out </span>
                             @endif

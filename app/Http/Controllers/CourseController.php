@@ -123,9 +123,7 @@ class CourseController extends Controller
                 ]
             ],
             'course' => $course,
-            'courses' => Course::with('students', 'logs')->get(),
             'logs' => Log::all(),
-            'days' => $course->academic_period ? iterator_to_array(CarbonPeriod::create($course->academic_period->start, $course->academic_period->end)->filter(function($day) { return $day->isWeekDay(); })->map(function($day) { return $day->format('D d-m-y'); })) : [],
         ]);
     }
 
