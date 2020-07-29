@@ -11,6 +11,7 @@ use App\Department;
 use App\Program;
 use App\Http\Resources\ChartStatistics;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FacultyStats;
 use Illuminate\Http\Request;
 
 class Statistics extends Controller
@@ -48,7 +49,7 @@ class Statistics extends Controller
                         return @$student->program->department->id == @$department->id;
                     });
                 }
-                return new ChartStatistics($statistics);
+                return new FacultyStats($statistics);
             }
             case 'program': {
                 $statistics = [];
@@ -58,7 +59,7 @@ class Statistics extends Controller
                         return @$student->program->id == @$program->id;
                     });
                 }
-                return new ChartStatistics($statistics);
+                return new FacultyStats($statistics);
             }
         }
 

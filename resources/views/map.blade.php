@@ -366,6 +366,19 @@
         <div>
             <h5 class="pl-3 pt-2 text-light"> <b> Faculties </b> </h5>
             <div id="departments" class="">
+                @foreach($departments as $department)
+                    <div class="row alert m-0 py-1 px-3 text-light" role="alert" style="border-radius: 0!important;background: #${{$department->hexcolor}};">
+                        <div class="col-4 p-0">
+                            <b>{{$department->shortname}}</b>
+                        </div>
+                        <div class="col-8 p-0">
+                            <p class="m-0 p-0 float-right">
+                                <span id="{{$department->shortname}}-n"> 0 </span> /
+                                <span id="{{$department->shortname}}-t"> 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
         <div class="">

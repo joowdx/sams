@@ -37,7 +37,7 @@
                 <div class="card-header pb-1">
                     <div class="row m-0 p-0">
                         <div class="col d-flex m-0 p-0">
-                            <h3 class="card-title pt-2">Stats</h3>
+                            <h3 class="card-title pt-2">Faculties</h3>
                         </div>
                         <div class="col d-flex flex-row-reverse m-0 p-0">
                             <div class="col m-0 p-0 pl-2 ml-1">
@@ -81,7 +81,7 @@
             </div>
         </div>
 
-        <div class="col-md-8">
+        {{-- <div class="col-md-8">
             <div class="card">
                 <div class="card-header pb-1">
                     <h3 class="card-title">Stats</h3>
@@ -94,7 +94,7 @@
                 </div>
                 <!-- /.card-body -->
             </div>
-        </div>
+        </div> --}}
     </div>
 
     {{-- <div class="col-lg-4 col-sm-6">
@@ -256,51 +256,51 @@ $(document).ready( async function(){
     })
     $('#showbypop').trigger('select2:select')
 
-    const data = await getData();
+    // const data = await getData();
 
-    const days = data.map(function(e){
-        return e.days;
-    })
+    // const days = data.map(function(e){
+    //     return e.days;
+    // })
 
-    const late = data.map(function(e){
-        return e.late;
-    })
+    // const late = data.map(function(e){
+    //     return e.late;
+    // })
 
-    const absent = data.map(function(e){
-        return e.absent;
-    })
+    // const absent = data.map(function(e){
+    //     return e.absent;
+    // })
 
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: days,
-            datasets: [{
-                label: 'Lates',
-                data: late,
-                borderWidth: 3,
-                backgroundColor: '#f39c12',
-                order: 1
-            }, {
-                label: 'Absences',
-                data: absent,
-                borderWidth: 3,
-                backgroundColor: '#f56954',
-                order: 2
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    },
+    // var ctx = document.getElementById('myChart').getContext('2d');
+    // var myChart = new Chart(ctx, {
+    //     type: 'line',
+    //     data: {
+    //         labels: days,
+    //         datasets: [{
+    //             label: 'Lates',
+    //             data: late,
+    //             borderWidth: 3,
+    //             backgroundColor: '#f39c12',
+    //             order: 1
+    //         }, {
+    //             label: 'Absences',
+    //             data: absent,
+    //             borderWidth: 3,
+    //             backgroundColor: '#f56954',
+    //             order: 2
+    //         }]
+    //     },
+    //     options: {
+    //         maintainAspectRatio: false,
+    //         scales: {
+    //             yAxes: [{
+    //                 ticks: {
+    //                     beginAtZero: true
+    //                 },
 
-                }]
-            },
-        }
-    });
+    //             }]
+    //         },
+    //     }
+    // });
 })
 </script>
 @endsection

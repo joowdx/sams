@@ -12,7 +12,7 @@ class Course extends Model
     private $parsedfacultylogs;
 
     protected $with = [
-        'room', 'academic_period', 'logs', 'faculty'
+        'room', 'academic_period', 'faculty'
     ];
 
     protected $fillable = [
@@ -208,7 +208,7 @@ class Course extends Model
         if($this->noclass($dt)) {
             return;
         }
-        $this->logs()->whereDate('date', $dt)->where(['log_by_type' => Faculty::class])->where('remarks', '<>', 'stamp')->delete();
+        // $this->logs()->whereDate('date', $dt)->where(['log_by_type' => Faculty::class])->where('remarks', '<>', 'stamp')->delete();
         $logs = $this->logs
         ->filter(function($log) use($dt) {
             return $log->date->eq($dt) && $log->remarks == 'stamp';
@@ -216,17 +216,20 @@ class Course extends Model
         ->map(function($log) {
             return $log->created_at;
         })
-        ->unique()
+        ->unique(function($log) {
+            return $log->format('H:i');
+        })
         ->sort(function($e, $f){
             return $e->gt($f);
         });
+        // dd($logs->toArray());
         // dd(today()->gte(now()), $logs->first()->gt(Carbon::createFromTimeString($this->time_from)), $logs->first()->format('H:i'), $this->time_from);
         $info = $this->logs()->create([
             'date' => $dt,
             'remarks' => $logs->all() ? ($logs->first()->gte($dt->copy()->setTimeFrom($this->time_from)) ? 'late' : 'ok') : 'absent' ,
             'process' => 'auto',
             'info' => $logs->all() ? [
-                'first' => $logs->first()->format('H:i'),
+                'first' => $logs->first()->format('H:i:s'),
                 'last' => $logs->last()->format('H:i'),
                 'minutes' => $logs->count(),
                 'time' => $this->gettimeblocks($logs),
@@ -258,7 +261,7 @@ class Course extends Model
         }
         $end = null;
         for($x = 1; $x < $logs->count(); $x++) {
-            if(@$all[$x]->clone()->addMinute()->eq(@$all[@$x+1])) {
+            if(@$all[$x] && @$all[$x+1] && @$all[$x]->clone()->setSeconds(0)->addMinute()->eq(@$all[@$x+1]->setSeconds(0))) {
                 $end = @$all[@$x+1] ?? $start;
             } else {
                 if($start == $logs->first()) {

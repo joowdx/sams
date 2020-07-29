@@ -43,14 +43,23 @@ class Population extends Controller
             @$data[] = $students->filter(function($student) use($level, $request) {
                 return ($request->level == 'department' ? $student->program->department->id : $student->program->id) == $level->id;
             })->count();
+            @$fdata[] = $level->faculties->filter(function($faculty) {
+                return $faculty->ongoingcourses()->count() > 0;
+            })->count();
         }
         return response()->json([
             'labels' => $levels->pluck('shortname'),
             'datasets' => [
                 [
                     'label' => 'Students',
+                    'backgroundColor' => '#005850',
                     'data' => $data,
                 ],
+                [
+                    'label' => 'Faculties',
+                    'backgroundColor' => '#c40050',
+                    'data' => $fdata,
+                ]
             ],
         ]);
     }

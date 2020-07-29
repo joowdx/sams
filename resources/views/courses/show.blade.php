@@ -44,7 +44,7 @@
 </div>
 @endcan
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-3 d-print-none">
         <div class="card">
             <div class="card-body">
                 <strong class=""> {{ $course->title }} <p class="float-right">  {{ "$course->time_from - $course->time_to" }}</p> </strong>

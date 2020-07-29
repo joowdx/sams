@@ -168,21 +168,21 @@
                                     <td class="py-0"> <small> <b> IN </b> </small> </td>
                                     <td class="py-0"> <b>:</b> </td>
                                     <td class="py-0">
-                                        <small> {{ Carbon\Carbon::createFromTimeString($record->info['first'])->format('H:i') }} </small>
+                                        <small> {{ $record->info['first'] ? Carbon\Carbon::createFromTimeString($record->info['first'])->format('H:i') : null }} </small>
                                     </td>
                                 </tr>
                                 <tr class="p-0 bg-transparent">
                                     <td class="py-0"> <small> <b> OUT </b> </small> </td>
                                     <td class="py-0"> <b>:</b> </td>
                                     <td class="py-0">
-                                        <small> {{ Carbon\Carbon::createFromTimeString($record->info['last'])->format('H:i') }} </small>
+                                        <small> {{ $record->info['last'] ? Carbon\Carbon::createFromTimeString($record->info['last'])->format('H:i') : null }} </small>
                                     </td>
                                 </tr>
                                 <tr class="p-0 bg-transparent">
                                     <td class="py-0"> <small> <b> DURATION </b> </small> </td>
                                     <td class="py-0"> <b>:</b> </td>
                                     <td class="py-0">
-                                        <small> {{ $record->info['minutes'] }} min </small>
+                                        <small> {{ $record->info['minutes'] ? $record->info['minutes'] . 'min' : null }}  </small>
                                     </td>
                                 </tr>
                             </tbody>

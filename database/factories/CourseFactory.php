@@ -34,8 +34,8 @@ $factory->state(Course::class, 'CCE-101', function(Faker $faker) {
         'title' => 'CCE-101',
         'day_from' => 'Mon',
         'day_to' => 'Fri',
-        'time_from' => '08:00',
-        'time_to' => '10:00',
+        'time_from' => '22:00',
+        'time_to' => '23:59',
         'room_id' => '3'
     ];
 });
@@ -46,8 +46,8 @@ $factory->state(Course::class, 'CCE-102', function(Faker $faker) {
         'title' => 'CCE-102',
         'day_from' => 'Mon',
         'day_to' => 'Fri',
-        'time_from' => '08:00',
-        'time_to' => '10:00',
+        'time_from' => '22:00',
+        'time_to' => '23:59',
         'room_id' => '4'
     ];
 });
@@ -58,8 +58,8 @@ $factory->state(Course::class, 'CCE-104', function(Faker $faker) {
         'title' => 'CCE-104',
         'day_from' => 'Mon',
         'day_to' => 'Fri',
-        'time_from' => '08:00',
-        'time_to' => '10:00',
+        'time_from' => '22:00',
+        'time_to' => '23:59',
         'room_id' => '5'
     ];
 });
