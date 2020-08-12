@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\GlobalConfiguration as Grace;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Model;
@@ -226,7 +227,7 @@ class Course extends Model
         // dd(today()->gte(now()), $logs->first()->gt(Carbon::createFromTimeString($this->time_from)), $logs->first()->format('H:i'), $this->time_from);
         $info = $this->logs()->create([
             'date' => $dt,
-            'remarks' => $logs->all() ? ($logs->first()->gte($dt->copy()->setTimeFrom($this->time_from)) ? 'late' : 'ok') : 'absent' ,
+            'remarks' => $logs->all() ? (Carbon::createFromTimeString($this->cc->time_from)->diffInMinutes(now(), false) > Grace::grace() ? 'late' : 'ok') : 'absent' ,
             'process' => 'auto',
             'info' => $logs->all() ? [
                 'first' => $logs->first()->format('H:i:s'),

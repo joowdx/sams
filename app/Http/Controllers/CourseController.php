@@ -109,6 +109,15 @@ class CourseController extends Controller
      */
     public function show($id)
     {
+        // dd(Student::whereHas('logs', function($query) use($id) {
+        //     $query->where('course_id', $id);
+        //     $query->where('remarks', 'absent');
+        // }, '>', 3)->with(['logs' => function($query) use($id) {
+        //     $query->where('course_id', $id);
+        //     $query->where('remarks', 'absent');
+        // }, 'courses' => function($query) use($id) {
+        //     $query->where('id', -1);
+        // }])->get()->toArray());
         abort_unless(is_numeric($id), 404);
         abort_unless($course = Course::find($id), 404);
         return view('courses.show', [
@@ -124,6 +133,20 @@ class CourseController extends Controller
             ],
             'course' => $course,
             'logs' => Log::all(),
+            'drops' => $drops = Student::whereHas('logs', function($query) use($id) {
+                $query->where('course_id', $id);
+                $query->where('remarks', 'absent');
+            }, '>', $course->getdroprate())->with(['logs' => function($query) use($id) {
+                $query->where('course_id', $id);
+                $query->where('remarks', 'absent');
+            }])->get(),
+            'dropcandidates' => Student::whereHas('logs', function($query) use($id) {
+                $query->where('course_id', $id);
+                $query->where('remarks', 'absent');
+            }, '>', $course->getdroprate() * 0.75)->with(['logs' => function($query) use($id) {
+                $query->where('course_id', $id);
+                $query->where('remarks', 'absent');
+            }])->whereNotIn('id', $drops->pluck('id'))->get(),
         ]);
     }
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $fillable = [
-        'remarks', 'date', 'process', 'info', 'created_at'
+        'remarks', 'date', 'process', 'info', 'created_at', 'modified_by'
     ];
 
     protected $dates = [
@@ -38,5 +38,10 @@ class Log extends Model
     public function reader()
     {
         return $this->belongsTo(Reader::class);
+    }
+
+    public function modified_by()
+    {
+        return $this->belongsTo(User::class, 'modified_by', 'id');
     }
 }

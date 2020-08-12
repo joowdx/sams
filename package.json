@@ -52,6 +52,7 @@
     "moment": "^2.27.0",
     "pace": "0.0.4",
     "pace-js": "^1.0.2",
+    "print-this": "^1.15.1",
     "pusher-js": "^5.1.1",
     "select2": "^4.0.13",
     "svg-pan-zoom": "^3.6.1",

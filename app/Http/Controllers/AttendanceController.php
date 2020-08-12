@@ -52,7 +52,8 @@ class AttendanceController extends Controller
                 $logs->whereIn('log_by_id', $courses->unique('faculty_id')->pluck('faculty_id'));
             }
             // dd($logs->get()->toArray());
-            $content['records'] = $logs->get();
+            $content['records'] = $logs->get()->load('modified_by');
+            // dd($logs->get()->load('modified_by')->toArray());
             $content['schoolyear'] = $request->schoolyear;
             $content['semester'] = $request->semester;
             $content['date'] = $request->date;

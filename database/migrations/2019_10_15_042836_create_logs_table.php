@@ -29,7 +29,7 @@ class CreateLogsTable extends Migration
             ])->default('default');
             $table->json('info')->nullable();
             $table->timestamps();
-            $table->unsignedBigInteger('modified_by')->default(1);
+            $table->unsignedBigInteger('modified_by')->nullable();
         });
     }
 

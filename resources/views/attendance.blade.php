@@ -143,6 +143,7 @@
                     <th> Attendance </th>
                     <th> Time </th>
                     <th> Remarks </th>
+                    <th> Modified </th>
                 </tr>
             </thead>
             <tbody>
@@ -235,6 +236,22 @@
                                 <span class="badge" style="background: #F57F17"> early-out </span>
                             @endif
                         @endif
+                    </td>
+                    <td class="align-middle">
+                        @if(@$record->modified_by->faculty)
+                            <small> Updated by: </small> <br>
+                            <b>{{ $record->modified_by->faculty->name }}</b>
+                        @elseif(@$record->modified_by)
+                            <small> Updated by: </small> <br>
+                            <b>{{ $record->modified_by()->pluck('username')->first() }}</b>
+                        @else
+                            <small> Processed by: </small> <br>
+                            <b> System </b>
+                        @endif
+                        <br>
+                        <small>
+                            {{ '@'.$record->created_at->format('Y-m-d H:i:s') }}
+                        </small>
                     </td>
                 </tr>
                 @endforeach
@@ -380,6 +397,7 @@
                     entityid: f,
                     course: id,
                     date: e.dateStr,
+                    user: `{{ Auth::user()->id }}`,
                     remarks: 'ok',
                 }).then(e => {
                     const message =
@@ -410,6 +428,7 @@
                         entityid: id,
                         course: course,
                         remarks: remarks,
+                        user: `{{ Auth::user()->id }}`,
                     })
                 })
                 .then(e => e.json())

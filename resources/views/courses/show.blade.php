@@ -84,6 +84,42 @@
                 </ul>
             </div>
         </div>
+
+        <div class="card" id="droppage">
+            <div class="card-body">
+                <strong><i class="fa-fw fad fa-exclamation-triangle mr-1"></i> Drops </strong>
+                <ul class="list-group list-group-unbordered my-3">
+                    <li class="list-group-item">
+                        <b>List</b> <a class="float-right d-print-none">{{ $drops->count() }}</a>
+                        <ol>
+                            @foreach ($drops as $drop)
+                                <li> {{ $drop->name }} </li>
+                                <ol class="d-none d-print-block">
+                                    @foreach ($drop->logs as $absences)
+                                        <li> {{ $absences->created_at->format('D d M Y') }} </li>
+                                    @endforeach
+                                </ol>
+                            @endforeach
+                        </ol>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Candidates</b> <a class="float-right d-print-none">{{ $dropcandidates->count() }}</a>
+                        <ol>
+                            @foreach ($dropcandidates as $candidate)
+                                <li> {{ $candidate->name }} </li>
+                                <ol class="d-none d-print-block">
+                                    @foreach ($candidate->logs as $absences)
+                                        <li> {{ $absences->created_at->format('D d M Y') }} </li>
+                                    @endforeach
+                                </ol>
+                            @endforeach
+                        </ol>
+                    </li>
+                </ul>
+                <a class="btn btn-dark text-light d-print-none" onclick="$('#droppage').printThis({importStyle: true, header: '{{ $course->title }}'})">Print This</a>
+            </div>
+        </div>
+
     </div>
     <div class="col-lg-9">
         <div class="card">
@@ -121,7 +157,7 @@
             displayEventTime: false,
             slotDuration: { day: 1 },
             slotLabelFormat: [{ weekday: 'short', day: '2-digit' }],
-            resourceColumns: [{ labelText: 'Name', width: '70%' },{ labelText: 'L', field: 'late', width: '10%' },{ labelText: 'E', field: 'excuse', width: '10%' },{ labelText: 'A', field: 'absent', width: '10%' },{ labelText: 'D', field: 'dropped', width: '10%' },],
+            resourceColumns: [{ labelText: 'Name', width: '70%' },{ labelText: 'L', field: 'late', width: '10%' },{ labelText: 'E', field: 'excuse', width: '10%' },{ labelText: 'A', field: 'absent', width: '10%' },],
             resourceAreaWidth: '35%',
             events: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.logs)),
             resources: (e, s, f) => fetch('{{ url("api/courses/".$course->id) }}').then(e => e.json()).then(e => s(e.students)),

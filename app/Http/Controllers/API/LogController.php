@@ -7,6 +7,7 @@ use App\Reader;
 use App\Course;
 use App\Faculty;
 use App\Student;
+use App\GlobalConfiguration as Grace;
 
 use App\UnknownLog;
 use App\Events\NewScannedLog;
@@ -81,7 +82,7 @@ class LogController extends Controller
         abort_unless(request()->t == '0', 403);
         abort_unless($this->cc->students->contains($this->sf) && $this->deny(), 403, 'Student not enrolled!');
         abort_unless($this->cc->students->find($this->sf)->pivot->status != 'dropped', 403, 'Student is dropped!');
-        abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
+        // abort_unless($this->cc->nolog($this->sf), 409, 'Already logged in!');
         return $this->sendlogevent($this->cc->logs()->save($this->newlog()));
     }
 
@@ -96,7 +97,9 @@ class LogController extends Controller
             $log = $this->sf->logs()->create(['remarks' => $remarks, 'date' => today()]);
         } else {
             switch($this->gr->type) {
-                case 'room': $rk = now()->diffInMinutes(Carbon::createFromTimeString($this->cc->time_from), false) < 1 ? 'late' : 'ok'; break;
+                case 'room': {
+                    // dd($g = Carbon::createFromTimeString($this->cc->time_from)->diffInMinutes(now(), false), $t = Grace::grace(), $g >  $t);
+                    $rk = Carbon::createFromTimeString($this->cc->time_from)->diffInMinutes(now(), false) > Grace::grace() ? 'late' : 'ok'; break;}
                 case 'gate': $rk = $this->sf->entered() ? 'exit' : 'entry'; break;
             }
             $log = $this->sf->logs()->create(['remarks' => $rk, 'date' => today()]);

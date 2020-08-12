@@ -30,6 +30,7 @@ class AttendanceController extends Controller
                 'date' => 'required_if:action,i|date_format:Y-m-d',
                 'remarks' => 'required|string|in:ok,late,absent,excuse,leave',
                 'course' => 'required|numeric',
+                'user' => 'required|numeric|exists:users,id'
             ])->passes(),
             403, 'Unknown'
         );
@@ -39,7 +40,8 @@ class AttendanceController extends Controller
                 abort_unless($log = Log::find($request->id), 404, 'Not Found');
                 abort_unless($cc = Course::find($request->course), 404, 'Not Found');
                 abort_unless($cc->logs->contains($log), 403, 'Not Allowed');
-                $log->update(['remarks' => $request->remarks, 'process' => 'overwritten']);
+                abort_unless($usr = User::find($request->user), 404, 'User not found');
+                $log->update(['remarks' => $request->remarks, 'process' => 'overwritten', 'modified_by' => $usr->id]);
                 $student = $log->log_by;
                 $status = $cc->students->find($student)->pivot->status;
                 $absences = $log->log_by->logs()->where([
