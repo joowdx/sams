@@ -49,7 +49,7 @@
     "icheck-2": "^2.0.0",
     "jsgrid": "^1.5.3",
     "laravel-echo": "^1.8.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "pace": "0.0.4",
     "pace-js": "^1.0.2",
     "print-this": "^1.15.1",
